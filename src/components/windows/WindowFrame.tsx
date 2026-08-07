@@ -9,8 +9,9 @@ const MIN_WIDTH = 360;
 const MIN_HEIGHT = 280;
 const CASCADE_STEP = 44;
 const CASCADE_CYCLE = 6;
-// Keeps windows clear of the floating dock at the bottom of the viewport.
-const DOCK_EXCLUSION = 140;
+// Keeps windows clear of the floating dock (and its hover tooltips) at the
+// bottom of the viewport.
+const DOCK_EXCLUSION = 160;
 const ENTER_DURATION = 380;
 const EXIT_DURATION = 300;
 
@@ -43,6 +44,7 @@ export function WindowFrame({
   title,
   defaultSize,
   centerX,
+  fadeScroll,
   zIndex,
   spawnIndex,
   origin,
@@ -57,6 +59,7 @@ export function WindowFrame({
   title: string;
   defaultSize: { width: number; height: number };
   centerX?: boolean;
+  fadeScroll?: boolean;
   zIndex: number;
   spawnIndex: number;
   origin?: WindowOrigin;
@@ -84,6 +87,23 @@ export function WindowFrame({
   });
   const [maximized, setMaximized] = useState(false);
   const preMaximizeRect = useRef<Rect | null>(null);
+  const contentElRef = useRef<HTMLDivElement | null>(null);
+  const [scrollEdges, setScrollEdges] = useState({ atTop: true, atBottom: true });
+
+  const updateScrollEdges = useCallback((el: HTMLDivElement) => {
+    const atTop = el.scrollTop <= 1;
+    const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
+    setScrollEdges({ atTop, atBottom });
+  }, []);
+
+  const setContentEl = useCallback(
+    (el: HTMLDivElement | null) => {
+      contentElRef.current = el;
+      onContentRef?.(el);
+      if (el) updateScrollEdges(el);
+    },
+    [onContentRef, updateScrollEdges],
+  );
   const dragState = useRef<{ startX: number; startY: number; origin: Rect } | null>(
     null,
   );
@@ -188,6 +208,10 @@ export function WindowFrame({
   const effectivePhase: Phase =
     phase === "idle" && forceClose && origin ? "closing" : phase;
 
+  useEffect(() => {
+    if (contentElRef.current) updateScrollEdges(contentElRef.current);
+  }, [rect.height, maximized, updateScrollEdges]);
+
   const handleAnimationEnd = useCallback(() => {
     if (effectivePhase === "entering") setPhase("idle");
     else if (effectivePhase === "closing") onClose();
@@ -263,17 +287,43 @@ export function WindowFrame({
         <div className="w-[52px]" aria-hidden />
       </div>
 
-      <div
-        ref={onContentRef}
-        onScroll={(e) => {
-          if (!onScrollProgress) return;
-          const el = e.currentTarget;
-          const max = el.scrollHeight - el.clientHeight;
-          onScrollProgress(max > 0 ? el.scrollTop / max : 0);
-        }}
-        className="flex-1 overflow-y-auto overscroll-contain"
-      >
-        {children}
+      <div className="relative flex-1 overflow-hidden">
+        {fadeScroll && (
+          <div
+            aria-hidden
+            className={`pointer-events-none absolute inset-x-0 top-0 z-10 h-12 bg-gradient-to-b from-white to-transparent transition-opacity duration-200 ${
+              scrollEdges.atTop ? "opacity-0" : "opacity-100"
+            }`}
+          />
+        )}
+
+        <div
+          ref={setContentEl}
+          onScroll={(e) => {
+            const el = e.currentTarget;
+            if (onScrollProgress) {
+              const max = el.scrollHeight - el.clientHeight;
+              onScrollProgress(max > 0 ? el.scrollTop / max : 0);
+            }
+            if (fadeScroll) updateScrollEdges(el);
+          }}
+          className={`h-full overflow-y-auto overscroll-contain ${
+            fadeScroll
+              ? "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              : ""
+          }`}
+        >
+          {children}
+        </div>
+
+        {fadeScroll && (
+          <div
+            aria-hidden
+            className={`pointer-events-none absolute inset-x-0 bottom-0 z-10 h-24 bg-gradient-to-t from-white to-transparent transition-opacity duration-200 ${
+              scrollEdges.atBottom ? "opacity-0" : "opacity-100"
+            }`}
+          />
+        )}
       </div>
 
       {!maximized && (

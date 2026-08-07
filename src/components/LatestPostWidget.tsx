@@ -20,16 +20,16 @@ function PostCard({
     <OSLink
       href={`/blog/${post.slug}`}
       windowKey={`blog:${post.slug}`}
-      className={`flex items-center gap-3 rounded-2xl border border-border bg-white/50 p-3 shadow-lg shadow-black/5 backdrop-blur-xl ${className ?? ""}`}
+      className={`flex items-center gap-3.5 rounded-2xl border border-border bg-white/50 p-3.5 shadow-lg shadow-black/5 backdrop-blur-xl ${className ?? ""}`}
     >
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-foreground text-base leading-none text-background">
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-foreground text-lg leading-none text-background">
         ✽
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-        <span className="font-mono text-[11px] text-muted">
+        <span className="font-mono text-xs text-muted">
           {formatDate(post.date)}
         </span>
-        <span className="text-[13px] leading-snug font-medium text-foreground">
+        <span className="text-sm leading-snug font-medium text-foreground">
           {post.title}
         </span>
       </div>
@@ -41,7 +41,7 @@ export function LatestPostWidget({ posts }: { posts: BlogPost[] }) {
   const [primary, secondary] = posts;
 
   return (
-    <div className="group absolute top-6 right-6 z-30 hidden w-64 sm:block">
+    <div className="group absolute top-6 right-6 z-30 hidden w-72 sm:block">
       {secondary && (
         <PostCard
           post={secondary}

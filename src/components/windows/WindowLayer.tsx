@@ -50,6 +50,7 @@ export function WindowLayer() {
               title={entry.title}
               defaultSize={entry.defaultSize}
               centerX={entry.centerX}
+              fadeScroll={entry.fadeScroll}
               zIndex={w.zIndex}
               spawnIndex={w.spawnIndex}
               origin={w.origin}

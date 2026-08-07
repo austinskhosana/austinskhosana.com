@@ -17,6 +17,7 @@ type RegistryEntry = {
   Content: ComponentType;
   defaultSize: { width: number; height: number };
   centerX?: boolean;
+  fadeScroll?: boolean;
 };
 
 const CASE_STUDY_SIZE = { width: 1120, height: 820 };
@@ -48,6 +49,7 @@ const caseStudyRegistry: Record<string, RegistryEntry> = Object.fromEntries(
       Content: () => <CaseStudyContent project={project} />,
       defaultSize: CASE_STUDY_SIZE,
       centerX: true,
+      fadeScroll: true,
     },
   ]),
 );

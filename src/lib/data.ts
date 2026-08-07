@@ -12,6 +12,17 @@ export const toolStack: ToolStackItem[] = [
   { label: "◇", bg: "#0A0A0A", fg: "#ffffff" },
 ];
 
+export type PlaygroundCategory = "illustration" | "design" | "code";
+
+export type PlaygroundItem = {
+  slug: string;
+  name: string;
+  category: PlaygroundCategory;
+  description: string;
+};
+
+export const playgroundItems: PlaygroundItem[] = [];
+
 export type Project = {
   slug: string;
   title: string;
@@ -112,7 +123,8 @@ export const projects: Project[] = [
   {
     slug: "comments-moderation",
     title: "Coeditor",
-    description: "Creating an AI-powered comments moderation platform.",
+    description:
+      "Creating an AI-powered comments moderation platform for some of the UK's leading magazines.",
     tags: [
       "UI Design",
       "Product Design",
@@ -130,7 +142,7 @@ export const projects: Project[] = [
       {
         heading: "The Challenge",
         body: [
-          "News platforms struggle with comments containing harmful content. The team needed a system that can exist as a plug-in for different magazines, while maintaining publisher control over moderation parameters.",
+          "News and politics platforms often struggle with comments sections filled with bigotry and behaviour that doesn't align with community guidelines. We built this for some of the UK's leading magazines — the challenge was creating a system that could exist as a plug-in across different publishers, while still giving teams fine-grained control over the parameters of AI-moderated analysis and feedback.",
         ],
       },
       {
@@ -142,13 +154,13 @@ export const projects: Project[] = [
       {
         heading: "The Process",
         body: [
-          "The team followed standard UX methodology: user flow mapping, workshops, critiques, then wireframes and Figma designs. I contributed CSS animations to guide engineering implementation.",
+          "The team followed standard UX methodology: user flow mapping, workshops, critiques, then wireframes and Figma designs. I contributed CSS animations to guide engineering implementation, working as the only designer on the project.",
         ],
       },
       {
         heading: "CSS Animations & the Loader",
         body: [
-          "Starting with an open-source loader, I adapted it for light-mode compatibility. The design used colour as a visual signal: a classic set of colours for approvals and acceptances, and a pink-and-blue colourway.",
+          "Starting with an open-source loader, I adapted it for light-mode compatibility. The design used colour as a visual signal: a classic set of colours for approvals and acceptances, and a pink-and-blue colourway for the primary loading state.",
         ],
       },
       {
@@ -170,9 +182,15 @@ export const projects: Project[] = [
         ],
       },
       {
-        heading: "The Dashboard & Modal",
+        heading: "The Dashboard UI",
         body: [
-          "The moderation interface displays comment context — article, user details, history — in a compact format, enabling moderators to make rapid, confident decisions.",
+          "The moderation dashboard is where moderators review comments that didn't pass the AI check, with enough context to approve, reject, or escalate quickly and confidently.",
+        ],
+      },
+      {
+        heading: "The Modal",
+        body: [
+          "Designing the moderation modal was my favourite part of this project — it had to surface the article, the comment itself, user details, and comment history in one compact, high-signal view, without drowning moderators in noise.",
         ],
       },
       {
@@ -224,23 +242,31 @@ export const projects: Project[] = [
       {
         heading: "Key Features",
         body: [
-          "A prompt input area for story generation.",
-          "A visual aesthetic builder with grid-based style selection.",
-          "A Tinder-style character and location swiping interface.",
-          "A minimalistic loading experience.",
-          "A glassmorphism-styled playback screen.",
+          "Welcome Screen — falling CDs against a vibrant backdrop with a looping hero video, blending nostalgia with a forward-thinking take on media.",
+          "Prompt Input & Featured Content — a prompt field to start generating a movie or series, plus a scrollable feed of community-generated content for inspiration.",
+          "AI Video Aesthetic Builder — a visual grid of styles from realism to anime, with a refresh option to keep exploration lightweight and curated.",
+          "Movie/Show Description — watch the generated film, read a concise synopsis, and discover similar titles through tailored recommendations.",
+          "Character & Style Selector — a Tinder-style swiping interface for curating characters, styles, and locations, turning customization into a game-like experience.",
+          "Generating Loader — a minimalistic \"Generating\" state that keeps users informed without overwhelming them while their film is built.",
+          "Playback Screen — a glassmorphism-styled player with a blur effect on the video for a sleek, modern backdrop to playback controls.",
         ],
       },
       {
         heading: "The Process",
         body: [
-          "The UX methodology progressed through persona development, empathy mapping, information architecture, wireframing, and high-fidelity design — focusing on a seamless user experience that encourages creativity and exploration.",
+          "Persona — identified the needs and motivations of creative individuals who want to tell stories without a full production studio behind them.",
+          "Empathy Maps — mapped what users said, did, thought, and felt to design around real needs instead of assumptions.",
+          "Ideation — built the information architecture and core user pathways, from style selection and character customization to playback and discovery.",
+          "Wireframes — translated the IA into low-fidelity layouts to test prompts, character selection, style customization, and plot outlining before investing in high-fidelity visuals.",
         ],
       },
       {
         heading: "Key Reflections",
         body: [
-          "The project highlighted insights about generative AI's empowerment potential, the importance of intuitive design, and balancing aesthetic appeal with functionality to inspire and support users.",
+          "Generative AI Potential — demonstrated how generative AI can empower users to create their own stories and characters.",
+          "User Experience Focus — prioritized a seamless experience that encourages creativity and exploration.",
+          "Intuitive Design Insights — even as a concept, defining the information architecture reinforced how much intuitive design shapes engagement.",
+          "Balancing Aesthetics and Functionality — learned the necessity of balancing aesthetic appeal with functionality to inspire and support users.",
         ],
       },
     ],

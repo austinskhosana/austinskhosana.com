@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
-import { projects } from "@/lib/data";
+import { playgroundItems } from "@/lib/data";
+import type { PlaygroundCategory } from "@/lib/data";
 
 type DocStep = {
   kind: "doc";
@@ -21,20 +22,21 @@ type CdStep = {
   command: string;
 };
 
-type ProjectStep = {
-  kind: "project";
+type ItemStep = {
+  kind: "item";
   command: string;
   slug: string;
 };
 
-type Step = DocStep | ListingStep | CdStep | ProjectStep;
+type Step = DocStep | ListingStep | CdStep | ItemStep;
 
-const PROJECT_ITEMS = [
-  { name: "project 1", slug: "pixelvault" },
-  { name: "project 2", slug: "thespectator" },
-  { name: "project 3", slug: "comments-moderation" },
-  { name: "project 4", slug: "spectra-2" },
-];
+const CATEGORIES: PlaygroundCategory[] = ["illustration", "design", "code"];
+
+function itemsForCategory(category: PlaygroundCategory) {
+  return playgroundItems
+    .filter((item) => item.category === category)
+    .map((item) => ({ name: item.name, slug: item.slug }));
+}
 
 const BASE_STEPS: Step[] = [
   {
@@ -45,11 +47,13 @@ const BASE_STEPS: Step[] = [
       "A collection of my design explorations across illustration, design and code.",
     ],
   },
-  {
-    kind: "listing",
-    command: "ls ./projects",
-    items: PROJECT_ITEMS,
-  },
+  ...CATEGORIES.map(
+    (category): ListingStep => ({
+      kind: "listing",
+      command: `ls ./${category}`,
+      items: itemsForCategory(category),
+    }),
+  ),
 ];
 
 const TYPE_SPEED = 45;
@@ -79,12 +83,12 @@ function PromptPrefix() {
 function StepOutput({
   step,
   isActive,
-  onOpenProject,
+  onOpenItem,
   onGoBack,
 }: {
   step: Step;
   isActive: boolean;
-  onOpenProject: (slug: string) => void;
+  onOpenItem: (slug: string) => void;
   onGoBack: () => void;
 }) {
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
@@ -132,6 +136,10 @@ function StepOutput({
       }
     }
 
+    if (step.items.length === 0) {
+      return <p className="text-muted">nothing here yet</p>;
+    }
+
     return (
       <>
         {step.items.map((item, index) => (
@@ -141,7 +149,7 @@ function StepOutput({
               itemRefs.current[index] = el;
             }}
             type="button"
-            onClick={() => onOpenProject(item.slug)}
+            onClick={() => onOpenItem(item.slug)}
             onKeyDown={(event) => handleKeyDown(event, index)}
             className="w-fit text-left text-foreground underline underline-offset-2 transition-colors hover:text-accent focus:outline-none focus-visible:bg-foreground focus-visible:text-white"
           >
@@ -156,16 +164,14 @@ function StepOutput({
     return null;
   }
 
-  const project = projects.find((p) => p.slug === step.slug);
-  if (!project) return null;
+  const item = playgroundItems.find((p) => p.slug === step.slug);
+  if (!item) return null;
 
   return (
     <>
-      <p className="text-foreground">{project.title}</p>
-      <p className="text-muted">{project.description}</p>
-      <p className="text-muted">Role: {project.role}</p>
-      <p className="text-muted">Tools: {project.tools}</p>
-      <p className="text-muted">Tags: {project.tags.join(", ")}</p>
+      <p className="text-foreground">{item.name}</p>
+      <p className="text-muted">{item.description}</p>
+      <p className="text-muted">Category: {item.category}</p>
       <button
         type="button"
         onClick={onGoBack}
@@ -210,11 +216,13 @@ export function PlaygroundWindowContent() {
     return () => clearTimeout(timeout);
   }, [typed, commandDone, allDone, activeStep]);
 
-  function openProject(slug: string) {
+  function openItem(slug: string) {
+    const item = playgroundItems.find((p) => p.slug === slug);
+    if (!item) return;
     setSteps((prev) => [
       ...prev,
-      { kind: "cd", command: `cd ./projects/${slug}` },
-      { kind: "project", command: "open readme.md", slug },
+      { kind: "cd", command: `cd ./${item.category}/${slug}` },
+      { kind: "item", command: "open readme.md", slug },
     ]);
   }
 
@@ -234,7 +242,7 @@ export function PlaygroundWindowContent() {
             <StepOutput
               step={step}
               isActive={i === completed - 1}
-              onOpenProject={openProject}
+              onOpenItem={openItem}
               onGoBack={goBack}
             />
           </div>

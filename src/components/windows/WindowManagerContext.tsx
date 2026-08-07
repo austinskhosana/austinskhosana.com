@@ -31,6 +31,7 @@ type WindowManagerContextValue = {
   windows: OpenWindow[];
   openWindow: (key: WindowKey, origin?: WindowOrigin) => void;
   closeWindow: (key: WindowKey) => void;
+  closeAllWindows: () => void;
   focusWindow: (key: WindowKey) => void;
   toggleMinimize: (key: WindowKey) => void;
   registerContentEl: (key: WindowKey, el: HTMLDivElement | null) => void;
@@ -84,6 +85,14 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
     setWindows((prev) => prev.filter((w) => w.key !== key));
   }, []);
 
+  // Minimized windows aren't mounted, so they can be dropped immediately;
+  // visible ones are marked closing so WindowFrame can genie-out first.
+  const closeAllWindows = useCallback(() => {
+    setWindows((prev) =>
+      prev.filter((w) => !w.minimized).map((w) => ({ ...w, closing: true })),
+    );
+  }, []);
+
   const registerContentEl = useCallback(
     (key: WindowKey, el: HTMLDivElement | null) => {
       if (el) contentRefs.current.set(key, el);
@@ -124,6 +133,7 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
       windows,
       openWindow,
       closeWindow,
+      closeAllWindows,
       focusWindow,
       toggleMinimize,
       registerContentEl,
@@ -134,6 +144,7 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
       windows,
       openWindow,
       closeWindow,
+      closeAllWindows,
       focusWindow,
       toggleMinimize,
       registerContentEl,
