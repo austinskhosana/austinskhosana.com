@@ -2,7 +2,7 @@ import Link from "next/link";
 import {
   HomeIcon,
   UserIcon,
-  PlayIcon,
+  BeakerIcon,
   LightBulbIcon,
 } from "@heroicons/react/24/solid";
 import type { ComponentType, SVGProps } from "react";
@@ -40,7 +40,7 @@ const items: {
     href: "/playground",
     label: "Playground",
     windowKey: "playground",
-    Icon: PlayIcon,
+    Icon: BeakerIcon,
   },
   {
     href: "https://github.com/austinskhosana",
@@ -68,35 +68,46 @@ export function FloatingDock() {
         <nav className="pointer-events-auto flex items-center gap-2 rounded-full border border-border bg-white/90 p-2 shadow-lg shadow-black/5 backdrop-blur">
           {items.map((item) => {
             const className =
-              "flex h-[52px] w-[52px] items-center justify-center rounded-full border border-border text-foreground/70 transition-colors hover:border-foreground/40 hover:bg-[#f5f5f5] hover:text-foreground";
+              "flex h-[52px] w-[52px] items-center justify-center rounded-full border border-border text-foreground/70 transition-colors hover:border-border hover:bg-[#e5e5e5] hover:text-foreground";
+
+            const tooltip = (
+              <span
+                role="presentation"
+                className="pointer-events-none absolute bottom-full left-1/2 mb-3 -translate-x-1/2 scale-95 rounded-md border border-border bg-white px-3 py-1.5 font-mono text-xs whitespace-nowrap text-foreground opacity-0 shadow-lg shadow-black/5 transition-all duration-150 group-hover:scale-100 group-hover:opacity-100"
+              >
+                {item.label}
+              </span>
+            );
 
             if (item.windowKey) {
               return (
-                <OSLink
-                  key={item.href}
-                  href={item.href}
-                  windowKey={item.windowKey}
-                  aria-label={item.label}
-                  title={item.label}
-                  className={className}
-                >
-                  <item.Icon className="h-[22px] w-[22px]" strokeWidth={1.8} />
-                </OSLink>
+                <div key={item.href} className="group relative">
+                  {tooltip}
+                  <OSLink
+                    href={item.href}
+                    windowKey={item.windowKey}
+                    aria-label={item.label}
+                    className={className}
+                  >
+                    <item.Icon className="h-[22px] w-[22px]" strokeWidth={1.8} />
+                  </OSLink>
+                </div>
               );
             }
 
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-label={item.label}
-                title={item.label}
-                target={item.external ? "_blank" : undefined}
-                rel={item.external ? "noopener noreferrer" : undefined}
-                className={className}
-              >
-                <item.Icon className="h-[22px] w-[22px]" strokeWidth={1.8} />
-              </Link>
+              <div key={item.href} className="group relative">
+                {tooltip}
+                <Link
+                  href={item.href}
+                  aria-label={item.label}
+                  target={item.external ? "_blank" : undefined}
+                  rel={item.external ? "noopener noreferrer" : undefined}
+                  className={className}
+                >
+                  <item.Icon className="h-[22px] w-[22px]" strokeWidth={1.8} />
+                </Link>
+              </div>
             );
           })}
         </nav>

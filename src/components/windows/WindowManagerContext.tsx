@@ -19,7 +19,13 @@ export type OpenWindow = {
   minimized: boolean;
   spawnIndex: number;
   origin?: WindowOrigin;
+  closing?: boolean;
+  scrollProgress?: number;
 };
+
+function isCaseStudyKey(key: WindowKey) {
+  return key.startsWith("work:");
+}
 
 type WindowManagerContextValue = {
   windows: OpenWindow[];
@@ -27,6 +33,9 @@ type WindowManagerContextValue = {
   closeWindow: (key: WindowKey) => void;
   focusWindow: (key: WindowKey) => void;
   toggleMinimize: (key: WindowKey) => void;
+  registerContentEl: (key: WindowKey, el: HTMLDivElement | null) => void;
+  updateScrollProgress: (key: WindowKey, progress: number) => void;
+  scrollToFraction: (key: WindowKey, fraction: number) => void;
 };
 
 const WindowManagerContext = createContext<WindowManagerContextValue | null>(
@@ -37,25 +46,63 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
   const [windows, setWindows] = useState<OpenWindow[]>([]);
   const zCounter = useRef(50);
   const spawnCounter = useRef(0);
+  const contentRefs = useRef<Map<WindowKey, HTMLDivElement>>(new Map());
 
   const openWindow = useCallback((key: WindowKey, origin?: WindowOrigin) => {
     zCounter.current += 1;
     const z = zCounter.current;
     setWindows((prev) => {
-      const existing = prev.find((w) => w.key === key);
+      // Only one case study can be open at a time — any other case study
+      // gets replaced: minimized ones drop silently, visible ones animate
+      // out (genie) via the `closing` flag picked up by WindowFrame.
+      const base = isCaseStudyKey(key)
+        ? prev
+            .filter((w) => !(isCaseStudyKey(w.key) && w.key !== key && w.minimized))
+            .map((w) =>
+              isCaseStudyKey(w.key) && w.key !== key
+                ? { ...w, closing: true }
+                : w,
+            )
+        : prev;
+
+      const existing = base.find((w) => w.key === key);
       if (existing) {
-        return prev.map((w) =>
-          w.key === key ? { ...w, minimized: false, zIndex: z } : w,
+        return base.map((w) =>
+          w.key === key
+            ? { ...w, minimized: false, zIndex: z, closing: false }
+            : w,
         );
       }
       const spawnIndex = spawnCounter.current;
       spawnCounter.current += 1;
-      return [...prev, { key, zIndex: z, minimized: false, spawnIndex, origin }];
+      return [...base, { key, zIndex: z, minimized: false, spawnIndex, origin }];
     });
   }, []);
 
   const closeWindow = useCallback((key: WindowKey) => {
+    contentRefs.current.delete(key);
     setWindows((prev) => prev.filter((w) => w.key !== key));
+  }, []);
+
+  const registerContentEl = useCallback(
+    (key: WindowKey, el: HTMLDivElement | null) => {
+      if (el) contentRefs.current.set(key, el);
+      else contentRefs.current.delete(key);
+    },
+    [],
+  );
+
+  const updateScrollProgress = useCallback((key: WindowKey, progress: number) => {
+    setWindows((prev) =>
+      prev.map((w) => (w.key === key ? { ...w, scrollProgress: progress } : w)),
+    );
+  }, []);
+
+  const scrollToFraction = useCallback((key: WindowKey, fraction: number) => {
+    const el = contentRefs.current.get(key);
+    if (!el) return;
+    const max = el.scrollHeight - el.clientHeight;
+    el.scrollTo({ top: max * fraction, behavior: "smooth" });
   }, []);
 
   const focusWindow = useCallback((key: WindowKey) => {
@@ -73,8 +120,26 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ windows, openWindow, closeWindow, focusWindow, toggleMinimize }),
-    [windows, openWindow, closeWindow, focusWindow, toggleMinimize],
+    () => ({
+      windows,
+      openWindow,
+      closeWindow,
+      focusWindow,
+      toggleMinimize,
+      registerContentEl,
+      updateScrollProgress,
+      scrollToFraction,
+    }),
+    [
+      windows,
+      openWindow,
+      closeWindow,
+      focusWindow,
+      toggleMinimize,
+      registerContentEl,
+      updateScrollProgress,
+      scrollToFraction,
+    ],
   );
 
   return (

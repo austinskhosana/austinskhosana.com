@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties, PointerEvent as ReactPointerEvent, ReactNode } from "react";
 import type { WindowOrigin } from "./WindowManagerContext";
 
@@ -46,9 +46,12 @@ export function WindowFrame({
   zIndex,
   spawnIndex,
   origin,
+  forceClose,
   onClose,
   onFocus,
   onMinimize,
+  onContentRef,
+  onScrollProgress,
   children,
 }: {
   title: string;
@@ -57,9 +60,12 @@ export function WindowFrame({
   zIndex: number;
   spawnIndex: number;
   origin?: WindowOrigin;
+  forceClose?: boolean;
   onClose: () => void;
   onFocus: () => void;
   onMinimize: () => void;
+  onContentRef?: (el: HTMLDivElement | null) => void;
+  onScrollProgress?: (progress: number) => void;
   children: ReactNode;
 }) {
   const [phase, setPhase] = useState<Phase>(() =>
@@ -168,20 +174,34 @@ export function WindowFrame({
     setPhase("closing");
   }, [origin, phase, onClose]);
 
+  // A window without an origin can't genie-close, so a forced replacement
+  // has to be removed immediately — that's an external-system update
+  // (telling the manager to drop this window), which is what effects are for.
+  useEffect(() => {
+    if (forceClose && phase === "idle" && !origin) {
+      onClose();
+    }
+  }, [forceClose, phase, origin, onClose]);
+
+  // Windows with an origin animate out instead; derive that during render
+  // rather than syncing it into state from an effect.
+  const effectivePhase: Phase =
+    phase === "idle" && forceClose && origin ? "closing" : phase;
+
   const handleAnimationEnd = useCallback(() => {
-    if (phase === "entering") setPhase("idle");
-    else if (phase === "closing") onClose();
-  }, [phase, onClose]);
+    if (effectivePhase === "entering") setPhase("idle");
+    else if (effectivePhase === "closing") onClose();
+  }, [effectivePhase, onClose]);
 
   const animationStyle: CSSProperties =
-    phase === "entering"
+    effectivePhase === "entering"
       ? {
           ...(origin ? genieVars(rect, origin) : null),
           animation: `genie-in ${ENTER_DURATION}ms var(--ease-in-out) forwards`,
           transformOrigin: "0 0",
           willChange: "transform, opacity",
         }
-      : phase === "closing"
+      : effectivePhase === "closing"
         ? {
             ...(origin ? genieVars(rect, origin) : null),
             animation: `genie-out ${EXIT_DURATION}ms var(--ease-in-out) forwards`,
@@ -190,7 +210,7 @@ export function WindowFrame({
           }
         : {};
 
-  const isAnimating = phase !== "idle";
+  const isAnimating = effectivePhase !== "idle";
 
   return (
     <div
@@ -243,7 +263,18 @@ export function WindowFrame({
         <div className="w-[52px]" aria-hidden />
       </div>
 
-      <div className="flex-1 overflow-y-auto overscroll-contain">{children}</div>
+      <div
+        ref={onContentRef}
+        onScroll={(e) => {
+          if (!onScrollProgress) return;
+          const el = e.currentTarget;
+          const max = el.scrollHeight - el.clientHeight;
+          onScrollProgress(max > 0 ? el.scrollTop / max : 0);
+        }}
+        className="flex-1 overflow-y-auto overscroll-contain"
+      >
+        {children}
+      </div>
 
       {!maximized && (
         <div

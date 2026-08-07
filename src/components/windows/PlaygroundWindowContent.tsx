@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { KeyboardEvent } from "react";
 import { projects } from "@/lib/data";
 
 type DocStep = {
@@ -77,13 +78,23 @@ function PromptPrefix() {
 
 function StepOutput({
   step,
+  isActive,
   onOpenProject,
   onGoBack,
 }: {
   step: Step;
+  isActive: boolean;
   onOpenProject: (slug: string) => void;
   onGoBack: () => void;
 }) {
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  useEffect(() => {
+    if (isActive && step.kind === "listing") {
+      itemRefs.current[0]?.focus();
+    }
+  }, [isActive, step.kind]);
+
   if (step.kind === "doc") {
     return (
       <>
@@ -98,14 +109,41 @@ function StepOutput({
   }
 
   if (step.kind === "listing") {
+    function handleKeyDown(
+      event: KeyboardEvent<HTMLButtonElement>,
+      index: number,
+    ) {
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        const next = itemRefs.current[index + 1] ?? itemRefs.current[0];
+        next?.focus();
+      } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        const prev =
+          itemRefs.current[index - 1] ??
+          itemRefs.current[itemRefs.current.length - 1];
+        prev?.focus();
+      } else if (event.key === "Home") {
+        event.preventDefault();
+        itemRefs.current[0]?.focus();
+      } else if (event.key === "End") {
+        event.preventDefault();
+        itemRefs.current[itemRefs.current.length - 1]?.focus();
+      }
+    }
+
     return (
       <>
-        {step.items.map((item) => (
+        {step.items.map((item, index) => (
           <button
             key={item.slug}
+            ref={(el) => {
+              itemRefs.current[index] = el;
+            }}
             type="button"
             onClick={() => onOpenProject(item.slug)}
-            className="w-fit text-left text-foreground underline underline-offset-2 transition-colors hover:text-accent"
+            onKeyDown={(event) => handleKeyDown(event, index)}
+            className="w-fit text-left text-foreground underline underline-offset-2 transition-colors hover:text-accent focus:outline-none focus-visible:bg-foreground focus-visible:text-white"
           >
             {item.name}
           </button>
@@ -131,7 +169,14 @@ function StepOutput({
       <button
         type="button"
         onClick={onGoBack}
-        className="w-fit text-muted transition-colors hover:text-foreground"
+        onKeyDown={(event) => {
+          if (event.key === "Backspace") {
+            event.preventDefault();
+            onGoBack();
+          }
+        }}
+        autoFocus={isActive}
+        className="w-fit text-muted transition-colors hover:text-foreground focus:outline-none focus-visible:text-foreground focus-visible:underline"
       >
         ← cd ..
       </button>
@@ -188,6 +233,7 @@ export function PlaygroundWindowContent() {
             </p>
             <StepOutput
               step={step}
+              isActive={i === completed - 1}
               onOpenProject={openProject}
               onGoBack={goBack}
             />

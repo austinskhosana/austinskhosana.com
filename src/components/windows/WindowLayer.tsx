@@ -4,10 +4,17 @@ import { useEffect } from "react";
 import { useWindowManager } from "./WindowManagerContext";
 import { windowRegistry } from "./registry";
 import { WindowFrame } from "./WindowFrame";
+import { CaseStudyTimeline } from "./CaseStudyTimeline";
 
 export function WindowLayer() {
-  const { windows, closeWindow, focusWindow, toggleMinimize } =
-    useWindowManager();
+  const {
+    windows,
+    closeWindow,
+    focusWindow,
+    toggleMinimize,
+    registerContentEl,
+    updateScrollProgress,
+  } = useWindowManager();
 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
@@ -46,14 +53,19 @@ export function WindowLayer() {
               zIndex={w.zIndex}
               spawnIndex={w.spawnIndex}
               origin={w.origin}
+              forceClose={w.closing}
               onClose={() => closeWindow(w.key)}
               onFocus={() => focusWindow(w.key)}
               onMinimize={() => toggleMinimize(w.key)}
+              onContentRef={(el) => registerContentEl(w.key, el)}
+              onScrollProgress={(progress) => updateScrollProgress(w.key, progress)}
             >
               <Content />
             </WindowFrame>
           );
         })}
+
+      <CaseStudyTimeline />
 
       {minimized.length > 0 && (
         <div className="pointer-events-auto fixed bottom-32 left-6 z-50 flex flex-col gap-2">

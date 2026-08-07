@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import type { KeyboardEvent } from "react";
 import { blogPosts } from "@/lib/data";
 
 type DocStep = {
@@ -76,13 +77,23 @@ function PromptPrefix() {
 
 function StepOutput({
   step,
+  isActive,
   onOpenPost,
   onGoBack,
 }: {
   step: Step;
+  isActive: boolean;
   onOpenPost: (slug: string) => void;
   onGoBack: () => void;
 }) {
+  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  useEffect(() => {
+    if (isActive && step.kind === "listing") {
+      itemRefs.current[0]?.focus();
+    }
+  }, [isActive, step.kind]);
+
   if (step.kind === "doc") {
     return (
       <>
@@ -97,19 +108,46 @@ function StepOutput({
   }
 
   if (step.kind === "listing") {
+    function handleKeyDown(
+      event: KeyboardEvent<HTMLButtonElement>,
+      index: number,
+    ) {
+      if (event.key === "ArrowDown") {
+        event.preventDefault();
+        const next = itemRefs.current[index + 1] ?? itemRefs.current[0];
+        next?.focus();
+      } else if (event.key === "ArrowUp") {
+        event.preventDefault();
+        const prev =
+          itemRefs.current[index - 1] ??
+          itemRefs.current[itemRefs.current.length - 1];
+        prev?.focus();
+      } else if (event.key === "Home") {
+        event.preventDefault();
+        itemRefs.current[0]?.focus();
+      } else if (event.key === "End") {
+        event.preventDefault();
+        itemRefs.current[itemRefs.current.length - 1]?.focus();
+      }
+    }
+
     return (
       <>
-        {blogPosts.map((post) => (
+        {blogPosts.map((post, index) => (
           <button
             key={post.slug}
+            ref={(el) => {
+              itemRefs.current[index] = el;
+            }}
             type="button"
             onClick={() => onOpenPost(post.slug)}
-            className="group flex w-full items-baseline justify-between gap-4 text-left"
+            onKeyDown={(event) => handleKeyDown(event, index)}
+            className="group flex w-full items-baseline justify-between gap-4 text-left focus:outline-none focus-visible:bg-foreground focus-visible:text-white"
           >
-            <span className="text-foreground underline underline-offset-2 transition-colors group-hover:text-accent">
+            <span className="text-foreground underline underline-offset-2 transition-colors group-hover:text-accent group-focus-visible:text-white">
               {post.title}
             </span>
-            <span className="whitespace-nowrap text-muted">
+            <span className="whitespace-nowrap text-muted group-focus-visible:text-white/70">
               {formatDate(post.date)}
             </span>
           </button>
@@ -137,7 +175,14 @@ function StepOutput({
       <button
         type="button"
         onClick={onGoBack}
-        className="w-fit text-muted transition-colors hover:text-foreground"
+        onKeyDown={(event) => {
+          if (event.key === "Backspace") {
+            event.preventDefault();
+            onGoBack();
+          }
+        }}
+        autoFocus={isActive}
+        className="w-fit text-muted transition-colors hover:text-foreground focus:outline-none focus-visible:text-foreground focus-visible:underline"
       >
         ← cd ..
       </button>
@@ -148,11 +193,7 @@ function StepOutput({
 export function BlogWindowContent({ initialSlug }: { initialSlug?: string } = {}) {
   const [steps, setSteps] = useState<Step[]>(() =>
     initialSlug
-      ? [
-          ...BASE_STEPS,
-          { kind: "cd", command: `cd ./posts/${initialSlug}` },
-          { kind: "post", command: "open post.md", slug: initialSlug },
-        ]
+      ? [{ kind: "post", command: "open post.md", slug: initialSlug }]
       : BASE_STEPS,
   );
   const [stepIndex, setStepIndex] = useState(0);
@@ -188,7 +229,16 @@ export function BlogWindowContent({ initialSlug }: { initialSlug?: string } = {}
   }
 
   function goBack() {
-    setSteps((prev) => [...prev, { kind: "cd", command: "cd .." }]);
+    setSteps((prev) => {
+      const hasListing = prev.some((step) => step.kind === "listing");
+      return [
+        ...prev,
+        { kind: "cd", command: "cd .." },
+        ...(hasListing
+          ? []
+          : [{ kind: "listing", command: "ls ./posts" } as Step]),
+      ];
+    });
   }
 
   return (
@@ -200,7 +250,12 @@ export function BlogWindowContent({ initialSlug }: { initialSlug?: string } = {}
               <PromptPrefix />
               {step.command}
             </p>
-            <StepOutput step={step} onOpenPost={openPost} onGoBack={goBack} />
+            <StepOutput
+              step={step}
+              isActive={i === completed - 1}
+              onOpenPost={openPost}
+              onGoBack={goBack}
+            />
           </div>
         ))}
 
