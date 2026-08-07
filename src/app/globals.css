@@ -6,6 +6,8 @@
   --muted: #6e6e6e;
   --border: #e1e1e1;
   --accent: #0099ff;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 @theme inline {
@@ -38,15 +40,21 @@ body {
   }
 }
 
+@keyframes blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
 @keyframes genie-in {
   0% {
     opacity: 0;
     transform: translate(var(--gtx), var(--gty)) scale(var(--gsx), var(--gsy));
-  }
-  70% {
-    opacity: 1;
-    transform: translate(calc(var(--gtx) * 0.06), calc(var(--gty) * 0.06))
-      scale(calc(var(--gsx) * 0.15 + 0.85), calc(var(--gsy) * 0.15 + 1.05));
   }
   100% {
     opacity: 1;
@@ -58,11 +66,6 @@ body {
   0% {
     opacity: 1;
     transform: translate(0, 0) scale(1, 1);
-  }
-  35% {
-    opacity: 1;
-    transform: translate(calc(var(--gtx) * 0.06), calc(var(--gty) * 0.06))
-      scale(calc(var(--gsx) * 0.15 + 0.85), calc(var(--gsy) * 0.15 + 1.05));
   }
   100% {
     opacity: 0;

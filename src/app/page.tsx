@@ -13,12 +13,12 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col items-center gap-4">
-          <h1 className="text-balance font-display text-2xl leading-snug font-semibold tracking-tight sm:text-3xl">
+          <h1 className="text-balance font-display text-2xl leading-snug font-semibold tracking-tight">
             Hi! My name is Austin Skhosana
             <br />
             I&apos;m a Designer and Developer
           </h1>
-          <p className="text-balance font-mono text-sm leading-relaxed text-muted">
+          <p className="max-w-[520px] text-balance font-mono text-base leading-snug text-muted">
             I love making things so I just built{" "}
             <Link
               href="/work/pixelvault"

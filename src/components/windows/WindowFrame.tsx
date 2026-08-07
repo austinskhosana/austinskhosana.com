@@ -175,14 +175,14 @@ export function WindowFrame({
     phase === "entering"
       ? {
           ...(origin ? genieVars(rect, origin) : null),
-          animation: `genie-in ${ENTER_DURATION}ms cubic-bezier(0.22, 1, 0.36, 1) forwards`,
+          animation: `genie-in ${ENTER_DURATION}ms var(--ease-in-out) forwards`,
           transformOrigin: "0 0",
           willChange: "transform, opacity",
         }
       : phase === "closing"
         ? {
             ...(origin ? genieVars(rect, origin) : null),
-            animation: `genie-out ${EXIT_DURATION}ms cubic-bezier(0.4, 0, 0.7, 0.2) forwards`,
+            animation: `genie-out ${EXIT_DURATION}ms var(--ease-in-out) forwards`,
             transformOrigin: "0 0",
             willChange: "transform, opacity",
           }
