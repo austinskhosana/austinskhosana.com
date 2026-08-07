@@ -42,7 +42,7 @@ export default async function CaseStudy({
 
       <header className="flex flex-col gap-6">
         <span className="text-sm text-muted">{project.title}</span>
-        <h1 className="font-display text-3xl font-medium">
+        <h1 className="text-balance font-display text-3xl font-semibold tracking-tight sm:text-4xl">
           {project.description}
         </h1>
         <div className="flex flex-wrap gap-x-8 gap-y-2 border-t border-border pt-6 text-sm">
@@ -83,7 +83,7 @@ export default async function CaseStudy({
       <div className="flex flex-col gap-12">
         {project.sections.map((section) => (
           <section key={section.heading} className="flex flex-col gap-4">
-            <h2 className="font-display text-xl font-medium">
+            <h2 className="font-display text-xl font-medium tracking-tight">
               {section.heading}
             </h2>
             {section.body.length > 1 ? (
@@ -91,14 +91,14 @@ export default async function CaseStudy({
                 {section.body.map((line) => (
                   <li
                     key={line}
-                    className="text-base leading-relaxed text-muted"
+                    className="font-mono text-sm leading-relaxed text-muted"
                   >
                     {line}
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="text-base leading-relaxed text-muted">
+              <p className="font-mono text-sm leading-relaxed text-muted">
                 {section.body[0]}
               </p>
             )}

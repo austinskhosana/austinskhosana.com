@@ -51,12 +51,14 @@ export default async function BlogPostPage({
         <span className="text-sm text-muted">
           {formatDate(post.date)} &middot; Austin Skhosana
         </span>
-        <h1 className="font-display text-3xl font-medium">{post.title}</h1>
+        <h1 className="text-balance font-display text-3xl font-semibold tracking-tight sm:text-4xl">
+          {post.title}
+        </h1>
       </header>
 
       <div className="flex flex-col gap-6">
         {post.body.map((paragraph, i) => (
-          <p key={i} className="text-base leading-relaxed text-muted">
+          <p key={i} className="font-mono text-sm leading-relaxed text-muted">
             {paragraph}
           </p>
         ))}

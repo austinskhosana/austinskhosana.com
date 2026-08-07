@@ -6,6 +6,8 @@ import {
   LightBulbIcon,
 } from "@heroicons/react/24/solid";
 import type { ComponentType, SVGProps } from "react";
+import { OSLink } from "@/components/windows/OSLink";
+import type { WindowKey } from "@/components/windows/registry";
 
 function GitHubIcon(props: SVGProps<SVGSVGElement>) {
   return (
@@ -29,11 +31,17 @@ const items: {
   href: string;
   label: string;
   external?: boolean;
+  windowKey?: WindowKey;
   Icon: ComponentType<SVGProps<SVGSVGElement>>;
 }[] = [
   { href: "/", label: "Home", Icon: HomeIcon },
-  { href: "/about-me", label: "About", Icon: UserIcon },
-  { href: "/playground", label: "Playground", Icon: PlayIcon },
+  { href: "/about-me", label: "About", windowKey: "about-me", Icon: UserIcon },
+  {
+    href: "/playground",
+    label: "Playground",
+    windowKey: "playground",
+    Icon: PlayIcon,
+  },
   {
     href: "https://github.com/austinskhosana",
     label: "GitHub",
@@ -46,27 +54,53 @@ const items: {
     external: true,
     Icon: LinkedInIcon,
   },
-  { href: "/blog", label: "Blog", Icon: LightBulbIcon },
+  { href: "/blog", label: "Blog", windowKey: "blog", Icon: LightBulbIcon },
 ];
 
 export function FloatingDock() {
   return (
-    <div className="pointer-events-none fixed inset-x-0 bottom-6 z-40 flex justify-center">
-      <nav className="pointer-events-auto flex items-center gap-1.5 rounded-full border border-border bg-white/90 p-1.5 shadow-lg shadow-black/5 backdrop-blur">
-        {items.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            aria-label={item.label}
-            title={item.label}
-            target={item.external ? "_blank" : undefined}
-            rel={item.external ? "noopener noreferrer" : undefined}
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground/70 transition-colors hover:border-foreground/40 hover:bg-[#f5f5f5] hover:text-foreground"
-          >
-            <item.Icon className="h-[18px] w-[18px]" strokeWidth={1.8} />
-          </Link>
-        ))}
-      </nav>
-    </div>
+    <>
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-x-0 bottom-0 z-30 h-40 backdrop-blur-xl [mask-image:linear-gradient(to_top,black,transparent)] [-webkit-mask-image:linear-gradient(to_top,black,transparent)]"
+      />
+      <div className="pointer-events-none fixed inset-x-0 bottom-10 z-50 flex justify-center">
+        <nav className="pointer-events-auto flex items-center gap-2 rounded-full border border-border bg-white/90 p-2 shadow-lg shadow-black/5 backdrop-blur">
+          {items.map((item) => {
+            const className =
+              "flex h-[52px] w-[52px] items-center justify-center rounded-full border border-border text-foreground/70 transition-colors hover:border-foreground/40 hover:bg-[#f5f5f5] hover:text-foreground";
+
+            if (item.windowKey) {
+              return (
+                <OSLink
+                  key={item.href}
+                  href={item.href}
+                  windowKey={item.windowKey}
+                  aria-label={item.label}
+                  title={item.label}
+                  className={className}
+                >
+                  <item.Icon className="h-[22px] w-[22px]" strokeWidth={1.8} />
+                </OSLink>
+              );
+            }
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-label={item.label}
+                title={item.label}
+                target={item.external ? "_blank" : undefined}
+                rel={item.external ? "noopener noreferrer" : undefined}
+                className={className}
+              >
+                <item.Icon className="h-[22px] w-[22px]" strokeWidth={1.8} />
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+    </>
   );
 }
