@@ -22,9 +22,16 @@ export function WindowLayer() {
   }, [windows, closeWindow]);
 
   const minimized = windows.filter((w) => w.minimized);
+  const hasVisibleWindows = windows.some((w) => !w.minimized);
 
   return (
     <div className="pointer-events-none fixed inset-0 z-40">
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 backdrop-blur-xl transition-opacity duration-300 ease-[var(--ease-out)]"
+        style={{ opacity: hasVisibleWindows ? 1 : 0 }}
+      />
+
       {windows
         .filter((w) => !w.minimized)
         .map((w) => {
@@ -35,6 +42,7 @@ export function WindowLayer() {
               key={w.key}
               title={entry.title}
               defaultSize={entry.defaultSize}
+              centerX={entry.centerX}
               zIndex={w.zIndex}
               spawnIndex={w.spawnIndex}
               origin={w.origin}

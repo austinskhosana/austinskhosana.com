@@ -43,7 +43,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <WindowManagerProvider>
           <Nav />
           <LatestPostWidget posts={widgetPosts} />
-          <main className="flex-1 pb-28">{children}</main>
+          <main className="flex-1 pb-8">{children}</main>
           <Footer />
           <FloatingDock />
           <WindowLayer />

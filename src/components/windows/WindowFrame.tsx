@@ -42,6 +42,7 @@ function clampPosition(rect: Rect): Rect {
 export function WindowFrame({
   title,
   defaultSize,
+  centerX,
   zIndex,
   spawnIndex,
   origin,
@@ -52,6 +53,7 @@ export function WindowFrame({
 }: {
   title: string;
   defaultSize: { width: number; height: number };
+  centerX?: boolean;
   zIndex: number;
   spawnIndex: number;
   origin?: WindowOrigin;
@@ -68,7 +70,7 @@ export function WindowFrame({
     const height = Math.min(defaultSize.height, window.innerHeight - MARGIN * 2);
     const offset = (spawnIndex % CASCADE_CYCLE) * CASCADE_STEP;
     return clampPosition({
-      x: (window.innerWidth - width) / 2 + offset,
+      x: (window.innerWidth - width) / 2 + (centerX ? 0 : offset),
       y: Math.max(MARGIN * 3, (window.innerHeight - height) / 2 - 20) + offset,
       width,
       height,

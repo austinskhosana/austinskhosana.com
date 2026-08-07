@@ -30,7 +30,7 @@ type Step = DocStep | ListingStep | CdStep | PostStep;
 const BASE_STEPS: Step[] = [
   {
     kind: "doc",
-    command: "cat blog.md",
+    command: "open blog.md",
     output: [
       "# Blog",
       "Notes on design, code, and the tools shaping how I build.",
@@ -145,8 +145,16 @@ function StepOutput({
   );
 }
 
-export function BlogWindowContent() {
-  const [steps, setSteps] = useState<Step[]>(BASE_STEPS);
+export function BlogWindowContent({ initialSlug }: { initialSlug?: string } = {}) {
+  const [steps, setSteps] = useState<Step[]>(() =>
+    initialSlug
+      ? [
+          ...BASE_STEPS,
+          { kind: "cd", command: `cd ./posts/${initialSlug}` },
+          { kind: "post", command: "open post.md", slug: initialSlug },
+        ]
+      : BASE_STEPS,
+  );
   const [stepIndex, setStepIndex] = useState(0);
   const [typed, setTyped] = useState("");
   const [completed, setCompleted] = useState(0);
@@ -175,7 +183,7 @@ export function BlogWindowContent() {
     setSteps((prev) => [
       ...prev,
       { kind: "cd", command: `cd ./posts/${slug}` },
-      { kind: "post", command: "cat post.md", slug },
+      { kind: "post", command: "open post.md", slug },
     ]);
   }
 

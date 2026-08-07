@@ -38,7 +38,7 @@ const PROJECT_ITEMS = [
 const BASE_STEPS: Step[] = [
   {
     kind: "doc",
-    command: "cat playground.md",
+    command: "open playground.md",
     output: [
       "# The Playground",
       "A collection of my design explorations across illustration, design and code.",
@@ -169,7 +169,7 @@ export function PlaygroundWindowContent() {
     setSteps((prev) => [
       ...prev,
       { kind: "cd", command: `cd ./projects/${slug}` },
-      { kind: "project", command: "cat readme.md", slug },
+      { kind: "project", command: "open readme.md", slug },
     ]);
   }
 

@@ -2,7 +2,7 @@ import { Terminal, type TerminalStep } from "@/components/terminal/Terminal";
 
 const STEPS: TerminalStep[] = [
   {
-    command: "cat about.md",
+    command: "open about.md",
     output: (
       <>
         <p className="text-foreground">
