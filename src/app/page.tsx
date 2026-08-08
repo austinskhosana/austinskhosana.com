@@ -2,15 +2,14 @@ import { CopyEmailButton } from "@/components/CopyEmailButton";
 import { ToolStack } from "@/components/ToolStack";
 import { ProjectCard } from "@/components/ProjectCard";
 import { OSLink } from "@/components/windows/OSLink";
+import { MemojiAvatar } from "@/components/MemojiAvatar";
 import { projects } from "@/lib/data";
 
 export default function Home() {
   return (
     <div className="mx-auto flex max-w-[1400px] flex-col gap-24 px-6 pt-20 pb-32">
       <section className="mx-auto flex max-w-xl flex-col items-center gap-8 text-center">
-        <div className="flex h-24 w-24 items-center justify-center rounded-full border border-border bg-[#f5f5f5] text-2xl text-muted">
-          AS
-        </div>
+        <MemojiAvatar />
 
         <div className="flex flex-col items-center gap-6">
           <div className="flex flex-col items-center gap-4">

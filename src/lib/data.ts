@@ -57,31 +57,67 @@ export const projects: Project[] = [
     tools: "UI/UX Design, Code Prototype, TailwindCSS",
     sections: [
       {
-        heading: "The Challenge",
+        heading: "The Challenges",
         body: [
-          "Sharing AI-assisted code prototypes is messy and fragmented, with resources scattered across multiple platforms and environments.",
+          "AI-assisted UI engineering for teams is disjointed. There's a deployed link here, a Figma template there, and an experimental component running in another environment — maybe deployed somewhere, maybe only local. We live in an age where we can generate code with ease, but how do we actually curate and share all of this within a team?",
         ],
       },
       {
-        heading: "The Solution",
+        heading: "The Solutions",
         body: [
-          "Pixel Vault is a resource base for all things UI engineering within a team — built for organizing design work, curating AI-generated interfaces, and connecting prompts to prototypes.",
+          "Pixel Vault is a resource base for all things UI engineering within a team. It's built for sharing work, curating creative UI output, and connecting everything from prompts to prototypes and everything in between.",
         ],
       },
       {
-        heading: "Key Features",
+        heading: "UI Components",
         body: [
-          "UI Components — staggered card animations plus a coding sandbox to explore components in their actual context, complete with a comments section for collaborative work within the team.",
-          "Coding Sandbox DX — adds structure, visual cues, and AI hints to replace traditional IDE capabilities.",
-          "Prototypes — enables iteration tracking and team remixing of exploratory work.",
-          "Prompts & Templates — showcases unconventional interaction patterns designed to create small moments of joy in how we interact with computers.",
-          "Vibe Coded Design Tools — centralizes internally-built utilities, plugins, and micro-applications.",
+          "The UI Components page has a subtle stagger animation across all the cards, and I built a coding sandbox to explore components in their actual context, complete with a comments section for collaborative work within the team.",
         ],
       },
       {
-        heading: "Key Learning",
+        heading: "DX in the Coding Sandbox",
         body: [
-          "While AI prototyping helps designers move faster, skills stack on top of each other — token management requires thoughtful delegation.",
+          "This screen was really interesting to design because I had to think very intentionally about developer experience and polish. I was using Claude Sonnet, and initially the UI was just plain text with no context, no hierarchy, and no colour. So I added structure, visual cues, and AI hints, because whenever I'm in one of these online coding sandboxes I always miss the IDE plugins that give you a similar experience.",
+        ],
+        images: [
+          {
+            src: "/images/pixelvault-coding-sandbox.png",
+            alt: "Pixel Vault coding sandbox showing the Animated Gradient Text component",
+            width: 4320,
+            height: 2960,
+          },
+        ],
+      },
+      {
+        heading: "Prototypes",
+        body: [
+          "Users can upload prototypes, share them with teammates, and keep a record of iterations and explorations that can be borrowed and remixed across the team.",
+        ],
+      },
+      {
+        heading: "Prompts & Templates",
+        body: [
+          "This animation was one of my favourite parts of the project. I'm trying to get better at thinking through interfaces as interactive systems and exploring interaction patterns that aren't as conventional, just creating small moments of joy in how we interact with computers as humans.",
+        ],
+      },
+      {
+        heading: "Vibe Coded Design Tools",
+        body: [
+          "In the age of democratised software creation, designers are creating their own tools — plugins, micro-apps, and internal utilities — and I wanted this to be a place where those tools can be shared and stored within teams.",
+        ],
+        images: [
+          {
+            src: "/images/pixelvault-design-tools.png",
+            alt: "Pixel Vault Design Tools page with Type Scale Generator and Spacing Visualizer",
+            width: 4320,
+            height: 2960,
+          },
+        ],
+      },
+      {
+        heading: "Learnings & Outcomes",
+        body: [
+          "I learnt that while AI prototyping helps designers move faster, skills stack on top of each other: my technical background was amplified by the tool. At the same time, relying on these tools introduces new constraints, like token management and being mindful about what you delegate to the agent.",
         ],
       },
     ],
@@ -501,6 +537,7 @@ export type BlogPost = {
   date: string;
   excerpt: string;
   body: string[];
+  video?: string;
 };
 
 export const blogPosts: BlogPost[] = [
@@ -510,6 +547,7 @@ export const blogPosts: BlogPost[] = [
     date: "2026-03-08",
     excerpt:
       "Figma Make is like a sketchbook you interact with using English, that moves at the speed of AI generation.",
+    video: "/videos/figma-make-widget.mp4",
     body: [
       "Figma Make is like a sketchbook you interact with using English, that moves at the speed of AI generation. Wireframes have historically served as rapid entry points for visual alignment, but generative AI is fundamentally reshaping design workflows.",
       "Natural language now functions as a prototyping interface, democratizing what was once restricted to those with advanced technical skills. This shift creates tension around what constitutes \"high fidelity\" — questioning whether a polished AI prototype or a wireframe with clearer design intent holds more value.",
@@ -523,6 +561,7 @@ export const blogPosts: BlogPost[] = [
     date: "2026-02-24",
     excerpt:
       "Models default to this framework for the art of styling the internet. How did we get here?",
+    video: "/videos/tailwind-widget.mp4",
     body: [
       "You open up your coding tool of choice, you have some insane idea that you think will optimise your morning routine and maybe just maybe change the world. You tell your agent to have a go at it and it gets to work. You take a look at the syntax because you want to tweak some of the styling yourself so you don't burn through too many tokens on tasks that don't feel worth it — \"taste is the moat\" you whisper to yourself as you obsess over border radius. So there you are, tweaking utility classes instead of vanilla CSS. How did we get here? Models default to this framework for the art of styling the internet.",
       "The conversation needs us to go back to basics. What is Tailwind? Tailwind is what happened when someone got tired of naming things. Instead of inventing class names and writing CSS in a separate file, you describe your layout inline, in your HTML, using small utility classes that do exactly one thing each. It's verbose in a way that somehow ends up feeling like clarity. It's a design system that speaks like a designer — a set of syntax as rules for quick styling.",

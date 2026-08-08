@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import type { BlogPost } from "@/lib/data";
 import { OSLink } from "@/components/windows/OSLink";
 
@@ -16,15 +19,36 @@ function PostCard({
   post: BlogPost;
   className?: string;
 }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    video.play().catch(() => {});
+  }, []);
+
   return (
     <OSLink
       href={`/blog/${post.slug}`}
       windowKey={`blog:${post.slug}`}
       className={`flex items-center gap-3.5 rounded-2xl border border-border bg-white/50 p-3.5 shadow-lg shadow-black/5 backdrop-blur-xl ${className ?? ""}`}
     >
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-foreground text-lg leading-none text-background">
-        ✽
-      </div>
+      {post.video ? (
+        <video
+          ref={videoRef}
+          src={post.video}
+          className="h-12 w-12 shrink-0 rounded-lg object-cover"
+          autoPlay
+          loop
+          muted
+          playsInline
+        />
+      ) : (
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-foreground text-lg leading-none text-background">
+          ✽
+        </div>
+      )}
       <div className="flex min-w-0 flex-1 flex-col gap-0.5">
         <span className="font-mono text-xs text-muted">
           {formatDate(post.date)}

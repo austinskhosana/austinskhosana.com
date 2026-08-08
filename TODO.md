@@ -7,7 +7,8 @@ Working list for austinskhosana.com. Check items off as they're done.
 ### Other
 
 - [ ] **Next up** — LLM version of me — the biggest chunk of work. Groq-backed chat route (`src/app/api/chat/route.ts`) and streaming chat UI in the About Me terminal already exist (unlock-command gate, rate limiting, system prompt); needs finishing/polish
-- [ ] ASCII art for all the terminals — Playground and About Me have drafts but need polish, far from done; Blog terminal still needs one
+- [x] ASCII art for all the terminals
+- [ ] Compress/convert `public/videos/memoji.mov` to `.mp4` — currently 12MB and QuickTime format, heavy for an above-the-fold decorative loop and less cross-browser compatible than mp4
 
 ### Responsiveness
 
@@ -15,13 +16,13 @@ Working list for austinskhosana.com. Check items off as they're done.
 
 ## Blocked by content
 
-- [ ] Add the memoji video to the circle in the header — waiting on the file from another device
-- [ ] Content for the images in the blog articles component/widget
+- [x] Add the memoji video to the circle in the header
+- [x] Content for the images in the blog articles component/widget — both posts now have looping videos in the widget icon slot
 - [ ] Add images to the case study covers — thespectator, comments-moderation, spectra-2 now have covers (homepage grid + case study header both wired to `project.image`); pixelvault still needs one
-- [ ] Work on the "Pixel Vault" case study
-- [ ] Work on the "The Spectator" case study
-- [ ] Work on the "Coeditor" case study
-- [ ] Work on the "Spectra" case study
+- [ ] Finish the "Pixel Vault" case study — sections fleshed out with real copy; DX in the Coding Sandbox and Vibe Coded Design Tools have images; UI Components, Prototypes, and Prompts & Templates still need video files (coming from the other computer)
+- [x] Work on the "The Spectator" case study
+- [x] Work on the "Coeditor" case study — full section copy + all 6 screenshots wired in
+- [x] Work on the "Spectra" case study — full section copy + all 11 screenshots wired in
 - [ ] Add real items to `playgroundItems` in `lib/data.ts` — categories are wired up but the array is empty, so each section currently shows "nothing here yet"
 - [ ] Add more blog articles
 
