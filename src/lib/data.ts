@@ -12,7 +12,11 @@ export const toolStack: ToolStackItem[] = [
   { label: "◇", bg: "#0A0A0A", fg: "#ffffff" },
 ];
 
-export type PlaygroundCategory = "illustration" | "design" | "code";
+export type PlaygroundCategory =
+  | "illustration"
+  | "design"
+  | "code"
+  | "artificial-intelligence";
 
 export type PlaygroundItem = {
   slug: string;
@@ -34,8 +38,12 @@ export type Project = {
   imageAlt?: string;
   imageWidth?: number;
   imageHeight?: number;
-  gallery?: { src: string; alt: string }[];
-  sections: { heading: string; body: string[] }[];
+  gallery?: { src: string; alt: string; width: number; height: number }[];
+  sections: {
+    heading: string;
+    body: string[];
+    images?: { src: string; alt: string; width: number; height: number }[];
+  }[];
 };
 
 export const projects: Project[] = [
@@ -86,36 +94,74 @@ export const projects: Project[] = [
     tags: ["Product Design", "Strategy", "UX Research"],
     role: "UI Designer",
     tools: "UI/UX Design",
-    image: "/images/6ImrjoK7aed6NhmL8Pk41tKeHrc.png",
+    image: "/images/cover-thespectator.png",
     imageAlt: "The Spectator gift subscription flow",
-    imageWidth: 6048,
-    imageHeight: 3928,
+    imageWidth: 4228,
+    imageHeight: 2960,
     sections: [
       {
         heading: "The Challenge",
         body: [
           "The oldest running magazine in the world needed a flow for their gifting feature for the busiest time of the year for gifts — the holiday season.",
-          "The objective was clear: move users smoothly through the subscription flow while clearly communicating the value and payment options of each offer.",
+          "The PRD was simple: move users smoothly through the subscription flow while clearly communicating the value and payment options of each offer.",
         ],
       },
       {
         heading: "The Solution",
         body: [
-          "I translated existing UX work into high-fidelity, fully annotated Figma designs that were ready for developer handoff.",
+          "I took the UX work the Spectator team had already completed and translated it into high-fidelity, fully annotated Figma designs that were ready for developer handoff.",
         ],
       },
       {
         heading: "The Process",
         body: [
-          "User Flows — created by the team before the design phase.",
-          "Wireframes — a collaborative stage establishing layout and interaction without brand focus.",
-          "UI Design — leading the effort to evolve wireframes into high-fidelity screens that expressed the final vision.",
+          "The team began by creating user flows. I wasn't involved in this stage, but the flows were a key artefact for understanding the signed-off user experience and the constraints I needed to design within.",
+        ],
+        images: [
+          {
+            src: "/images/spectator-user-flows.png",
+            alt: "The Spectator gift subscription user flows for fixed term and auto renewing gifts",
+            width: 4320,
+            height: 2960,
+          },
         ],
       },
       {
-        heading: "The Results",
+        heading: "Wireframes",
         body: [
-          "The Spectator hit record subscription highs after this flow went live — a direct correlation between design implementation and revenue growth, and a strong example of successful cross-functional teamwork.",
+          "This is where collaboration began. We started wireframing the experience to clarify what we wanted the UI to look and feel like, without yet focusing on brand identity. This helped us align early and commit to a clear direction for layout and interaction.",
+        ],
+      },
+      {
+        heading: "UI Design",
+        body: [
+          "This is where I led the design effort — evolving the wireframes into high-fidelity screens that expressed the final vision for the UI and all its key states.",
+        ],
+        images: [
+          {
+            src: "/images/spectator-ui-terms-recommended.png",
+            alt: "Gift subscription terms screen with annual automatic renewal recommended",
+            width: 4320,
+            height: 2960,
+          },
+          {
+            src: "/images/spectator-ui-terms-bestvalue.png",
+            alt: "Gift subscription terms screen with annual one-off payment as best value",
+            width: 4320,
+            height: 2960,
+          },
+          {
+            src: "/images/spectator-ui-gift-type.png",
+            alt: "Gift subscription type screen with digital only selected",
+            width: 4320,
+            height: 2960,
+          },
+        ],
+      },
+      {
+        heading: "The Outcome?",
+        body: [
+          "The Spectator hit record subscription highs after this flow went live — so teamwork really did make the dream work. It was especially satisfying to see my design work tied so directly to a clear revenue peak. All around, a great project.",
         ],
       },
     ],
@@ -134,10 +180,10 @@ export const projects: Project[] = [
     ],
     role: "Product Designer",
     tools: "Product Design, CSS",
-    image: "/images/CX64iJFNd4K5fwyvcUf5QrknS0.png",
+    image: "/images/cover-comments-moderation.png",
     imageAlt: "Coeditor detailed comment view",
-    imageWidth: 5774,
-    imageHeight: 3591,
+    imageWidth: 4228,
+    imageHeight: 2960,
     sections: [
       {
         heading: "The Challenge",
@@ -208,65 +254,193 @@ export const projects: Project[] = [
     tags: ["Product Design", "Strategy", "UX Research"],
     role: "Self-led Project",
     tools: "UI/UX Design",
-    image: "/images/onivFblOwHUTrzdIRuz3LzJKVEc.png",
+    image: "/images/cover-spectra-2.png",
     imageAlt: "Spectra — series and movies with infinite possibilities",
-    imageWidth: 1572,
-    imageHeight: 3408,
-    gallery: [
-      {
-        src: "/images/onivFblOwHUTrzdIRuz3LzJKVEc.png",
-        alt: "Spectra home screen",
-      },
-      {
-        src: "/images/nY6XqWc8DMpg12a5A6B3b9XzNak.png",
-        alt: "Spectra visual aesthetic selector",
-      },
-      {
-        src: "/images/M8XX2ZLG9C9EhZF3Q7StOiShESE.png",
-        alt: "Spectra generated movie screen",
-      },
-    ],
+    imageWidth: 4228,
+    imageHeight: 2960,
     sections: [
       {
-        heading: "The Challenge",
+        heading: "The Challenges",
         body: [
-          "Users struggle to bring their unique storytelling visions to life due to the high cost, technical barriers, and inaccessibility of traditional filmmaking tools.",
+          "Users struggle to bring their unique storytelling visions to life due to the high cost, technical barriers, and inaccessibility of traditional filmmaking tools. Many people have ideas for films and series, but lack the skills, equipment, or resources to turn those ideas into something tangible.",
         ],
       },
       {
-        heading: "The Solution",
+        heading: "The Solutions",
         body: [
-          "Spectra aims to revolutionize storytelling by allowing users to create their own movies and TV series, democratizing filmmaking through accessible creative tools.",
+          "To tackle Spectra's challenges, I designed an intuitive interface that simplified the movie-making process. Users can curate characters, locations, and styles through clear visual previews and interactive elements. This approach makes creating custom films and series accessible, playful, and enjoyable for a wide range of users.",
         ],
       },
       {
-        heading: "Key Features",
+        heading: "Welcome to Spectra",
         body: [
-          "Welcome Screen — falling CDs against a vibrant backdrop with a looping hero video, blending nostalgia with a forward-thinking take on media.",
-          "Prompt Input & Featured Content — a prompt field to start generating a movie or series, plus a scrollable feed of community-generated content for inspiration.",
-          "AI Video Aesthetic Builder — a visual grid of styles from realism to anime, with a refresh option to keep exploration lightweight and curated.",
-          "Movie/Show Description — watch the generated film, read a concise synopsis, and discover similar titles through tailored recommendations.",
-          "Character & Style Selector — a Tinder-style swiping interface for curating characters, styles, and locations, turning customization into a game-like experience.",
-          "Generating Loader — a minimalistic \"Generating\" state that keeps users informed without overwhelming them while their film is built.",
-          "Playback Screen — a glassmorphism-styled player with a blur effect on the video for a sleek, modern backdrop to playback controls.",
+          "The Spectra welcome screen features falling CDs against a vibrant backdrop, complemented by a looping hero video. This design blends nostalgia with a forward-thinking approach to media, offering an engaging entry point that immediately sets the tone for creative exploration.",
+        ],
+        images: [
+          {
+            src: "/images/spectra-onboarding.png",
+            alt: "Spectra welcome screen with sign up options",
+            width: 4320,
+            height: 2960,
+          },
+        ],
+      },
+      {
+        heading: "Prompt Input & Featured Content",
+        body: [
+          "The home screen features a prompt input area where users can start generating a movie or series in their own words. Below the prompt, users can scroll through featured content generated by others, showcasing community creativity and providing inspiration for new stories.",
+        ],
+        images: [
+          {
+            src: "/images/spectra-home.png",
+            alt: "Spectra home screen with prompt input and featured content",
+            width: 4320,
+            height: 2960,
+          },
+        ],
+      },
+      {
+        heading: "AI Video Aesthetic Builder UI Workflow",
+        body: [
+          "In the movie curation experience, users start by selecting the visual aesthetic, ranging from realism to anime and other stylized looks. A rich set of options is presented in a visual grid, and users can click refresh to generate a new set of aesthetics if they don't find something they like. This keeps exploration lightweight and fun while still feeling curated.",
+        ],
+        images: [
+          {
+            src: "/images/spectra-aesthetic-selector.png",
+            alt: "Spectra select a visual aesthetic screen",
+            width: 4320,
+            height: 2960,
+          },
+        ],
+      },
+      {
+        heading: "Movie/Show Description",
+        body: [
+          "The movie/show description screen allows users to watch the selected film or episode, read a concise description of the story and characters, and discover similar titles through tailored recommendations. This deepens engagement by helping users understand the narrative context and quickly jump into related content they might enjoy.",
+        ],
+        images: [
+          {
+            src: "/images/spectra-movie-description.png",
+            alt: "Spectra movie description screen for Boys Love Aspen",
+            width: 4320,
+            height: 2960,
+          },
+        ],
+      },
+      {
+        heading: "Generated Character Selector Screen",
+        body: [
+          "This Tinder-style swiping screen lets users easily curate their movie by swiping right on characters, styling options, or locations they want to include, and left to dismiss those they don't. The familiar interaction pattern lowers friction and turns the customization process into an engaging, game-like experience.",
+        ],
+        images: [
+          {
+            src: "/images/spectra-character-selector.png",
+            alt: "Spectra character selector screen with swipeable character cards",
+            width: 4320,
+            height: 2960,
+          },
+        ],
+      },
+      {
+        heading: "Generating Loader",
+        body: [
+          "During the movie generation process, a minimalistic loader appears with the message \"Generating.\" The simple, focused design keeps users informed without overwhelming them, building anticipation while the system constructs their custom film or series.",
+        ],
+        images: [
+          {
+            src: "/images/spectra-generating-loader.png",
+            alt: "Spectra generating loader screen",
+            width: 4320,
+            height: 2960,
+          },
+        ],
+      },
+      {
+        heading: "Movie Playback Screen",
+        body: [
+          "The movie playback screen features a visually engaging blur effect on the video, embracing glassmorphism for a sleek, modern aesthetic. This treatment draws attention to the content while providing a stylish and contemporary backdrop for playback controls and metadata.",
+        ],
+        images: [
+          {
+            src: "/images/spectra-playback.png",
+            alt: "Spectra movie playback screen with glassmorphism controls",
+            width: 4320,
+            height: 2960,
+          },
         ],
       },
       {
         heading: "The Process",
         body: [
-          "Persona — identified the needs and motivations of creative individuals who want to tell stories without a full production studio behind them.",
-          "Empathy Maps — mapped what users said, did, thought, and felt to design around real needs instead of assumptions.",
-          "Ideation — built the information architecture and core user pathways, from style selection and character customization to playback and discovery.",
-          "Wireframes — translated the IA into low-fidelity layouts to test prompts, character selection, style customization, and plot outlining before investing in high-fidelity visuals.",
+          "The UX process for Spectra began with defining a user persona and empathy maps to understand the target audience. From there, I crafted the information architecture to ensure a smooth end-to-end flow, which then informed the wireframes and final UI design. The goal at every step was to deliver a seamless experience for crafting AI-generated movies and series.",
         ],
       },
       {
-        heading: "Key Reflections",
+        heading: "Persona",
         body: [
-          "Generative AI Potential — demonstrated how generative AI can empower users to create their own stories and characters.",
-          "User Experience Focus — prioritized a seamless experience that encourages creativity and exploration.",
-          "Intuitive Design Insights — even as a concept, defining the information architecture reinforced how much intuitive design shapes engagement.",
-          "Balancing Aesthetics and Functionality — learned the necessity of balancing aesthetic appeal with functionality to inspire and support users.",
+          "During the persona creation phase, I identified the diverse needs and motivations of Spectra's users. By gathering insights into their goals and frustrations, I developed a detailed persona representing creative individuals who love to experiment with technology, express themselves visually, and tell stories without needing a full production studio behind them.",
+        ],
+        images: [
+          {
+            src: "/images/spectra-persona.png",
+            alt: "Spectra user persona card for Ben Patel",
+            width: 4320,
+            height: 2284,
+          },
+        ],
+      },
+      {
+        heading: "Empathy Maps",
+        body: [
+          "In the empathy mapping phase, I aimed to deepen my understanding of Spectra's users by visually representing their thoughts, feelings, and behaviors. Using insights from user research, I mapped what users said, did, thought, and felt during their creative process. This highlighted key motivations, pain points, and desires, allowing me to empathize with their experiences and design around their real needs instead of assumptions.",
+        ],
+        images: [
+          {
+            src: "/images/spectra-empathy-map.png",
+            alt: "Spectra empathy map for the Ben persona",
+            width: 2560,
+            height: 2416,
+          },
+        ],
+      },
+      {
+        heading: "Ideation",
+        body: [
+          "In the ideation phase, I focused on developing a comprehensive information architecture for Spectra. By organizing content and defining core user pathways, I created a clear structure for intuitive navigation across the platform. This foundation allowed users to easily explore movie creation options, from style selection and character customization to playback and discovery.",
+        ],
+        images: [
+          {
+            src: "/images/spectra-user-flow.png",
+            alt: "Spectra user flow diagram covering sign up, home, and profile paths",
+            width: 2560,
+            height: 2004,
+          },
+        ],
+      },
+      {
+        heading: "Wireframes",
+        body: [
+          "In the wireframing phase, I translated the information architecture into low-fidelity layouts that showcased Spectra's core functionality. The focus was on creating a clean, user-friendly interface that simplified movie and TV series creation. Key interactions — such as writing prompts, selecting characters, customizing styles, and outlining plots — were prominently featured. This iterative approach enabled early testing of user flows and interactions before investing in high-fidelity visuals.",
+          "1. The AI movie creation experience begins with the user writing a prompt.",
+          "2. Once a visual aesthetic has been selected, the user selects various aspects of the movie experience through a swiping interface.",
+          "3. Once all selections have been made, the movie is generated and begins playing.",
+        ],
+        images: [
+          {
+            src: "/images/spectra-wireframes-flow.png",
+            alt: "Spectra wireframe flow from welcome screen through to movie playback",
+            width: 2560,
+            height: 6480,
+          },
+        ],
+      },
+      {
+        heading: "Reflections",
+        body: [
+          "Generative AI Potential — The Spectra project demonstrated the potential of generative AI to empower users in creating their own stories and characters.",
+          "User Experience Focus — Focused on developing a seamless user experience that encourages creativity and exploration.",
+          "Intuitive Design Insights — Although the project remains a concept, insights from defining the information architecture highlighted the importance of intuitive design in engaging users.",
+          "Balancing Aesthetics and Functionality — Learned the necessity of balancing aesthetic appeal with functionality to inspire and support users in crafting unique cinematic experiences.",
         ],
       },
     ],

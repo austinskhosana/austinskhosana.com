@@ -28,6 +28,22 @@ type PostStep = {
 
 type Step = DocStep | ListingStep | CdStep | PostStep;
 
+const ASCII_ART = `      ..          ..
+. uW8"      x .d88"
+\`t888        5888R          u.
+ 8888   .    '888R    ...ue888b       uL
+ 9888.z88N    888R    888R Y888r  .ue888Nc..
+ 9888  888E   888R    888R I888> d88E\`"888E\`
+ 9888  888E   888R    888R I888> 888E  888E
+ 9888  888E   888R    888R I888> 888E  888E
+ 9888  888E   888R   u8888cJ888  888E  888E
+.8888  888"  .888B .  "*888*P"   888& .888E
+ \`%888*%"    ^*888%     'Y"      *888" 888&
+    "\`         "%                 \`"   "888E
+                                 .dWi   \`88E
+                                 4888~  J8%
+                                  ^"===*"\`   "`;
+
 const BASE_STEPS: Step[] = [
   {
     kind: "doc",
@@ -244,6 +260,13 @@ export function BlogWindowContent({ initialSlug }: { initialSlug?: string } = {}
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-10">
       <div className="flex flex-col gap-2 bg-white p-5 font-mono text-sm leading-relaxed">
+        <pre
+          aria-hidden
+          className="mb-10 w-fit font-mono text-[10px] leading-[10px] whitespace-pre text-foreground/70 select-none"
+        >
+          {ASCII_ART}
+        </pre>
+
         {steps.slice(0, completed).map((step, i) => (
           <div key={i} className="flex flex-col gap-2">
             <p className="text-foreground">
