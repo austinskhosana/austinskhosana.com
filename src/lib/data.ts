@@ -208,11 +208,27 @@ export const projects: Project[] = [
         body: [
           "Starting with an open-source loader, I adapted it for light-mode compatibility. The design used colour as a visual signal: a classic set of colours for approvals and acceptances, and a pink-and-blue colourway for the primary loading state.",
         ],
+        images: [
+          {
+            src: "/images/coeditor-css-spinner-code.png",
+            alt: "CSS code for the pink and blue gradient loader animation",
+            width: 2200,
+            height: 1507,
+          },
+        ],
       },
       {
         heading: "Tradeoffs and Direction Change",
         body: [
           "The colorful loader clashed with various publisher brands. The team pivoted to a simple open-source search icon, with colours edited to better adapt to different brand environments.",
+        ],
+        images: [
+          {
+            src: "/images/coeditor-loader-final.png",
+            alt: "Final monochrome moderating feedback loader in the comment editor",
+            width: 2200,
+            height: 1507,
+          },
         ],
       },
       {
@@ -220,11 +236,27 @@ export const projects: Project[] = [
         body: [
           "Approved comments display a clear message confirming that their comment had been successfully published — without unnecessary flourishes.",
         ],
+        images: [
+          {
+            src: "/images/coeditor-success-state.png",
+            alt: "Comment posted successfully confirmation state",
+            width: 2200,
+            height: 1507,
+          },
+        ],
       },
       {
         heading: "UX Writing Challenge",
         body: [
           "This proved most difficult: delivering AI-based feedback that is both contextual and non-deterministic, while maintaining an empathetic tone across diverse publishers.",
+        ],
+        images: [
+          {
+            src: "/images/coeditor-moderation-feedback.png",
+            alt: "Comment editor showing AI moderation feedback on a flagged comment",
+            width: 2200,
+            height: 1507,
+          },
         ],
       },
       {
@@ -232,11 +264,27 @@ export const projects: Project[] = [
         body: [
           "The moderation dashboard is where moderators review comments that didn't pass the AI check, with enough context to approve, reject, or escalate quickly and confidently.",
         ],
+        images: [
+          {
+            src: "/images/coeditor-dashboard.png",
+            alt: "Comment moderation dashboard with a table of flagged comments",
+            width: 2200,
+            height: 1507,
+          },
+        ],
       },
       {
         heading: "The Modal",
         body: [
           "Designing the moderation modal was my favourite part of this project — it had to surface the article, the comment itself, user details, and comment history in one compact, high-signal view, without drowning moderators in noise.",
+        ],
+        images: [
+          {
+            src: "/images/coeditor-modal-compact.png",
+            alt: "Detailed comment view modal within the moderation dashboard",
+            width: 780,
+            height: 532,
+          },
         ],
       },
       {

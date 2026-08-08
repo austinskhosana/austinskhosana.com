@@ -336,7 +336,7 @@ export function CaseStudyContent({ project }: { project: Project }) {
             alt={project.imageAlt ?? project.title}
             fill
             className="object-cover object-top transition-opacity duration-150 ease-[var(--ease-out)] group-hover:opacity-90"
-            sizes="640px"
+            sizes="(min-width: 672px) 624px, 100vw"
             priority
           />
         </button>
@@ -388,7 +388,7 @@ export function CaseStudyContent({ project }: { project: Project }) {
                       width={image.width}
                       height={image.height}
                       className="h-auto w-full transition-opacity duration-150 ease-[var(--ease-out)] group-hover:opacity-90"
-                      sizes="640px"
+                      sizes="(min-width: 672px) 624px, 100vw"
                     />
                   </button>
                 ))}
