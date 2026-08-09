@@ -9,9 +9,41 @@ import type {
   PointerEvent as ReactPointerEvent,
 } from "react";
 import type { Project } from "@/lib/data";
+import { CoverVideo } from "@/components/CoverVideo";
 
 type LightboxImage = { src: string; alt: string; width: number; height: number };
 type Rect = { x: number; y: number; width: number; height: number };
+
+function SectionVideo({
+  video,
+}: {
+  video: { src: string; alt: string; width: number; height: number };
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const el = videoRef.current;
+    if (!el) return;
+    el.muted = true;
+    el.play().catch(() => {});
+  }, []);
+
+  return (
+    <div className="flex items-center justify-center bg-[#f5f5f5] p-8 sm:p-12">
+      <video
+        ref={videoRef}
+        src={video.src}
+        aria-label={video.alt}
+        className="w-full max-w-xl rounded-2xl border border-border shadow-lg shadow-black/5"
+        style={{ aspectRatio: `${video.width} / ${video.height}` }}
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+    </div>
+  );
+}
 
 const MARGIN = 48;
 const DRAG_MARGIN = 8;
@@ -317,7 +349,18 @@ export function CaseStudyContent({ project }: { project: Project }) {
         </div>
       </header>
 
-      {project.image && (
+      {project.coverVideo && (
+        <div className="flex aspect-[16/10] w-full items-center justify-center bg-[#f5f5f5] p-8 sm:p-12">
+          <CoverVideo
+            src={project.coverVideo}
+            alt={project.coverVideoAlt ?? project.title}
+            width={project.coverVideoWidth ?? 1600}
+            height={project.coverVideoHeight ?? 1000}
+          />
+        </div>
+      )}
+
+      {!project.coverVideo && project.image && (
         <button
           type="button"
           onClick={(e) =>
@@ -391,6 +434,14 @@ export function CaseStudyContent({ project }: { project: Project }) {
                       sizes="(min-width: 672px) 624px, 100vw"
                     />
                   </button>
+                ))}
+              </div>
+            )}
+
+            {section.videos && section.videos.length > 0 && (
+              <div className="flex flex-col gap-6">
+                {section.videos.map((video) => (
+                  <SectionVideo key={video.src} video={video} />
                 ))}
               </div>
             )}

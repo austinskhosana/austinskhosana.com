@@ -103,6 +103,7 @@ function StepOutput({
   onGoBack: () => void;
 }) {
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const cdBufferRef = useRef("");
 
   useEffect(() => {
     if (isActive && step.kind === "listing") {
@@ -195,6 +196,18 @@ function StepOutput({
           if (event.key === "Backspace") {
             event.preventDefault();
             onGoBack();
+            return;
+          }
+          if (/^[a-zA-Z]$/.test(event.key)) {
+            cdBufferRef.current = (cdBufferRef.current + event.key)
+              .slice(-2)
+              .toLowerCase();
+            if (cdBufferRef.current === "cd") {
+              event.preventDefault();
+              onGoBack();
+            }
+          } else {
+            cdBufferRef.current = "";
           }
         }}
         autoFocus={isActive}
@@ -245,16 +258,11 @@ export function BlogWindowContent({ initialSlug }: { initialSlug?: string } = {}
   }
 
   function goBack() {
-    setSteps((prev) => {
-      const hasListing = prev.some((step) => step.kind === "listing");
-      return [
-        ...prev,
-        { kind: "cd", command: "cd .." },
-        ...(hasListing
-          ? []
-          : [{ kind: "listing", command: "ls ./posts" } as Step]),
-      ];
-    });
+    setSteps((prev) => [
+      ...prev,
+      { kind: "cd", command: "cd .." },
+      { kind: "listing", command: "ls ./posts" },
+    ]);
   }
 
   return (

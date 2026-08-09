@@ -13,6 +13,8 @@ import type { WindowKey } from "./registry";
 
 export type WindowOrigin = { x: number; y: number; width: number; height: number };
 
+export type NavDirection = "up" | "down";
+
 export type OpenWindow = {
   key: WindowKey;
   zIndex: number;
@@ -21,6 +23,7 @@ export type OpenWindow = {
   origin?: WindowOrigin;
   closing?: boolean;
   scrollProgress?: number;
+  navDirection?: NavDirection;
 };
 
 function isCaseStudyKey(key: WindowKey) {
@@ -29,7 +32,11 @@ function isCaseStudyKey(key: WindowKey) {
 
 type WindowManagerContextValue = {
   windows: OpenWindow[];
-  openWindow: (key: WindowKey, origin?: WindowOrigin) => void;
+  openWindow: (
+    key: WindowKey,
+    origin?: WindowOrigin,
+    navDirection?: NavDirection,
+  ) => void;
   closeWindow: (key: WindowKey) => void;
   closeAllWindows: () => void;
   focusWindow: (key: WindowKey) => void;
@@ -49,36 +56,43 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
   const spawnCounter = useRef(0);
   const contentRefs = useRef<Map<WindowKey, HTMLDivElement>>(new Map());
 
-  const openWindow = useCallback((key: WindowKey, origin?: WindowOrigin) => {
-    zCounter.current += 1;
-    const z = zCounter.current;
-    setWindows((prev) => {
-      // Only one case study can be open at a time — any other case study
-      // gets replaced: minimized ones drop silently, visible ones animate
-      // out (genie) via the `closing` flag picked up by WindowFrame.
-      const base = isCaseStudyKey(key)
-        ? prev
-            .filter((w) => !(isCaseStudyKey(w.key) && w.key !== key && w.minimized))
-            .map((w) =>
-              isCaseStudyKey(w.key) && w.key !== key
-                ? { ...w, closing: true }
-                : w,
-            )
-        : prev;
+  const openWindow = useCallback(
+    (key: WindowKey, origin?: WindowOrigin, navDirection?: NavDirection) => {
+      zCounter.current += 1;
+      const z = zCounter.current;
+      setWindows((prev) => {
+        // Only one case study can be open at a time — any other case study
+        // gets replaced: minimized ones drop silently, visible ones animate
+        // out (genie, or a directional slide when triggered from the
+        // prev/next rail) via the `closing` flag picked up by WindowFrame.
+        const base = isCaseStudyKey(key)
+          ? prev
+              .filter((w) => !(isCaseStudyKey(w.key) && w.key !== key && w.minimized))
+              .map((w) =>
+                isCaseStudyKey(w.key) && w.key !== key
+                  ? { ...w, closing: true, navDirection }
+                  : w,
+              )
+          : prev;
 
-      const existing = base.find((w) => w.key === key);
-      if (existing) {
-        return base.map((w) =>
-          w.key === key
-            ? { ...w, minimized: false, zIndex: z, closing: false }
-            : w,
-        );
-      }
-      const spawnIndex = spawnCounter.current;
-      spawnCounter.current += 1;
-      return [...base, { key, zIndex: z, minimized: false, spawnIndex, origin }];
-    });
-  }, []);
+        const existing = base.find((w) => w.key === key);
+        if (existing) {
+          return base.map((w) =>
+            w.key === key
+              ? { ...w, minimized: false, zIndex: z, closing: false, navDirection }
+              : w,
+          );
+        }
+        const spawnIndex = spawnCounter.current;
+        spawnCounter.current += 1;
+        return [
+          ...base,
+          { key, zIndex: z, minimized: false, spawnIndex, origin, navDirection },
+        ];
+      });
+    },
+    [],
+  );
 
   const closeWindow = useCallback((key: WindowKey) => {
     contentRefs.current.delete(key);

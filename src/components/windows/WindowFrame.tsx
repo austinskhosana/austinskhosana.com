@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { CSSProperties, PointerEvent as ReactPointerEvent, ReactNode } from "react";
-import type { WindowOrigin } from "./WindowManagerContext";
+import type { NavDirection, WindowOrigin } from "./WindowManagerContext";
 
 const MARGIN = 12;
 const MIN_WIDTH = 360;
@@ -14,6 +14,8 @@ const CASCADE_CYCLE = 6;
 const DOCK_EXCLUSION = 160;
 const ENTER_DURATION = 380;
 const EXIT_DURATION = 300;
+export const NAV_DURATION = 260;
+const REDUCED_DURATION = 150;
 
 type Rect = { x: number; y: number; width: number; height: number };
 type Phase = "entering" | "idle" | "closing";
@@ -25,6 +27,19 @@ function genieVars(rect: Rect, origin: WindowOrigin) {
     "--gsx": origin.width / rect.width,
     "--gsy": origin.height / rect.height,
   } as CSSProperties;
+}
+
+function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handleChange = (e: MediaQueryListEvent) => setReduced(e.matches);
+    query.addEventListener("change", handleChange);
+    return () => query.removeEventListener("change", handleChange);
+  }, []);
+  return reduced;
 }
 
 function clampPosition(rect: Rect): Rect {
@@ -48,6 +63,7 @@ export function WindowFrame({
   zIndex,
   spawnIndex,
   origin,
+  navDirection,
   forceClose,
   onClose,
   onFocus,
@@ -63,6 +79,7 @@ export function WindowFrame({
   zIndex: number;
   spawnIndex: number;
   origin?: WindowOrigin;
+  navDirection?: NavDirection;
   forceClose?: boolean;
   onClose: () => void;
   onFocus: () => void;
@@ -72,7 +89,7 @@ export function WindowFrame({
   children: ReactNode;
 }) {
   const [phase, setPhase] = useState<Phase>(() =>
-    origin ? "entering" : "idle",
+    origin || navDirection ? "entering" : "idle",
   );
   const [rect, setRect] = useState<Rect>(() => {
     const width = Math.min(defaultSize.width, window.innerWidth - MARGIN * 2);
@@ -85,6 +102,7 @@ export function WindowFrame({
       height,
     });
   });
+  const reducedMotion = usePrefersReducedMotion();
   const [maximized, setMaximized] = useState(false);
   const preMaximizeRect = useRef<Rect | null>(null);
   const contentElRef = useRef<HTMLDivElement | null>(null);
@@ -194,19 +212,24 @@ export function WindowFrame({
     setPhase("closing");
   }, [origin, phase, onClose]);
 
-  // A window without an origin can't genie-close, so a forced replacement
-  // has to be removed immediately — that's an external-system update
-  // (telling the manager to drop this window), which is what effects are for.
+  // A window without an origin or nav direction can't animate out, so a
+  // forced replacement has to be removed immediately — that's an
+  // external-system update (telling the manager to drop this window),
+  // which is what effects are for.
   useEffect(() => {
-    if (forceClose && phase === "idle" && !origin) {
+    if (forceClose && phase === "idle" && !origin && !navDirection) {
       onClose();
     }
-  }, [forceClose, phase, origin, onClose]);
+  }, [forceClose, phase, origin, navDirection, onClose]);
 
-  // Windows with an origin animate out instead; derive that during render
-  // rather than syncing it into state from an effect.
+  // Windows with an origin or nav direction animate out instead; derive
+  // that during render rather than syncing it into state from an effect.
+  // Checked regardless of the current phase — a replacement can arrive
+  // while a window is still mid-entrance, and forcing it to closing then
+  // (rather than only from "idle") is what lets that entrance be
+  // interrupted instead of leaving the window stuck replaying it forever.
   const effectivePhase: Phase =
-    phase === "idle" && forceClose && origin ? "closing" : phase;
+    forceClose && (origin || navDirection) ? "closing" : phase;
 
   useEffect(() => {
     if (contentElRef.current) updateScrollEdges(contentElRef.current);
@@ -219,28 +242,42 @@ export function WindowFrame({
 
   const animationStyle: CSSProperties =
     effectivePhase === "entering"
-      ? {
-          ...(origin ? genieVars(rect, origin) : null),
-          animation: `genie-in ${ENTER_DURATION}ms var(--ease-in-out) forwards`,
-          transformOrigin: "0 0",
-          willChange: "transform, opacity",
-        }
-      : effectivePhase === "closing"
+      ? reducedMotion
         ? {
-            ...(origin ? genieVars(rect, origin) : null),
-            animation: `genie-out ${EXIT_DURATION}ms var(--ease-in-out) forwards`,
-            transformOrigin: "0 0",
-            willChange: "transform, opacity",
+            animation: `fade-in ${REDUCED_DURATION}ms var(--ease-out) forwards`,
           }
+        : navDirection
+          ? {
+              animation: `case-slide-in-${navDirection} ${NAV_DURATION}ms var(--ease-out) forwards`,
+              willChange: "transform, opacity",
+            }
+          : {
+              ...(origin ? genieVars(rect, origin) : null),
+              animation: `genie-in ${ENTER_DURATION}ms var(--ease-in-out) forwards`,
+              transformOrigin: "0 0",
+              willChange: "transform, opacity",
+            }
+      : effectivePhase === "closing"
+        ? reducedMotion
+          ? {
+              animation: `fade-out ${REDUCED_DURATION}ms var(--ease-out) forwards`,
+            }
+          : navDirection
+            ? {
+                animation: `case-slide-out-${navDirection} ${NAV_DURATION}ms var(--ease-out) forwards`,
+                willChange: "transform, opacity",
+              }
+            : {
+                ...(origin ? genieVars(rect, origin) : null),
+                animation: `genie-out ${EXIT_DURATION}ms var(--ease-in-out) forwards`,
+                transformOrigin: "0 0",
+                willChange: "transform, opacity",
+              }
         : {};
-
-  const isAnimating = effectivePhase !== "idle";
 
   return (
     <div
-      className={`pointer-events-auto absolute flex flex-col overflow-hidden rounded-2xl border border-border shadow-2xl shadow-black/10 ${
-        isAnimating ? "bg-white" : "bg-white/95 backdrop-blur-xl"
-      }`}
+      className="pointer-events-auto absolute flex flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-2xl shadow-black/10"
       style={{
         left: rect.x,
         top: rect.y,

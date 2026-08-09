@@ -5,6 +5,7 @@ import { useWindowManager } from "./WindowManagerContext";
 import { windowRegistry } from "./registry";
 import { WindowFrame } from "./WindowFrame";
 import { CaseStudyTimeline } from "./CaseStudyTimeline";
+import { CaseStudyNav } from "./CaseStudyNav";
 
 export function WindowLayer() {
   const {
@@ -54,6 +55,7 @@ export function WindowLayer() {
               zIndex={w.zIndex}
               spawnIndex={w.spawnIndex}
               origin={w.origin}
+              navDirection={w.navDirection}
               forceClose={w.closing}
               onClose={() => closeWindow(w.key)}
               onFocus={() => focusWindow(w.key)}
@@ -67,6 +69,7 @@ export function WindowLayer() {
         })}
 
       <CaseStudyTimeline />
+      <CaseStudyNav />
 
       {minimized.length > 0 && (
         <div className="pointer-events-auto fixed bottom-32 left-6 z-50 flex flex-col gap-2">

@@ -122,6 +122,7 @@ function StepOutput({
   onGoBack: () => void;
 }) {
   const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const cdBufferRef = useRef("");
 
   useEffect(() => {
     if (isActive && step.kind === "listing") {
@@ -209,6 +210,18 @@ function StepOutput({
           if (event.key === "Backspace") {
             event.preventDefault();
             onGoBack();
+            return;
+          }
+          if (/^[a-zA-Z]$/.test(event.key)) {
+            cdBufferRef.current = (cdBufferRef.current + event.key)
+              .slice(-2)
+              .toLowerCase();
+            if (cdBufferRef.current === "cd") {
+              event.preventDefault();
+              onGoBack();
+            }
+          } else {
+            cdBufferRef.current = "";
           }
         }}
         autoFocus={isActive}

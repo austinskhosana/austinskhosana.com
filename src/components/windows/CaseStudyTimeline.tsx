@@ -29,20 +29,18 @@ export function CaseStudyTimeline() {
   );
 
   return (
-    <div
-      key={project.slug}
-      className="pointer-events-none fixed top-1/2 left-6 z-30 hidden animate-[timeline-in_320ms_var(--ease-out)_forwards] flex-col gap-3 xl:flex"
-    >
+    <div className="pointer-events-none fixed top-1/2 left-6 z-30 hidden -translate-y-1/2 flex-col gap-3 xl:flex">
       {stops.map((label, index) => {
         const isActive = index === activeIndex;
         return (
           <button
-            key={label}
+            key={`${project.slug}-${label}`}
             type="button"
             onClick={() =>
               scrollToFraction(active.key, index / (stops.length - 1 || 1))
             }
-            className="group pointer-events-auto flex items-center gap-3 py-0.5"
+            style={{ animationDelay: `${Math.min(index, 6) * 40}ms` }}
+            className="group pointer-events-auto flex animate-[timeline-item-in_260ms_var(--ease-out)_forwards] items-center gap-3 py-0.5 opacity-0"
           >
             <span
               className={`h-px shrink-0 transition-all duration-200 ${

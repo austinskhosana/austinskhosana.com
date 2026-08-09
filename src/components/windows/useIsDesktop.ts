@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-export function useIsDesktop(query = "(min-width: 768px)") {
+export function useIsDesktop(query = "(min-width: 1024px)") {
   const [isDesktop, setIsDesktop] = useState(
     () => typeof window !== "undefined" && window.matchMedia(query).matches,
   );

@@ -20,7 +20,7 @@ type RegistryEntry = {
   fadeScroll?: boolean;
 };
 
-const CASE_STUDY_SIZE = { width: 1120, height: 820 };
+export const CASE_STUDY_SIZE = { width: 1120, height: 820 };
 const BLOG_POST_SIZE = { width: 640, height: 620 };
 
 const staticRegistry: Record<"blog" | "playground" | "about-me", RegistryEntry> = {

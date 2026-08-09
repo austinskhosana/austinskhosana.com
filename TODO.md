@@ -8,7 +8,7 @@ Working list for austinskhosana.com. Check items off as they're done.
 
 - [ ] **Next up** — LLM version of me — the biggest chunk of work. Groq-backed chat route (`src/app/api/chat/route.ts`) and streaming chat UI in the About Me terminal already exist (unlock-command gate, rate limiting, system prompt); needs finishing/polish
 - [x] ASCII art for all the terminals
-- [ ] Compress/convert `public/videos/memoji.mov` to `.mp4` — currently 12MB and QuickTime format, heavy for an above-the-fold decorative loop and less cross-browser compatible than mp4
+- [x] Compress/convert `memoji.mov` to `.mp4` — 12MB → 2MB via macOS's built-in `avconvert`, same resolution
 
 ### Responsiveness
 

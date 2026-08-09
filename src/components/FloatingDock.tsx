@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   HomeIcon,
   UserIcon,
@@ -7,7 +10,10 @@ import {
 } from "@heroicons/react/24/solid";
 import type { ComponentType, SVGProps } from "react";
 import { OSLink } from "@/components/windows/OSLink";
+import { useIsDesktop } from "@/components/windows/useIsDesktop";
+import { useWindowManager } from "@/components/windows/WindowManagerContext";
 import type { WindowKey } from "@/components/windows/registry";
+import { CaseStudyMobileNav } from "@/components/CaseStudyMobileNav";
 
 function GitHubIcon(props: SVGProps<SVGSVGElement>) {
   return (
@@ -58,6 +64,21 @@ const items: {
 ];
 
 export function FloatingDock() {
+  const isDesktop = useIsDesktop();
+  const { windows, closeAllWindows } = useWindowManager();
+  const hasOpenWindows = windows.length > 0;
+  const pathname = usePathname();
+
+  // On mobile/tablet, a case study is a real page rather than a window, so
+  // the full dock gives way to a focused prev/home/next rail — mirroring
+  // the dedicated CaseStudyNav rail desktop windows get.
+  const caseStudySlug = !isDesktop
+    ? pathname.match(/^\/work\/([^/]+)$/)?.[1]
+    : undefined;
+  if (caseStudySlug) {
+    return <CaseStudyMobileNav slug={caseStudySlug} />;
+  }
+
   return (
     <>
       <div
@@ -104,6 +125,12 @@ export function FloatingDock() {
                   target={item.external ? "_blank" : undefined}
                   rel={item.external ? "noopener noreferrer" : undefined}
                   className={className}
+                  onClick={(e) => {
+                    if (item.href === "/" && isDesktop && hasOpenWindows) {
+                      e.preventDefault();
+                      closeAllWindows();
+                    }
+                  }}
                 >
                   <item.Icon className="h-[22px] w-[22px]" strokeWidth={1.8} />
                 </Link>

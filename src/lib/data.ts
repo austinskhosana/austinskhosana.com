@@ -38,11 +38,16 @@ export type Project = {
   imageAlt?: string;
   imageWidth?: number;
   imageHeight?: number;
+  coverVideo?: string;
+  coverVideoAlt?: string;
+  coverVideoWidth?: number;
+  coverVideoHeight?: number;
   gallery?: { src: string; alt: string; width: number; height: number }[];
   sections: {
     heading: string;
     body: string[];
     images?: { src: string; alt: string; width: number; height: number }[];
+    videos?: { src: string; alt: string; width: number; height: number }[];
   }[];
 };
 
@@ -55,6 +60,10 @@ export const projects: Project[] = [
     tags: ["Frontend Development", "UI Design", "UX Research", "DX Design"],
     role: "Self-led Project",
     tools: "UI/UX Design, Code Prototype, TailwindCSS",
+    coverVideo: "/videos/pixelvault-prompts-templates.mp4",
+    coverVideoAlt: "Pixel Vault Prompts & Templates folder and the Figma Make System Prompt detail",
+    coverVideoWidth: 3408,
+    coverVideoHeight: 2062,
     sections: [
       {
         heading: "The Challenges",
@@ -98,6 +107,14 @@ export const projects: Project[] = [
         heading: "Prompts & Templates",
         body: [
           "This animation was one of my favourite parts of the project. I'm trying to get better at thinking through interfaces as interactive systems and exploring interaction patterns that aren't as conventional, just creating small moments of joy in how we interact with computers as humans.",
+        ],
+        videos: [
+          {
+            src: "/videos/pixelvault-prompts-templates.mp4",
+            alt: "Pixel Vault Prompts & Templates folder and the Figma Make System Prompt detail",
+            width: 3408,
+            height: 2062,
+          },
         ],
       },
       {
@@ -166,6 +183,14 @@ export const projects: Project[] = [
         heading: "Wireframes",
         body: [
           "This is where collaboration began. We started wireframing the experience to clarify what we wanted the UI to look and feel like, without yet focusing on brand identity. This helped us align early and commit to a clear direction for layout and interaction.",
+        ],
+        images: [
+          {
+            src: "/images/spectator-wireframes.png",
+            alt: "Stacked low-fidelity wireframes of the gift subscription flow's three steps",
+            width: 4320,
+            height: 2960,
+          },
         ],
       },
       {
@@ -240,9 +265,9 @@ export const projects: Project[] = [
         ],
       },
       {
-        heading: "CSS Animations & the Loader",
+        heading: "CSS Animations",
         body: [
-          "Starting with an open-source loader, I adapted it for light-mode compatibility. The design used colour as a visual signal: a classic set of colours for approvals and acceptances, and a pink-and-blue colourway for the primary loading state.",
+          "We were moving quickly, and I wanted a loading state that felt unique but was still feasible to ship on deadline, with me as the only designer on the project. I started from an open-source loader and built on top of it to create a small visual system for the loading states.",
         ],
         images: [
           {
@@ -254,9 +279,35 @@ export const projects: Project[] = [
         ],
       },
       {
+        heading: "The Loader",
+        body: [
+          "I began by editing the styles, turning the orb from dark mode to light mode to match the visual direction of the MVP's light-mode widget. This gave us a distinct, friendly loading pattern without starting from scratch.",
+        ],
+      },
+      {
+        heading: "The Loader States in Context",
+        body: [
+          "The idea for the loader was that it would move between states using colour as a visual signal: a classic set of colours for approvals and acceptances, and a pink-and-blue colourway for the primary loading state. This made it easy for users to read system status at a glance.",
+        ],
+        images: [
+          {
+            src: "/images/coeditor-loader-states-context.png",
+            alt: "Loader states shown in context: moderating, comment posted successfully, and moderation feedback",
+            width: 2200,
+            height: 1507,
+          },
+        ],
+      },
+      {
         heading: "Tradeoffs and Direction Change",
         body: [
-          "The colorful loader clashed with various publisher brands. The team pivoted to a simple open-source search icon, with colours edited to better adapt to different brand environments.",
+          "The team was excited about the loader as a visual direction, but we realised it wouldn't work in all the contexts it needed to. The plugin needed to sit comfortably alongside the brand colours of any publisher using it, and the colourful orb risked clashing with existing visual systems.",
+        ],
+      },
+      {
+        heading: "New Loader Animation",
+        body: [
+          "We shifted direction to something more neutral and flexible: a simple open-source search icon, with colours edited to better adapt to different brand environments. The animation and design felt more context-agnostic — something that could exist as a plugin multiple publishers could use without worrying whether it aligned perfectly with their visual language.",
         ],
         images: [
           {
@@ -318,8 +369,8 @@ export const projects: Project[] = [
           {
             src: "/images/coeditor-modal-compact.png",
             alt: "Detailed comment view modal within the moderation dashboard",
-            width: 780,
-            height: 532,
+            width: 2200,
+            height: 1507,
           },
         ],
       },
@@ -513,7 +564,7 @@ export const projects: Project[] = [
           {
             src: "/images/spectra-wireframes-flow.png",
             alt: "Spectra wireframe flow from welcome screen through to movie playback",
-            width: 2560,
+            width: 2332,
             height: 6480,
           },
         ],
