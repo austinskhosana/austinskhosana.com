@@ -35,17 +35,23 @@ function SectionVideo({
   }, []);
 
   if (video.framed) {
-    // Same treatment as the case study's cover video: grey tray + padding,
-    // with the clip itself getting border/rounded/shadow since it's a raw,
-    // chrome-less recording with no edges of its own.
+    // Same tray size as every other section rectangle (images, cover video).
+    // The video sits absolutely within it so its own aspect ratio can never
+    // stretch the tray — it just letterboxes to fit, like object-fit: contain.
     return (
-      <div className="flex items-center justify-center bg-[#f5f5f5] p-8 sm:p-12">
-        <CoverVideo
-          src={video.src}
-          alt={video.alt}
-          width={video.width}
-          height={video.height}
-        />
+      <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#f5f5f5]">
+        <div className="absolute inset-0 flex items-center justify-center p-8 sm:p-12">
+          <video
+            ref={videoRef}
+            src={video.src}
+            aria-label={video.alt}
+            className="h-full w-full rounded-2xl object-contain"
+            autoPlay
+            loop
+            muted
+            playsInline
+          />
+        </div>
       </div>
     );
   }
@@ -430,7 +436,9 @@ export function CaseStudyContent({ project }: { project: Project }) {
             )}
 
             {section.images && section.images.length > 0 && (
-              <div className="mt-10 flex flex-col gap-16">
+              <div
+                className={`flex flex-col ${section.tightImages ? "mt-6 gap-4" : "mt-10 gap-16"}`}
+              >
                 {section.images.map((image) => (
                   <button
                     key={image.src}

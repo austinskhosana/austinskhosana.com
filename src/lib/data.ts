@@ -51,6 +51,9 @@ export type Project = {
     navLabel?: string;
     body: string[];
     images?: { src: string; alt: string; width: number; height: number }[];
+    // Tighter stacking for image sets that read as one continuous sequence
+    // (e.g. states of the same component) rather than standalone shots.
+    tightImages?: boolean;
     // `framed` opts into the cover video's grey-tray + border/shadow
     // treatment (for raw, chrome-less clips); omit/false for clips that
     // already carry their own frame baked in, so they can go edge-to-edge.
@@ -287,8 +290,8 @@ export const projects: Project[] = [
     tools: "Product Design, CSS",
     image: "/images/cover-comments-moderation.png",
     imageAlt: "Coeditor detailed comment view",
-    imageWidth: 4228,
-    imageHeight: 2960,
+    imageWidth: 6912,
+    imageHeight: 4320,
     sections: [
       {
         heading: "The Challenge",
@@ -317,8 +320,8 @@ export const projects: Project[] = [
           {
             src: "/images/coeditor-css-spinner-code.png",
             alt: "CSS code for the pink and blue gradient loader animation",
-            width: 2200,
-            height: 1507,
+            width: 6912,
+            height: 4320,
           },
         ],
       },
@@ -327,19 +330,41 @@ export const projects: Project[] = [
         body: [
           "I began by editing the styles, turning the orb from dark mode to light mode to match the visual direction of the MVP's light-mode widget. This gave us a distinct, friendly loading pattern without starting from scratch.",
         ],
+        videos: [
+          {
+            src: "/videos/coeditor-loader-animation.mp4",
+            alt: "Pink and blue gradient orb loader animation in motion",
+            width: 800,
+            height: 926,
+            framed: true,
+          },
+        ],
       },
       {
         heading: "The Loader States in Context",
         navLabel: "Loader States",
+        tightImages: true,
         body: [
           "The idea for the loader was that it would move between states using colour as a visual signal: a classic set of colours for approvals and acceptances, and a pink-and-blue colourway for the primary loading state. This made it easy for users to read system status at a glance.",
         ],
         images: [
           {
-            src: "/images/coeditor-loader-states-context.png",
-            alt: "Loader states shown in context: moderating, comment posted successfully, and moderation feedback",
-            width: 2200,
-            height: 1507,
+            src: "/images/coeditor-loader-context-success.png",
+            alt: "Loader state: comment posted successfully",
+            width: 6912,
+            height: 4320,
+          },
+          {
+            src: "/images/coeditor-loader-context-moderating.png",
+            alt: "Loader state: comment being moderated",
+            width: 6912,
+            height: 4320,
+          },
+          {
+            src: "/images/coeditor-loader-context-feedback.png",
+            alt: "Loader state: moderation feedback",
+            width: 6912,
+            height: 4320,
           },
         ],
       },
@@ -360,8 +385,17 @@ export const projects: Project[] = [
           {
             src: "/images/coeditor-loader-final.png",
             alt: "Final monochrome moderating feedback loader in the comment editor",
-            width: 2200,
-            height: 1507,
+            width: 6912,
+            height: 4320,
+          },
+        ],
+        videos: [
+          {
+            src: "/videos/coeditor-new-loader-animation.mp4",
+            alt: "New monochrome loader animation in motion",
+            width: 898,
+            height: 984,
+            framed: true,
           },
         ],
       },
@@ -374,8 +408,8 @@ export const projects: Project[] = [
           {
             src: "/images/coeditor-success-state.png",
             alt: "Comment posted successfully confirmation state",
-            width: 2200,
-            height: 1507,
+            width: 6912,
+            height: 4320,
           },
         ],
       },
@@ -389,8 +423,8 @@ export const projects: Project[] = [
           {
             src: "/images/coeditor-moderation-feedback.png",
             alt: "Comment editor showing AI moderation feedback on a flagged comment",
-            width: 2200,
-            height: 1507,
+            width: 6912,
+            height: 4320,
           },
         ],
       },
@@ -403,8 +437,8 @@ export const projects: Project[] = [
           {
             src: "/images/coeditor-dashboard.png",
             alt: "Comment moderation dashboard with a table of flagged comments",
-            width: 2200,
-            height: 1507,
+            width: 6912,
+            height: 4320,
           },
         ],
       },
@@ -417,8 +451,8 @@ export const projects: Project[] = [
           {
             src: "/images/coeditor-modal-compact.png",
             alt: "Detailed comment view modal within the moderation dashboard",
-            width: 2200,
-            height: 1507,
+            width: 6912,
+            height: 4320,
           },
         ],
       },
