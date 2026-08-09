@@ -7,11 +7,19 @@ export function CoverVideo({
   alt,
   width,
   height,
+  fill = false,
+  scale = 1.25,
 }: {
   src: string;
   alt: string;
   width: number;
   height: number;
+  // Edge-to-edge, cropped, no border/shadow — for covers meant to bleed to
+  // the tray's edges instead of floating inside it as a framed object.
+  fill?: boolean;
+  // Only applies when `fill` is set — crop-in amount so the cropped edges
+  // don't show empty space for clips that don't quite cover the tray.
+  scale?: number;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -21,6 +29,22 @@ export function CoverVideo({
     el.muted = true;
     el.play().catch(() => {});
   }, []);
+
+  if (fill) {
+    return (
+      <video
+        ref={videoRef}
+        src={src}
+        aria-label={alt}
+        className="h-full w-full object-cover"
+        style={{ transform: `scale(${scale})` }}
+        autoPlay
+        loop
+        muted
+        playsInline
+      />
+    );
+  }
 
   return (
     <video

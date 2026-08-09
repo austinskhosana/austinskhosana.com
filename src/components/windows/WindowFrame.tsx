@@ -7,6 +7,11 @@ import type { NavDirection, WindowOrigin } from "./WindowManagerContext";
 const MARGIN = 12;
 const MIN_WIDTH = 360;
 const MIN_HEIGHT = 280;
+// Rendered height of the draggable title bar row (border-b + py-3 + text).
+// Content components sizing themselves to their own aspect ratio (e.g. a
+// plain image preview) need this to size the *window*, since defaultSize
+// covers the title bar too, not just the content area below it.
+export const TITLE_BAR_HEIGHT = 41;
 const CASCADE_STEP = 44;
 const CASCADE_CYCLE = 6;
 // Keeps windows clear of the floating dock (and its hover tooltips) at the

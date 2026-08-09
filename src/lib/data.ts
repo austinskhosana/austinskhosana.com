@@ -23,9 +23,68 @@ export type PlaygroundItem = {
   name: string;
   category: PlaygroundCategory;
   description: string;
+  image?: string;
+  imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
 };
 
-export const playgroundItems: PlaygroundItem[] = [];
+export const playgroundItems: PlaygroundItem[] = [
+  {
+    slug: "heart-futura",
+    name: "[digital illustration] - heart futura <3",
+    category: "illustration",
+    description:
+      "A heart wrapped in vines, suspended inside a glass bubble.",
+    image: "/images/playground-heart-futura.png",
+    imageAlt: "Digital illustration of a heart wrapped in vines inside a glass bubble",
+    imageWidth: 3516,
+    imageHeight: 1896,
+  },
+  {
+    slug: "creatorshop-ui-bento-grid",
+    name: "[ui design] - creatorshop ui bento grid",
+    category: "design",
+    description:
+      "A bento grid exploring Creatorshop's UI — product cards, category selection, and a 'Pay With Influence' moment.",
+    image: "/images/playground-creatorshop-ui-bento-grid.png",
+    imageAlt: "Creatorshop UI bento grid showing product cards, category selection, and a Pay With Influence button",
+    imageWidth: 1999,
+    imageHeight: 1124,
+  },
+  {
+    slug: "nimbus-logo-design",
+    name: "[logo design] - nimbus logo design",
+    category: "design",
+    description: "A rounded, cloud-like app icon mark for Nimbus.",
+    image: "/images/playground-nimbus-logo-design.png",
+    imageAlt: "Nimbus app icon — a white cloud-petal mark on a blue rounded square",
+    imageWidth: 6912,
+    imageHeight: 4320,
+  },
+  {
+    slug: "johnnie-walker-jet-tickets",
+    name: "[brand design] - johnnie walker influencer private jet tickets.",
+    category: "design",
+    description:
+      "A boarding pass mockup for Johnnie Walker's Destination Flavourcation influencer trip from JHB to CPT.",
+    image: "/images/playground-johnnie-walker-jet-tickets.png",
+    imageAlt: "Johnnie Walker Destination Flavourcation boarding pass, JHB to CPT",
+    imageWidth: 3344,
+    imageHeight: 1882,
+  },
+  {
+    slug: "boring-office-people",
+    name: "[character design] - boring office people",
+    category: "illustration",
+    description:
+      "A set of flat, line-work office character cards — a woman in a blazer and skirt, and two men in suits.",
+    image: "/images/playground-boring-office-people.png",
+    imageAlt: "Three flat black-and-white illustrated office characters on card backgrounds with sun icons",
+    imageWidth: 6912,
+    imageHeight: 4320,
+  },
+];
 
 export type Project = {
   slug: string;
@@ -42,6 +101,12 @@ export type Project = {
   coverVideoAlt?: string;
   coverVideoWidth?: number;
   coverVideoHeight?: number;
+  // Edge-to-edge, cropped cover instead of the default padded grey tray
+  // with a bordered/contained video.
+  coverVideoFill?: boolean;
+  // Overrides CoverVideo's default 1.25 crop-in scale — for clips that
+  // don't need as tight a zoom to fill the frame.
+  coverVideoScale?: number;
   gallery?: { src: string; alt: string; width: number; height: number }[];
   sections: {
     heading: string;
@@ -63,6 +128,10 @@ export type Project = {
       width: number;
       height: number;
       framed?: boolean;
+      // Edge-to-edge, cropped, no border/shadow — same treatment as the
+      // case study's cover video, for reusing that exact clip in-section.
+      fill?: boolean;
+      scale?: number;
     }[];
   }[];
 };
@@ -471,10 +540,12 @@ export const projects: Project[] = [
     tags: ["Product Design", "Strategy", "UX Research"],
     role: "Self-led Project",
     tools: "UI/UX Design",
-    image: "/images/cover-spectra-2.png",
-    imageAlt: "Spectra — series and movies with infinite possibilities",
-    imageWidth: 4228,
-    imageHeight: 2960,
+    coverVideo: "/videos/spectra-cover.mp4",
+    coverVideoAlt: "Spectra — series and movies with infinite possibilities",
+    coverVideoWidth: 3332,
+    coverVideoHeight: 1856,
+    coverVideoFill: true,
+    coverVideoScale: 1.15,
     sections: [
       {
         heading: "The Challenges",
@@ -493,12 +564,14 @@ export const projects: Project[] = [
         body: [
           "The Spectra welcome screen features falling CDs against a vibrant backdrop, complemented by a looping hero video. This design blends nostalgia with a forward-thinking approach to media, offering an engaging entry point that immediately sets the tone for creative exploration.",
         ],
-        images: [
+        videos: [
           {
-            src: "/images/spectra-onboarding.png",
-            alt: "Spectra welcome screen with sign up options",
-            width: 4320,
-            height: 2960,
+            src: "/videos/spectra-cover.mp4",
+            alt: "Spectra — series and movies with infinite possibilities",
+            width: 3332,
+            height: 1856,
+            fill: true,
+            scale: 1.15,
           },
         ],
       },
@@ -512,8 +585,8 @@ export const projects: Project[] = [
           {
             src: "/images/spectra-home.png",
             alt: "Spectra home screen with prompt input and featured content",
-            width: 4320,
-            height: 2960,
+            width: 6912,
+            height: 4320,
           },
         ],
       },
@@ -527,8 +600,8 @@ export const projects: Project[] = [
           {
             src: "/images/spectra-aesthetic-selector.png",
             alt: "Spectra select a visual aesthetic screen",
-            width: 4320,
-            height: 2960,
+            width: 6912,
+            height: 4320,
           },
         ],
       },
@@ -542,8 +615,8 @@ export const projects: Project[] = [
           {
             src: "/images/spectra-movie-description.png",
             alt: "Spectra movie description screen for Boys Love Aspen",
-            width: 4320,
-            height: 2960,
+            width: 6912,
+            height: 4320,
           },
         ],
       },
@@ -557,8 +630,8 @@ export const projects: Project[] = [
           {
             src: "/images/spectra-character-selector.png",
             alt: "Spectra character selector screen with swipeable character cards",
-            width: 4320,
-            height: 2960,
+            width: 6912,
+            height: 4320,
           },
         ],
       },
@@ -571,8 +644,8 @@ export const projects: Project[] = [
           {
             src: "/images/spectra-generating-loader.png",
             alt: "Spectra generating loader screen",
-            width: 4320,
-            height: 2960,
+            width: 6912,
+            height: 4320,
           },
         ],
       },
@@ -586,8 +659,8 @@ export const projects: Project[] = [
           {
             src: "/images/spectra-playback.png",
             alt: "Spectra movie playback screen with glassmorphism controls",
-            width: 4320,
-            height: 2960,
+            width: 6912,
+            height: 4320,
           },
         ],
       },

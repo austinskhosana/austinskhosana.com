@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
 import { playgroundItems } from "@/lib/data";
 import type { PlaygroundCategory } from "@/lib/data";
+import { OSLink } from "./OSLink";
 
 type DocStep = {
   kind: "doc";
@@ -17,18 +18,7 @@ type ListingStep = {
   items: { name: string; slug: string }[];
 };
 
-type CdStep = {
-  kind: "cd";
-  command: string;
-};
-
-type ItemStep = {
-  kind: "item";
-  command: string;
-  slug: string;
-};
-
-type Step = DocStep | ListingStep | CdStep | ItemStep;
+type Step = DocStep | ListingStep;
 
 const ASCII_ART = `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -113,16 +103,11 @@ function PromptPrefix() {
 function StepOutput({
   step,
   isActive,
-  onOpenItem,
-  onGoBack,
 }: {
   step: Step;
   isActive: boolean;
-  onOpenItem: (slug: string) => void;
-  onGoBack: () => void;
 }) {
-  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const cdBufferRef = useRef("");
+  const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
 
   useEffect(() => {
     if (isActive && step.kind === "listing") {
@@ -145,7 +130,7 @@ function StepOutput({
 
   if (step.kind === "listing") {
     function handleKeyDown(
-      event: KeyboardEvent<HTMLButtonElement>,
+      event: KeyboardEvent<HTMLAnchorElement>,
       index: number,
     ) {
       if (event.key === "ArrowDown") {
@@ -174,67 +159,28 @@ function StepOutput({
     return (
       <>
         {step.items.map((item, index) => (
-          <button
+          <OSLink
             key={item.slug}
             ref={(el) => {
               itemRefs.current[index] = el;
             }}
-            type="button"
-            onClick={() => onOpenItem(item.slug)}
+            href={`/playground/${item.slug}`}
+            windowKey={`playground:${item.slug}`}
             onKeyDown={(event) => handleKeyDown(event, index)}
             className="w-fit text-left text-foreground underline underline-offset-2 transition-colors hover:text-accent focus:outline-none focus-visible:bg-foreground focus-visible:text-white"
           >
             {item.name}
-          </button>
+          </OSLink>
         ))}
       </>
     );
   }
 
-  if (step.kind === "cd") {
-    return null;
-  }
-
-  const item = playgroundItems.find((p) => p.slug === step.slug);
-  if (!item) return null;
-
-  return (
-    <>
-      <p className="text-foreground">{item.name}</p>
-      <p className="text-muted">{item.description}</p>
-      <p className="text-muted">Category: {item.category}</p>
-      <button
-        type="button"
-        onClick={onGoBack}
-        onKeyDown={(event) => {
-          if (event.key === "Backspace") {
-            event.preventDefault();
-            onGoBack();
-            return;
-          }
-          if (/^[a-zA-Z]$/.test(event.key)) {
-            cdBufferRef.current = (cdBufferRef.current + event.key)
-              .slice(-2)
-              .toLowerCase();
-            if (cdBufferRef.current === "cd") {
-              event.preventDefault();
-              onGoBack();
-            }
-          } else {
-            cdBufferRef.current = "";
-          }
-        }}
-        autoFocus={isActive}
-        className="w-fit text-muted transition-colors hover:text-foreground focus:outline-none focus-visible:text-foreground focus-visible:underline"
-      >
-        ← cd ..
-      </button>
-    </>
-  );
+  return null;
 }
 
 export function PlaygroundWindowContent() {
-  const [steps, setSteps] = useState<Step[]>(BASE_STEPS);
+  const steps = BASE_STEPS;
   const [stepIndex, setStepIndex] = useState(0);
   const [typed, setTyped] = useState("");
   const [completed, setCompleted] = useState(0);
@@ -259,20 +205,6 @@ export function PlaygroundWindowContent() {
     return () => clearTimeout(timeout);
   }, [typed, commandDone, allDone, activeStep]);
 
-  function openItem(slug: string) {
-    const item = playgroundItems.find((p) => p.slug === slug);
-    if (!item) return;
-    setSteps((prev) => [
-      ...prev,
-      { kind: "cd", command: `cd ./${item.category}/${slug}` },
-      { kind: "item", command: "open readme.md", slug },
-    ]);
-  }
-
-  function goBack() {
-    setSteps((prev) => [...prev, { kind: "cd", command: "cd .." }]);
-  }
-
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-8 px-6 pt-3 pb-10">
       <div className="flex flex-col gap-2 bg-white p-5 font-mono text-sm leading-relaxed">
@@ -289,12 +221,7 @@ export function PlaygroundWindowContent() {
               <PromptPrefix />
               {step.command}
             </p>
-            <StepOutput
-              step={step}
-              isActive={i === completed - 1}
-              onOpenItem={openItem}
-              onGoBack={goBack}
-            />
+            <StepOutput step={step} isActive={i === completed - 1} />
           </div>
         ))}
 

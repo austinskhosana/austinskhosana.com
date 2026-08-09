@@ -23,6 +23,10 @@ function SectionVideo({
     width: number;
     height: number;
     framed?: boolean;
+    // Edge-to-edge, cropped, no border/shadow — same treatment as the case
+    // study's cover video, for reusing that exact clip within a section.
+    fill?: boolean;
+    scale?: number;
   };
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -33,6 +37,21 @@ function SectionVideo({
     el.muted = true;
     el.play().catch(() => {});
   }, []);
+
+  if (video.fill) {
+    return (
+      <div className="aspect-[16/10] w-full overflow-hidden bg-[#f5f5f5]">
+        <CoverVideo
+          src={video.src}
+          alt={video.alt}
+          width={video.width}
+          height={video.height}
+          fill
+          scale={video.scale}
+        />
+      </div>
+    );
+  }
 
   if (video.framed) {
     // Same tray size as every other section rectangle (images, cover video).
@@ -376,12 +395,20 @@ export function CaseStudyContent({ project }: { project: Project }) {
       </header>
 
       {project.coverVideo && (
-        <div className="flex aspect-[16/10] w-full items-center justify-center bg-[#f5f5f5] p-8 sm:p-12">
+        <div
+          className={
+            project.coverVideoFill
+              ? "aspect-[16/10] w-full overflow-hidden bg-[#f5f5f5]"
+              : "flex aspect-[16/10] w-full items-center justify-center bg-[#f5f5f5] p-8 sm:p-12"
+          }
+        >
           <CoverVideo
             src={project.coverVideo}
             alt={project.coverVideoAlt ?? project.title}
             width={project.coverVideoWidth ?? 1600}
             height={project.coverVideoHeight ?? 1000}
+            fill={project.coverVideoFill}
+            scale={project.coverVideoScale}
           />
         </div>
       )}

@@ -1,16 +1,19 @@
 import type { ComponentType } from "react";
 import { BlogWindowContent } from "./BlogWindowContent";
 import { PlaygroundWindowContent } from "./PlaygroundWindowContent";
+import { PlaygroundItemWindowContent } from "./PlaygroundItemWindowContent";
 import { AboutMeWindowContent } from "./AboutMeWindowContent";
 import { CaseStudyContent } from "@/components/CaseStudyContent";
-import { projects, blogPosts } from "@/lib/data";
+import { TITLE_BAR_HEIGHT } from "./WindowFrame";
+import { projects, blogPosts, playgroundItems } from "@/lib/data";
 
 export type WindowKey =
   | "blog"
   | "playground"
   | "about-me"
   | `work:${string}`
-  | `blog:${string}`;
+  | `blog:${string}`
+  | `playground:${string}`;
 
 type RegistryEntry = {
   title: string;
@@ -22,6 +25,31 @@ type RegistryEntry = {
 
 export const CASE_STUDY_SIZE = { width: 1120, height: 820 };
 const BLOG_POST_SIZE = { width: 640, height: 620 };
+const PLAYGROUND_ITEM_SIZE = { width: 640, height: 560 };
+const PLAYGROUND_IMAGE_WIDTH = 880;
+const PLAYGROUND_IMAGE_MIN_HEIGHT = 320;
+const PLAYGROUND_IMAGE_MAX_HEIGHT = 780;
+
+function playgroundItemSize(item: (typeof playgroundItems)[number]) {
+  if (!item.imageWidth || !item.imageHeight) {
+    return PLAYGROUND_ITEM_SIZE;
+  }
+  // Window height must cover the title bar *plus* the image area, or the
+  // image area is shorter than the width/aspect-ratio math assumes and the
+  // image shrinks to fit — leaving gaps on the sides instead of hugging them.
+  const imageHeight = Math.round(
+    PLAYGROUND_IMAGE_WIDTH * (item.imageHeight / item.imageWidth),
+  );
+  return {
+    width: PLAYGROUND_IMAGE_WIDTH,
+    height:
+      TITLE_BAR_HEIGHT +
+      Math.min(
+        PLAYGROUND_IMAGE_MAX_HEIGHT,
+        Math.max(PLAYGROUND_IMAGE_MIN_HEIGHT, imageHeight),
+      ),
+  };
+}
 
 const staticRegistry: Record<"blog" | "playground" | "about-me", RegistryEntry> = {
   blog: {
@@ -65,8 +93,20 @@ const blogPostRegistry: Record<string, RegistryEntry> = Object.fromEntries(
   ]),
 );
 
+const playgroundItemRegistry: Record<string, RegistryEntry> = Object.fromEntries(
+  playgroundItems.map((item) => [
+    `playground:${item.slug}`,
+    {
+      title: item.name,
+      Content: () => <PlaygroundItemWindowContent slug={item.slug} />,
+      defaultSize: playgroundItemSize(item),
+    },
+  ]),
+);
+
 export const windowRegistry: Record<WindowKey, RegistryEntry> = {
   ...staticRegistry,
   ...caseStudyRegistry,
   ...blogPostRegistry,
+  ...playgroundItemRegistry,
 } as Record<WindowKey, RegistryEntry>;

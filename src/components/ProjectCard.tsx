@@ -12,12 +12,20 @@ export function ProjectCard({ project }: { project: Project }) {
     >
       <div className="relative h-[320px] w-full overflow-hidden bg-[#f5f5f5] sm:h-[420px] lg:h-[700px]">
         {project.coverVideo ? (
-          <div className="flex h-full w-full items-center justify-center p-8 sm:p-12">
+          <div
+            className={
+              project.coverVideoFill
+                ? "h-full w-full"
+                : "flex h-full w-full items-center justify-center p-8 sm:p-12"
+            }
+          >
             <CoverVideo
               src={project.coverVideo}
               alt={project.coverVideoAlt ?? project.title}
               width={project.coverVideoWidth ?? 1600}
               height={project.coverVideoHeight ?? 1000}
+              fill={project.coverVideoFill}
+              scale={project.coverVideoScale}
             />
           </div>
         ) : (
