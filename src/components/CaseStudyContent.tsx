@@ -378,6 +378,7 @@ export function CaseStudyContent({ project }: { project: Project }) {
             src={project.image}
             alt={project.imageAlt ?? project.title}
             fill
+            quality={100}
             className="object-cover object-top transition-opacity duration-150 ease-[var(--ease-out)] group-hover:opacity-90"
             sizes="(min-width: 672px) 624px, 100vw"
             priority
@@ -430,6 +431,7 @@ export function CaseStudyContent({ project }: { project: Project }) {
                       alt={image.alt}
                       width={image.width}
                       height={image.height}
+                      quality={100}
                       className="h-auto w-full transition-opacity duration-150 ease-[var(--ease-out)] group-hover:opacity-90"
                       sizes="(min-width: 672px) 624px, 100vw"
                     />
@@ -470,6 +472,7 @@ export function CaseStudyContent({ project }: { project: Project }) {
                 src={image.src}
                 alt={image.alt}
                 fill
+                quality={100}
                 className="object-cover transition-opacity duration-150 ease-[var(--ease-out)] group-hover:opacity-90"
                 sizes="(min-width: 640px) 33vw, 100vw"
               />

@@ -26,6 +26,7 @@ export function ProjectCard({ project }: { project: Project }) {
               src={project.image}
               alt={project.imageAlt ?? project.title}
               fill
+              quality={100}
               className="object-cover object-top"
               sizes="(min-width: 1024px) 1057px, 100vw"
             />

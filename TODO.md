@@ -9,6 +9,7 @@ Working list for austinskhosana.com. Check items off as they're done.
 - [ ] **Next up** — LLM version of me — the biggest chunk of work. Groq-backed chat route (`src/app/api/chat/route.ts`) and streaming chat UI in the About Me terminal already exist (unlock-command gate, rate limiting, system prompt); needs finishing/polish
 - [x] ASCII art for all the terminals
 - [x] Compress/convert `memoji.mov` to `.mp4` — 12MB → 2MB via macOS's built-in `avconvert`, same resolution
+- [x] Improve case study project image quality — Next.js 16 defaulted the Image Optimization API to quality 75 with no `images.qualities` override; added `images.qualities: [100]` to `next.config.ts` and `quality={100}` on every `next/image` usage so screenshots match the uploaded source fidelity
 
 ### Responsiveness
 
