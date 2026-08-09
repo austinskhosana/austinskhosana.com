@@ -45,9 +45,22 @@ export type Project = {
   gallery?: { src: string; alt: string; width: number; height: number }[];
   sections: {
     heading: string;
+    // Shown in the case-study rail instead of `heading` when set — keeps
+    // long section titles from overflowing/being truncated in the rail
+    // while leaving the actual in-article heading text untouched.
+    navLabel?: string;
     body: string[];
     images?: { src: string; alt: string; width: number; height: number }[];
-    videos?: { src: string; alt: string; width: number; height: number }[];
+    // `framed` opts into the cover video's grey-tray + border/shadow
+    // treatment (for raw, chrome-less clips); omit/false for clips that
+    // already carry their own frame baked in, so they can go edge-to-edge.
+    videos?: {
+      src: string;
+      alt: string;
+      width: number;
+      height: number;
+      framed?: boolean;
+    }[];
   }[];
 };
 
@@ -84,16 +97,38 @@ export const projects: Project[] = [
         ],
       },
       {
+        heading: "Animated Components",
+        navLabel: "Animated",
+        body: [
+          "A showcase of the interactive components available in Pixel Vault, from buttons and their hover and motion states to the animated navbar.",
+        ],
+        videos: [
+          {
+            src: "/videos/pixelvault-button-showcase.mp4",
+            alt: "Pixel Vault animated button showcase with hover and motion states",
+            width: 3412,
+            height: 2056,
+          },
+          {
+            src: "/videos/pixelvault-navbar-showcase.mp4",
+            alt: "Pixel Vault animated navbar component",
+            width: 3394,
+            height: 2056,
+          },
+        ],
+      },
+      {
         heading: "DX in the Coding Sandbox",
+        navLabel: "DX",
         body: [
           "This screen was really interesting to design because I had to think very intentionally about developer experience and polish. I was using Claude Sonnet, and initially the UI was just plain text with no context, no hierarchy, and no colour. So I added structure, visual cues, and AI hints, because whenever I'm in one of these online coding sandboxes I always miss the IDE plugins that give you a similar experience.",
         ],
         images: [
           {
             src: "/images/pixelvault-coding-sandbox.png",
-            alt: "Pixel Vault coding sandbox showing the Animated Gradient Text component",
-            width: 4320,
-            height: 2960,
+            alt: "Pixel Vault coding sandbox showing the Magnetic Button component",
+            width: 6912,
+            height: 4320,
           },
         ],
       },
@@ -114,25 +149,28 @@ export const projects: Project[] = [
             alt: "Pixel Vault Prompts & Templates folder and the Figma Make System Prompt detail",
             width: 3408,
             height: 2062,
+            framed: true,
           },
         ],
       },
       {
         heading: "Vibe Coded Design Tools",
+        navLabel: "Design Tools",
         body: [
           "In the age of democratised software creation, designers are creating their own tools — plugins, micro-apps, and internal utilities — and I wanted this to be a place where those tools can be shared and stored within teams.",
         ],
         images: [
           {
             src: "/images/pixelvault-design-tools.png",
-            alt: "Pixel Vault Design Tools page with Type Scale Generator and Spacing Visualizer",
-            width: 4320,
-            height: 2960,
+            alt: "Pixel Vault Design Tools page with Color Palette Extractor, Type Scale Generator, and Spacing Visualizer",
+            width: 6912,
+            height: 4320,
           },
         ],
       },
       {
         heading: "Learnings & Outcomes",
+        navLabel: "Learnings",
         body: [
           "I learnt that while AI prototyping helps designers move faster, skills stack on top of each other: my technical background was amplified by the tool. At the same time, relying on these tools introduces new constraints, like token management and being mindful about what you delegate to the agent.",
         ],
@@ -148,9 +186,9 @@ export const projects: Project[] = [
     role: "UI Designer",
     tools: "UI/UX Design",
     image: "/images/cover-thespectator.png",
-    imageAlt: "The Spectator gift subscription flow",
-    imageWidth: 4228,
-    imageHeight: 2960,
+    imageAlt: "The Spectator gift subscription flow — choose your gift type",
+    imageWidth: 6912,
+    imageHeight: 4320,
     sections: [
       {
         heading: "The Challenge",
@@ -172,10 +210,16 @@ export const projects: Project[] = [
         ],
         images: [
           {
-            src: "/images/spectator-user-flows.png",
-            alt: "The Spectator gift subscription user flows for fixed term and auto renewing gifts",
-            width: 4320,
-            height: 2960,
+            src: "/images/spectator-user-flow-fixed-term.png",
+            alt: "The Spectator gift subscription user flow for fixed-term gifts",
+            width: 12416,
+            height: 5376,
+          },
+          {
+            src: "/images/spectator-user-flow-auto-renewing.png",
+            alt: "The Spectator gift subscription user flow for auto-renewing gifts",
+            width: 13632,
+            height: 6656,
           },
         ],
       },
@@ -187,9 +231,9 @@ export const projects: Project[] = [
         images: [
           {
             src: "/images/spectator-wireframes.png",
-            alt: "Stacked low-fidelity wireframes of the gift subscription flow's three steps",
-            width: 4320,
-            height: 2960,
+            alt: "Stacked low-fidelity wireframes of the gift subscription flow's four steps",
+            width: 6912,
+            height: 4320,
           },
         ],
       },
@@ -202,20 +246,20 @@ export const projects: Project[] = [
           {
             src: "/images/spectator-ui-terms-recommended.png",
             alt: "Gift subscription terms screen with annual automatic renewal recommended",
-            width: 4320,
-            height: 2960,
+            width: 6912,
+            height: 4320,
           },
           {
             src: "/images/spectator-ui-terms-bestvalue.png",
             alt: "Gift subscription terms screen with annual one-off payment as best value",
-            width: 4320,
-            height: 2960,
+            width: 6912,
+            height: 4320,
           },
           {
             src: "/images/spectator-ui-gift-type.png",
             alt: "Gift subscription type screen with digital only selected",
-            width: 4320,
-            height: 2960,
+            width: 6912,
+            height: 4320,
           },
         ],
       },
@@ -286,6 +330,7 @@ export const projects: Project[] = [
       },
       {
         heading: "The Loader States in Context",
+        navLabel: "Loader States",
         body: [
           "The idea for the loader was that it would move between states using colour as a visual signal: a classic set of colours for approvals and acceptances, and a pink-and-blue colourway for the primary loading state. This made it easy for users to read system status at a glance.",
         ],
@@ -300,12 +345,14 @@ export const projects: Project[] = [
       },
       {
         heading: "Tradeoffs and Direction Change",
+        navLabel: "Tradeoffs",
         body: [
           "The team was excited about the loader as a visual direction, but we realised it wouldn't work in all the contexts it needed to. The plugin needed to sit comfortably alongside the brand colours of any publisher using it, and the colourful orb risked clashing with existing visual systems.",
         ],
       },
       {
         heading: "New Loader Animation",
+        navLabel: "New Loader",
         body: [
           "We shifted direction to something more neutral and flexible: a simple open-source search icon, with colours edited to better adapt to different brand environments. The animation and design felt more context-agnostic — something that could exist as a plugin multiple publishers could use without worrying whether it aligned perfectly with their visual language.",
         ],
@@ -334,6 +381,7 @@ export const projects: Project[] = [
       },
       {
         heading: "UX Writing Challenge",
+        navLabel: "UX Writing",
         body: [
           "This proved most difficult: delivering AI-based feedback that is both contextual and non-deterministic, while maintaining an empathetic tone across diverse publishers.",
         ],
@@ -422,6 +470,7 @@ export const projects: Project[] = [
       },
       {
         heading: "Prompt Input & Featured Content",
+        navLabel: "Prompt Input",
         body: [
           "The home screen features a prompt input area where users can start generating a movie or series in their own words. Below the prompt, users can scroll through featured content generated by others, showcasing community creativity and providing inspiration for new stories.",
         ],
@@ -436,6 +485,7 @@ export const projects: Project[] = [
       },
       {
         heading: "AI Video Aesthetic Builder UI Workflow",
+        navLabel: "Aesthetic Builder",
         body: [
           "In the movie curation experience, users start by selecting the visual aesthetic, ranging from realism to anime and other stylized looks. A rich set of options is presented in a visual grid, and users can click refresh to generate a new set of aesthetics if they don't find something they like. This keeps exploration lightweight and fun while still feeling curated.",
         ],
@@ -450,6 +500,7 @@ export const projects: Project[] = [
       },
       {
         heading: "Movie/Show Description",
+        navLabel: "Show Description",
         body: [
           "The movie/show description screen allows users to watch the selected film or episode, read a concise description of the story and characters, and discover similar titles through tailored recommendations. This deepens engagement by helping users understand the narrative context and quickly jump into related content they might enjoy.",
         ],
@@ -464,6 +515,7 @@ export const projects: Project[] = [
       },
       {
         heading: "Generated Character Selector Screen",
+        navLabel: "Character Selector",
         body: [
           "This Tinder-style swiping screen lets users easily curate their movie by swiping right on characters, styling options, or locations they want to include, and left to dismiss those they don't. The familiar interaction pattern lowers friction and turns the customization process into an engaging, game-like experience.",
         ],
@@ -492,6 +544,7 @@ export const projects: Project[] = [
       },
       {
         heading: "Movie Playback Screen",
+        navLabel: "Playback Screen",
         body: [
           "The movie playback screen features a visually engaging blur effect on the video, embracing glassmorphism for a sleek, modern aesthetic. This treatment draws attention to the content while providing a stylish and contemporary backdrop for playback controls and metadata.",
         ],

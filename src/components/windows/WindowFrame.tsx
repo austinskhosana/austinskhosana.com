@@ -346,7 +346,7 @@ export function WindowFrame({
           }}
           className={`h-full overflow-y-auto overscroll-contain ${
             fadeScroll
-              ? "[scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+              ? "[scrollbar-width:none] pb-16 [&::-webkit-scrollbar]:hidden"
               : ""
           }`}
         >

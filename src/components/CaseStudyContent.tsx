@@ -17,7 +17,13 @@ type Rect = { x: number; y: number; width: number; height: number };
 function SectionVideo({
   video,
 }: {
-  video: { src: string; alt: string; width: number; height: number };
+  video: {
+    src: string;
+    alt: string;
+    width: number;
+    height: number;
+    framed?: boolean;
+  };
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
@@ -28,20 +34,34 @@ function SectionVideo({
     el.play().catch(() => {});
   }, []);
 
+  if (video.framed) {
+    // Same treatment as the case study's cover video: grey tray + padding,
+    // with the clip itself getting border/rounded/shadow since it's a raw,
+    // chrome-less recording with no edges of its own.
+    return (
+      <div className="flex items-center justify-center bg-[#f5f5f5] p-8 sm:p-12">
+        <CoverVideo
+          src={video.src}
+          alt={video.alt}
+          width={video.width}
+          height={video.height}
+        />
+      </div>
+    );
+  }
+
   return (
-    <div className="flex items-center justify-center bg-[#f5f5f5] p-8 sm:p-12">
-      <video
-        ref={videoRef}
-        src={video.src}
-        aria-label={video.alt}
-        className="w-full max-w-xl rounded-2xl border border-border shadow-lg shadow-black/5"
-        style={{ aspectRatio: `${video.width} / ${video.height}` }}
-        autoPlay
-        loop
-        muted
-        playsInline
-      />
-    </div>
+    <video
+      ref={videoRef}
+      src={video.src}
+      aria-label={video.alt}
+      className="h-auto w-full"
+      style={{ aspectRatio: `${video.width} / ${video.height}` }}
+      autoPlay
+      loop
+      muted
+      playsInline
+    />
   );
 }
 
@@ -410,7 +430,7 @@ export function CaseStudyContent({ project }: { project: Project }) {
             )}
 
             {section.images && section.images.length > 0 && (
-              <div className="flex flex-col gap-6">
+              <div className="mt-10 flex flex-col gap-16">
                 {section.images.map((image) => (
                   <button
                     key={image.src}
@@ -424,8 +444,11 @@ export function CaseStudyContent({ project }: { project: Project }) {
                       })
                     }
                     aria-label={`View larger image: ${image.alt}`}
-                    className="group block w-full cursor-zoom-in overflow-hidden bg-[#f5f5f5]"
+                    className="group block w-full cursor-zoom-in"
                   >
+                    {/* No site-side frame here: these images already come
+                        with the grey tray, border, and shadow baked in
+                        from Figma, matching the video's treatment. */}
                     <Image
                       src={image.src}
                       alt={image.alt}

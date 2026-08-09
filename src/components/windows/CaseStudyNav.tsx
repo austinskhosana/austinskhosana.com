@@ -59,7 +59,7 @@ export function CaseStudyNav() {
       // Width pinned to 62.5px to match Nav.tsx's rendered header height
       // (py-5 + the logo's 15px line-height) — keeps the rail's footprint
       // visually consistent with the top navbar.
-      className="pointer-events-none fixed top-1/2 z-30 hidden w-[62.5px] animate-[nav-in-right_320ms_var(--ease-out)_forwards] flex-col items-center gap-2 rounded-full border border-border bg-white/90 p-2 shadow-lg shadow-black/5 backdrop-blur xl:flex"
+      className="pointer-events-none fixed top-1/2 z-50 hidden w-[62.5px] animate-[nav-in-right_320ms_var(--ease-out)_forwards] flex-col items-center gap-2 rounded-full border border-border bg-white/90 p-2 shadow-lg shadow-black/5 backdrop-blur xl:flex"
     >
       <button
         type="button"

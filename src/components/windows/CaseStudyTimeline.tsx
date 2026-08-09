@@ -1,7 +1,14 @@
 "use client";
 
 import { useWindowManager } from "./WindowManagerContext";
+import { CASE_STUDY_SIZE } from "./registry";
 import { projects } from "@/lib/data";
+
+// The window is centered, so the rail's available width is derived from
+// its known half-width (mirrors CaseStudyNav) — labels truncate to fit
+// whatever space is actually free instead of spilling under the window.
+const RAIL_LEFT_OFFSET = 24; // matches the `left-6` on the rail below
+const RAIL_GAP = 20;
 
 export function CaseStudyTimeline() {
   const { windows, scrollToFraction } = useWindowManager();
@@ -18,7 +25,7 @@ export function CaseStudyTimeline() {
 
   const stops = [
     "Overview",
-    ...project.sections.map((section) => section.heading),
+    ...project.sections.map((section) => section.navLabel ?? section.heading),
     ...(project.gallery && project.gallery.length > 0 ? ["Gallery"] : []),
   ];
 
@@ -28,8 +35,15 @@ export function CaseStudyTimeline() {
     Math.floor(progress * stops.length),
   );
 
+  const maxRailWidth = `max(0px, calc(50vw - ${
+    CASE_STUDY_SIZE.width / 2 + RAIL_LEFT_OFFSET + RAIL_GAP
+  }px))`;
+
   return (
-    <div className="pointer-events-none fixed top-1/2 left-6 z-30 hidden -translate-y-1/2 flex-col gap-3 xl:flex">
+    <div
+      style={{ maxWidth: maxRailWidth }}
+      className="pointer-events-none fixed top-1/2 left-6 z-50 hidden -translate-y-1/2 flex-col gap-3 overflow-hidden xl:flex"
+    >
       {stops.map((label, index) => {
         const isActive = index === activeIndex;
         return (
@@ -50,7 +64,7 @@ export function CaseStudyTimeline() {
               }`}
             />
             <span
-              className={`max-w-[140px] truncate font-mono text-xs transition-opacity duration-200 ${
+              className={`min-w-0 flex-1 truncate font-mono text-xs transition-opacity duration-200 ${
                 isActive
                   ? "text-foreground opacity-100"
                   : "text-muted opacity-0 group-hover:opacity-100"
