@@ -75,8 +75,13 @@ export function AboutMeWindowContent() {
   const [exchanges, setExchanges] = useState<Exchange[]>([]);
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
 
   const busy = exchanges.some((e) => e.streaming);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ block: "end" });
+  }, [gateLog, exchanges]);
 
   useEffect(() => {
     if (introDone) return;
@@ -108,7 +113,21 @@ export function AboutMeWindowContent() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question, history }),
       });
-      if (!res.ok || !res.body) throw new Error("bad response");
+      if (!res.ok) {
+        const message = (await res.text().catch(() => "")).trim();
+        setExchanges((prev) => {
+          const next = [...prev];
+          next[next.length - 1] = {
+            question,
+            answer: message || "something went wrong — try again.",
+            streaming: false,
+            error: true,
+          };
+          return next;
+        });
+        return;
+      }
+      if (!res.body) throw new Error("bad response");
 
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
@@ -276,6 +295,8 @@ export function AboutMeWindowContent() {
             </form>
           </div>
         )}
+
+        <div ref={bottomRef} />
       </div>
     </div>
   );

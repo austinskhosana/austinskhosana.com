@@ -1,8 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { KeyboardEvent } from "react";
 import { blogPosts } from "@/lib/data";
+import { useWindowManager } from "./WindowManagerContext";
+import { OSLink } from "./OSLink";
+import type { WindowKey } from "./registry";
 
 type DocStep = {
   kind: "doc";
@@ -15,18 +19,13 @@ type ListingStep = {
   command: string;
 };
 
-type CdStep = {
-  kind: "cd";
-  command: string;
-};
-
 type PostStep = {
   kind: "post";
   command: string;
   slug: string;
 };
 
-type Step = DocStep | ListingStep | CdStep | PostStep;
+type Step = DocStep | ListingStep | PostStep;
 
 const ASCII_ART = `      ..          ..
 . uW8"      x .d88"
@@ -94,15 +93,13 @@ function PromptPrefix() {
 function StepOutput({
   step,
   isActive,
-  onOpenPost,
   onGoBack,
 }: {
   step: Step;
   isActive: boolean;
-  onOpenPost: (slug: string) => void;
   onGoBack: () => void;
 }) {
-  const itemRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const cdBufferRef = useRef("");
 
   useEffect(() => {
@@ -126,7 +123,7 @@ function StepOutput({
 
   if (step.kind === "listing") {
     function handleKeyDown(
-      event: KeyboardEvent<HTMLButtonElement>,
+      event: KeyboardEvent<HTMLAnchorElement>,
       index: number,
     ) {
       if (event.key === "ArrowDown") {
@@ -151,13 +148,13 @@ function StepOutput({
     return (
       <>
         {blogPosts.map((post, index) => (
-          <button
+          <OSLink
             key={post.slug}
-            ref={(el) => {
+            ref={(el: HTMLAnchorElement | null) => {
               itemRefs.current[index] = el;
             }}
-            type="button"
-            onClick={() => onOpenPost(post.slug)}
+            href={`/blog/${post.slug}`}
+            windowKey={`blog:${post.slug}`}
             onKeyDown={(event) => handleKeyDown(event, index)}
             className="group flex w-full items-baseline justify-between gap-4 text-left focus:outline-none focus-visible:bg-foreground focus-visible:text-white"
           >
@@ -167,14 +164,10 @@ function StepOutput({
             <span className="whitespace-nowrap text-muted group-focus-visible:text-white/70">
               {formatDate(post.date)}
             </span>
-          </button>
+          </OSLink>
         ))}
       </>
     );
-  }
-
-  if (step.kind === "cd") {
-    return null;
   }
 
   const post = blogPosts.find((p) => p.slug === step.slug);
@@ -182,6 +175,17 @@ function StepOutput({
 
   return (
     <>
+      {post.image && post.imageWidth && post.imageHeight && (
+        <Image
+          src={post.image}
+          alt={post.imageAlt ?? post.title}
+          width={post.imageWidth}
+          height={post.imageHeight}
+          quality={100}
+          className="h-auto w-full"
+          sizes="(min-width: 672px) 592px, 100vw"
+        />
+      )}
       <p className="text-foreground">{post.title}</p>
       <p className="text-muted">{formatDate(post.date)}</p>
       {post.body.map((paragraph, i) => (
@@ -220,6 +224,7 @@ function StepOutput({
 }
 
 export function BlogWindowContent({ initialSlug }: { initialSlug?: string } = {}) {
+  const { closeWindow } = useWindowManager();
   const [steps, setSteps] = useState<Step[]>(() =>
     initialSlug
       ? [{ kind: "post", command: "open post.md", slug: initialSlug }]
@@ -249,31 +254,24 @@ export function BlogWindowContent({ initialSlug }: { initialSlug?: string } = {}
     return () => clearTimeout(timeout);
   }, [typed, commandDone, allDone, activeStep]);
 
-  function openPost(slug: string) {
-    setSteps((prev) => [
-      ...prev,
-      { kind: "cd", command: `cd ./posts/${slug}` },
-      { kind: "post", command: "open post.md", slug },
-    ]);
-  }
-
+  // A post window only ever shows a single "post" step (see initial state
+  // above), so going back just closes that window instead of navigating
+  // back to a listing that was never rendered here.
   function goBack() {
-    setSteps((prev) => [
-      ...prev,
-      { kind: "cd", command: "cd .." },
-      { kind: "listing", command: "ls ./posts" },
-    ]);
+    if (initialSlug) closeWindow(`blog:${initialSlug}` as WindowKey);
   }
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-10">
       <div className="flex flex-col gap-2 bg-white p-5 font-mono text-sm leading-relaxed">
-        <pre
-          aria-hidden
-          className="mb-10 w-fit font-mono text-[10px] leading-[10px] whitespace-pre text-foreground/70 select-none"
-        >
-          {ASCII_ART}
-        </pre>
+        {!initialSlug && (
+          <pre
+            aria-hidden
+            className="mb-10 w-fit font-mono text-[10px] leading-[10px] whitespace-pre text-foreground/70 select-none"
+          >
+            {ASCII_ART}
+          </pre>
+        )}
 
         {steps.slice(0, completed).map((step, i) => (
           <div key={i} className="flex flex-col gap-2">
@@ -284,7 +282,6 @@ export function BlogWindowContent({ initialSlug }: { initialSlug?: string } = {}
             <StepOutput
               step={step}
               isActive={i === completed - 1}
-              onOpenPost={openPost}
               onGoBack={goBack}
             />
           </div>

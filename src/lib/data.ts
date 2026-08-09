@@ -749,6 +749,10 @@ export type BlogPost = {
   excerpt: string;
   body: string[];
   video?: string;
+  image?: string;
+  imageAlt?: string;
+  imageWidth?: number;
+  imageHeight?: number;
 };
 
 export const blogPosts: BlogPost[] = [
