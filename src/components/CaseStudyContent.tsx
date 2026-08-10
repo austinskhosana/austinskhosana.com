@@ -11,6 +11,7 @@ import type {
 } from "react";
 import type { Project } from "@/lib/data";
 import { CoverVideo } from "@/components/CoverVideo";
+import { useAutoplayVideo } from "@/components/useAutoplayVideo";
 import { useIsDesktop } from "@/components/windows/useIsDesktop";
 
 type LightboxImage = { src: string; alt: string; width: number; height: number };
@@ -58,13 +59,7 @@ function SectionVideo({
   };
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const el = videoRef.current;
-    if (!el) return;
-    el.muted = true;
-    el.play().catch(() => {});
-  }, []);
+  useAutoplayVideo(videoRef);
 
   if (video.fill) {
     return (

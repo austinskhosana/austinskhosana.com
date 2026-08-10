@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import type { BlogPost } from "@/lib/data";
 import { OSLink } from "@/components/windows/OSLink";
+import { useAutoplayVideo } from "@/components/useAutoplayVideo";
 
 function formatDate(date: string) {
   return new Date(date).toLocaleDateString("en-US", {
@@ -20,13 +21,7 @@ function PostCard({
   className?: string;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.muted = true;
-    video.play().catch(() => {});
-  }, []);
+  useAutoplayVideo(videoRef);
 
   return (
     <OSLink

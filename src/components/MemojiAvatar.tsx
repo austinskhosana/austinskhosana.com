@@ -1,16 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import { useAutoplayVideo } from "@/components/useAutoplayVideo";
 
 export function MemojiAvatar() {
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    video.muted = true;
-    video.play().catch(() => {});
-  }, []);
+  useAutoplayVideo(videoRef);
 
   return (
     <div className="h-28 w-28 overflow-hidden rounded-full border border-border bg-[#f5f5f5]">

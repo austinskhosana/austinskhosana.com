@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
+import { useAutoplayVideo } from "@/components/useAutoplayVideo";
 
 export function CoverVideo({
   src,
@@ -22,13 +23,7 @@ export function CoverVideo({
   scale?: number;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
-
-  useEffect(() => {
-    const el = videoRef.current;
-    if (!el) return;
-    el.muted = true;
-    el.play().catch(() => {});
-  }, []);
+  useAutoplayVideo(videoRef);
 
   if (fill) {
     return (
