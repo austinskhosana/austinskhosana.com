@@ -4,13 +4,13 @@ Working list for austinskhosana.com. Check items off as they're done.
 
 ## Left to do
 
-- [ ] **Next up** — LLM version of me — Groq-backed chat route (`src/app/api/chat/route.ts`) and streaming chat UI in the About Me terminal already exist (unlock-command gate, rate limiting, system prompt); needs finishing/polish
 - [ ] Polish up case study written content
 - [ ] Add more blog articles
 - [ ] Sound design — UI sound effects across interactions (window open/close, clicks, terminal typing, etc.)
 
 ## Done
 
+- [x] LLM version of me — Groq-backed chat route (`src/app/api/chat/route.ts`) and streaming chat UI in the About Me terminal (unlock-command gate, rate limiting, system prompt); fixed origin-check bypass, markdown leaking into the plain-text terminal, and a flexbox spacing bug in the live prompt row
 - [x] ASCII art for all the terminals
 - [x] Compress/convert `memoji.mov` to `.mp4` — 12MB → 2MB via macOS's built-in `avconvert`, same resolution
 - [x] Improve case study project image quality — Next.js 16 defaulted the Image Optimization API to quality 75 with no `images.qualities` override; added `images.qualities: [100]` to `next.config.ts` and `quality={100}` on every `next/image` usage so screenshots match the uploaded source fidelity

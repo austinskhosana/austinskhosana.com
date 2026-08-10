@@ -46,6 +46,20 @@ type GateAttempt = {
   unlocked: boolean;
 };
 
+// The window layer unmounts this component whenever the About Me window is
+// minimized or closed, so React state alone would lose the conversation.
+// Stashing it in module scope survives that remount — safe because only one
+// About Me window can ever be open at a time.
+type PersistedState = {
+  introTyped: string;
+  introDone: boolean;
+  chatUnlocked: boolean;
+  gateLog: GateAttempt[];
+  exchanges: Exchange[];
+};
+
+let persistedState: PersistedState | null = null;
+
 function Cursor() {
   return (
     <span
@@ -62,22 +76,49 @@ function PromptPrefix() {
       <span className="text-accent">austin@portfolio</span>
       <span className="text-muted">:</span>
       <span className="text-muted">~/about-me</span>
-      <span className="text-muted">$</span>{" "}
+      <span className="text-muted mr-[1ch]">$</span>
     </>
   );
 }
 
 export function AboutMeWindowContent() {
-  const [introTyped, setIntroTyped] = useState("");
-  const [introDone, setIntroDone] = useState(false);
-  const [chatUnlocked, setChatUnlocked] = useState(false);
-  const [gateLog, setGateLog] = useState<GateAttempt[]>([]);
-  const [exchanges, setExchanges] = useState<Exchange[]>([]);
+  const [introTyped, setIntroTyped] = useState(() => persistedState?.introTyped ?? "");
+  const [introDone, setIntroDone] = useState(() => persistedState?.introDone ?? false);
+  const [chatUnlocked, setChatUnlocked] = useState(
+    () => persistedState?.chatUnlocked ?? false,
+  );
+  const [gateLog, setGateLog] = useState<GateAttempt[]>(() => persistedState?.gateLog ?? []);
+  const [exchanges, setExchanges] = useState<Exchange[]>(
+    () => persistedState?.exchanges ?? [],
+  );
   const [input, setInput] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const busy = exchanges.some((e) => e.streaming);
+
+  useEffect(() => {
+    persistedState = { introTyped, introDone, chatUnlocked, gateLog, exchanges };
+  }, [introTyped, introDone, chatUnlocked, gateLog, exchanges]);
+
+  // A response still streaming when the window closes never gets to finish —
+  // its setExchanges calls land on this now-unmounted instance, not whatever
+  // remounts later — so freeze it as interrupted instead of leaving a cursor
+  // that blinks forever. Runs once the effect above has already synced the
+  // latest render's state into persistedState.
+  useEffect(() => {
+    return () => {
+      if (!persistedState) return;
+      persistedState = {
+        ...persistedState,
+        exchanges: persistedState.exchanges.map((e) =>
+          e.streaming
+            ? { ...e, streaming: false, error: true, answer: e.answer || "interrupted — try asking again." }
+            : e,
+        ),
+      };
+    };
+  }, []);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ block: "end" });
@@ -162,6 +203,13 @@ export function AboutMeWindowContent() {
     }
   }
 
+  function handleTerminalClick() {
+    if (!introDone || busy) return;
+    const selection = window.getSelection();
+    if (selection && selection.toString().length > 0) return;
+    inputRef.current?.focus();
+  }
+
   const suggestion =
     !chatUnlocked &&
     input.length > 0 &&
@@ -197,7 +245,10 @@ export function AboutMeWindowContent() {
 
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-10">
-      <div className="flex flex-col gap-2 bg-white p-5 font-mono text-sm leading-relaxed">
+      <div
+        onClick={handleTerminalClick}
+        className="flex flex-col gap-2 bg-white p-5 font-mono text-sm leading-relaxed"
+      >
         <pre
           aria-hidden
           className="mb-10 w-fit font-mono text-[5px] leading-[5px] whitespace-pre text-foreground/70 select-none"
