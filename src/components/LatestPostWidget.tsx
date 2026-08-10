@@ -48,7 +48,7 @@ function PostCard({
         <span className="font-mono text-xs text-muted">
           {formatDate(post.date)}
         </span>
-        <span className="text-sm leading-snug font-medium text-foreground">
+        <span className="text-sm leading-snug font-normal text-foreground">
           {post.title}
         </span>
       </div>

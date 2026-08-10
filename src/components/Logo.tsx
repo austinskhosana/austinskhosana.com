@@ -22,7 +22,7 @@ export function Logo() {
       <span aria-hidden className="text-lg leading-none">
         ✽
       </span>
-      Austin Skhosana
+      <span className="font-normal">Austin Skhosana</span>
     </Link>
   );
 }
