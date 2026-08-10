@@ -101,10 +101,21 @@ function StepOutput({
 }) {
   const itemRefs = useRef<(HTMLAnchorElement | null)[]>([]);
   const cdBufferRef = useRef("");
+  const backButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (isActive && step.kind === "listing") {
       itemRefs.current[0]?.focus();
+    }
+  }, [isActive, step.kind]);
+
+  // Focusing the back button makes "cd" typeable right away, but a plain
+  // autoFocus scrolls it into view — which sits below the cover image and
+  // full body, yanking a freshly opened post down to the bottom instead of
+  // leaving it at the top where the image is.
+  useEffect(() => {
+    if (isActive && step.kind === "post") {
+      backButtonRef.current?.focus({ preventScroll: true });
     }
   }, [isActive, step.kind]);
 
@@ -194,6 +205,7 @@ function StepOutput({
         </p>
       ))}
       <button
+        ref={backButtonRef}
         type="button"
         onClick={onGoBack}
         onKeyDown={(event) => {
@@ -214,7 +226,6 @@ function StepOutput({
             cdBufferRef.current = "";
           }
         }}
-        autoFocus={isActive}
         className="w-fit text-muted transition-colors hover:text-foreground focus:outline-none focus-visible:text-foreground focus-visible:underline"
       >
         ← cd ..

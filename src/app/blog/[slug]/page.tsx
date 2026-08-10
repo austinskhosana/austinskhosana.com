@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { blogPosts } from "@/lib/data";
@@ -46,6 +47,19 @@ export default async function BlogPostPage({
       >
         &larr; Back to blog
       </Link>
+
+      {post.image && post.imageWidth && post.imageHeight && (
+        <Image
+          src={post.image}
+          alt={post.imageAlt ?? post.title}
+          width={post.imageWidth}
+          height={post.imageHeight}
+          quality={100}
+          priority
+          className="h-auto w-full rounded-2xl"
+          sizes="(min-width: 672px) 672px, 100vw"
+        />
+      )}
 
       <header className="flex flex-col gap-3">
         <span className="text-sm text-muted">
