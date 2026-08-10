@@ -86,10 +86,10 @@ export function FloatingDock() {
         className="pointer-events-none fixed inset-x-0 bottom-0 z-30 h-40 backdrop-blur-xl [mask-image:linear-gradient(to_top,black,transparent)] [-webkit-mask-image:linear-gradient(to_top,black,transparent)]"
       />
       <div className="pointer-events-none fixed inset-x-0 bottom-10 z-50 flex justify-center">
-        <nav className="pointer-events-auto flex items-center gap-2 rounded-full border border-border bg-white p-2 shadow-lg shadow-black/5">
+        <nav className="pointer-events-auto flex items-center gap-1.5 rounded-full border border-border bg-white p-1.5 shadow-lg shadow-black/5 sm:gap-2 sm:p-2">
           {items.map((item) => {
             const className =
-              "flex h-[52px] w-[52px] items-center justify-center rounded-full border border-border text-foreground/70 transition-colors hover:border-border hover:bg-[#e5e5e5] hover:text-foreground";
+              "flex h-11 w-11 items-center justify-center rounded-full border border-border text-foreground/70 transition-colors hover:border-border hover:bg-[#e5e5e5] hover:text-foreground sm:h-[52px] sm:w-[52px]";
 
             const tooltip = (
               <span
@@ -110,7 +110,7 @@ export function FloatingDock() {
                     aria-label={item.label}
                     className={className}
                   >
-                    <item.Icon className="h-[22px] w-[22px]" strokeWidth={1.8} />
+                    <item.Icon className="h-[18px] w-[18px] sm:h-[22px] sm:w-[22px]" strokeWidth={1.8} />
                   </OSLink>
                 </div>
               );
@@ -132,7 +132,7 @@ export function FloatingDock() {
                     }
                   }}
                 >
-                  <item.Icon className="h-[22px] w-[22px]" strokeWidth={1.8} />
+                  <item.Icon className="h-[18px] w-[18px] sm:h-[22px] sm:w-[22px]" strokeWidth={1.8} />
                 </Link>
               </div>
             );

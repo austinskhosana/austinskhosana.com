@@ -273,7 +273,7 @@ export function BlogWindowContent({ initialSlug }: { initialSlug?: string } = {}
   }
 
   return (
-    <div className="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-10">
+    <div className="mx-auto flex max-w-2xl flex-col gap-8 overflow-x-hidden px-6 py-10">
       <div className="flex flex-col gap-2 bg-white p-5 font-mono text-sm leading-relaxed">
         {!initialSlug && (
           <pre

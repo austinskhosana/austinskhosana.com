@@ -278,14 +278,14 @@ export function AboutMeWindowContent() {
   }
 
   return (
-    <div className="mx-auto flex max-w-2xl flex-col gap-8 px-6 py-10">
+    <div className="mx-auto flex max-w-2xl flex-col gap-8 overflow-x-hidden px-6 py-10">
       <div
         onClick={handleTerminalClick}
         className="flex flex-col gap-2 bg-white p-5 font-mono text-sm leading-relaxed"
       >
         <pre
           aria-hidden
-          className="mb-10 w-fit font-mono text-[5px] leading-[5px] whitespace-pre text-foreground/70 select-none"
+          className="mb-10 hidden w-fit font-mono text-[5px] leading-[5px] whitespace-pre text-foreground/70 select-none sm:block"
         >
           {ASCII_ART}
         </pre>
