@@ -11,6 +11,7 @@ import type {
 } from "react";
 import type { Project } from "@/lib/data";
 import { CoverVideo } from "@/components/CoverVideo";
+import { useIsDesktop } from "@/components/windows/useIsDesktop";
 
 type LightboxImage = { src: string; alt: string; width: number; height: number };
 type Rect = { x: number; y: number; width: number; height: number };
@@ -188,6 +189,7 @@ function Lightbox({
   origin: Rect | null;
   onClose: () => void;
 }) {
+  const isDesktop = useIsDesktop();
   const [phase, setPhase] = useState<"entering" | "idle" | "closing">(
     "entering",
   );
@@ -208,15 +210,20 @@ function Lightbox({
     setMountedOrigin(origin);
     setPhase("entering");
     setZoom(100);
-    const layout = computeLayout(image, 100);
-    setRect(
-      clampRect({
-        x: (window.innerWidth - layout.windowWidth) / 2,
-        y: (window.innerHeight - layout.windowHeight) / 2,
-        width: layout.windowWidth,
-        height: layout.windowHeight,
-      }),
-    );
+    // The draggable, resizable window chrome (title bar, zoom controls) is a
+    // desktop-only affordance — mobile gets a plain full-screen image, which
+    // doesn't need a positioned/sized rect at all.
+    if (isDesktop) {
+      const layout = computeLayout(image, 100);
+      setRect(
+        clampRect({
+          x: (window.innerWidth - layout.windowWidth) / 2,
+          y: (window.innerHeight - layout.windowHeight) / 2,
+          width: layout.windowWidth,
+          height: layout.windowHeight,
+        }),
+      );
+    }
   }
 
   useEffect(() => {
@@ -237,7 +244,7 @@ function Lightbox({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mountedImage, zoom]);
 
-  if (!mountedImage || !rect) return null;
+  if (!mountedImage || (isDesktop && !rect)) return null;
 
   function requestClose() {
     setPhase("closing");
@@ -251,6 +258,43 @@ function Lightbox({
     } else if (phase === "entering") {
       setPhase("idle");
     }
+  }
+
+  if (!isDesktop) {
+    const mobileAnimationStyle: CSSProperties =
+      phase !== "idle"
+        ? {
+            animation: `${phase === "closing" ? "fade-out" : "fade-in"} ${
+              phase === "closing" ? EXIT_DURATION : ENTER_DURATION
+            }ms var(--ease-out) forwards`,
+          }
+        : {};
+
+    return createPortal(
+      <div
+        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 p-6"
+        style={mobileAnimationStyle}
+        onClick={requestClose}
+        onAnimationEnd={handleAnimationEnd}
+      >
+        <button
+          type="button"
+          aria-label="Close"
+          onClick={requestClose}
+          className="absolute top-4 right-4 flex h-11 w-11 items-center justify-center rounded-full bg-white/90 text-lg text-foreground shadow-lg transition-opacity hover:opacity-80"
+        >
+          ✕
+        </button>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={mountedImage.src}
+          alt={mountedImage.alt}
+          className="max-h-full max-w-full object-contain"
+          onClick={(e) => e.stopPropagation()}
+        />
+      </div>,
+      document.body,
+    );
   }
 
   function applyZoom(nextZoom: number) {
@@ -282,6 +326,8 @@ function Lightbox({
     dragState.current = null;
     (e.currentTarget as Element).releasePointerCapture(e.pointerId);
   }
+
+  if (!rect) return null;
 
   const layout = computeLayout(mountedImage, zoom);
 
