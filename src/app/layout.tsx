@@ -25,11 +25,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://austinskhosana.com"),
   title: "Austin Skhosana's Portfolio",
   description: "Works by Austin Skhosana",
   openGraph: {
     title: "Austin Skhosana's Portfolio",
     description: "Works by Austin Skhosana",
+    images: ["/og-image.png"],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Austin Skhosana's Portfolio",
+    description: "Works by Austin Skhosana",
+    images: ["/og-image.png"],
   },
 };
 
