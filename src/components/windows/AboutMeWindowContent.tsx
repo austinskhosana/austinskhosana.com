@@ -70,12 +70,20 @@ function Cursor() {
   );
 }
 
+const PROMPT_USER = "austin@portfolio";
+const PROMPT_PATH = "~/about-me";
+// Character width of the rendered prompt ("user:path$ "), used to indent
+// just the first line of the chat textarea so it starts right after the
+// prompt while wrapped lines fall back to the true left edge — ":", "$",
+// and the 1ch margin after "$" account for the +3.
+const PROMPT_CH = PROMPT_USER.length + PROMPT_PATH.length + 3;
+
 function PromptPrefix() {
   return (
     <>
-      <span className="text-accent">austin@portfolio</span>
+      <span className="text-accent">{PROMPT_USER}</span>
       <span className="text-muted">:</span>
-      <span className="text-muted">~/about-me</span>
+      <span className="text-muted">{PROMPT_PATH}</span>
       <span className="text-muted mr-[1ch]">$</span>
     </>
   );
@@ -92,7 +100,8 @@ export function AboutMeWindowContent() {
     () => persistedState?.exchanges ?? [],
   );
   const [input, setInput] = useState("");
-  const inputRef = useRef<HTMLInputElement>(null);
+  const gateInputRef = useRef<HTMLInputElement>(null);
+  const chatInputRef = useRef<HTMLTextAreaElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const busy = exchanges.some((e) => e.streaming);
@@ -137,8 +146,19 @@ export function AboutMeWindowContent() {
   }, [introTyped, introDone]);
 
   useEffect(() => {
-    if (introDone && !busy) inputRef.current?.focus();
-  }, [introDone, busy, exchanges.length]);
+    if (introDone && !busy) {
+      (chatUnlocked ? chatInputRef : gateInputRef).current?.focus();
+    }
+  }, [introDone, busy, chatUnlocked, exchanges.length]);
+
+  // Grows the chat textarea to fit wrapped content instead of scrolling
+  // horizontally like the single-line gate input does.
+  useEffect(() => {
+    const el = chatInputRef.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${el.scrollHeight}px`;
+  }, [input, chatUnlocked]);
 
   async function ask(question: string, priorExchanges: Exchange[]) {
     setExchanges((prev) => [...prev, { question, answer: "", streaming: true }]);
@@ -207,7 +227,7 @@ export function AboutMeWindowContent() {
     if (!introDone || busy) return;
     const selection = window.getSelection();
     if (selection && selection.toString().length > 0) return;
-    inputRef.current?.focus();
+    (chatUnlocked ? chatInputRef : gateInputRef).current?.focus();
   }
 
   const suggestion =
@@ -218,7 +238,7 @@ export function AboutMeWindowContent() {
       ? UNLOCK_COMMAND.slice(input.length)
       : "";
 
-  function handleInputKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+  function handleGateKeyDown(e: KeyboardEvent<HTMLInputElement>) {
     if (!suggestion) return;
     const atEnd = e.currentTarget.selectionStart === input.length;
     if (e.key === "Tab" || (e.key === "ArrowRight" && atEnd)) {
@@ -227,8 +247,7 @@ export function AboutMeWindowContent() {
     }
   }
 
-  function handleSubmit(e: FormEvent) {
-    e.preventDefault();
+  function submit() {
     const trimmed = input.trim();
     if (!trimmed || busy) return;
     setInput("");
@@ -241,6 +260,21 @@ export function AboutMeWindowContent() {
     }
 
     void ask(trimmed.slice(0, MAX_QUESTION_LENGTH), exchanges);
+  }
+
+  function handleFormSubmit(e: FormEvent) {
+    e.preventDefault();
+    submit();
+  }
+
+  // The gate <input> submits its form on Enter natively; the chat <textarea>
+  // needs Enter intercepted (its default is a newline) — Shift+Enter still
+  // inserts one, for questions that want an explicit line break.
+  function handleChatKeyDown(e: KeyboardEvent<HTMLTextAreaElement>) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      submit();
+    }
   }
 
   return (
@@ -264,20 +298,34 @@ export function AboutMeWindowContent() {
           </p>
           {introDone && (
             <>
-              <p className="text-foreground">
+              <p className="text-muted">
                 Hi there! I&apos;m Austin Skhosana, a designer based in
-                Johannesburg, South Africa.
+                Johannesburg, South Africa. This is usually the point in the
+                bio where I tell you I&apos;m sooo passionate about user
+                empathy and pixel-perfect design, but at this point
+                that&apos;s table stakes for designers. So let&apos;s talk
+                about something else — I&apos;m obsessed with DX, otherwise
+                known as developer experience.
               </p>
               <p className="text-muted">
-                My practice bridges high-fidelity mocks and increasingly
-                shares syntax and code prototypes for frontend work that
-                Figma cannot fully capture. I care more about developer
-                experience than conventional design talking points.
+                That&apos;s why my practice is fluid, existing somewhere
+                between high-fidelity mocks and increasingly sharing syntax
+                and code prototypes for frontend details Figma can&apos;t
+                fully capture.
               </p>
               <p className="text-muted">
-                I focus on cross-functional collaboration, championing the
+                A core idea in my practice is moving between disciplines to
+                improve cross-functional collaboration — championing the
                 material software exists in, and the people who help us
                 designers ship it to users.
+              </p>
+              <p className="text-muted">
+                That philosophy is best explained through Pixel Vault, a
+                resource base I solo-built (in three days, for a hackathon)
+                for teams to share prompts, prototypes and code — a shared
+                second brain for modern UI engineering workflows. It aptly
+                encapsulates the 3 C&apos;s that define my work: Code, Craft,
+                and Collaboration.
               </p>
             </>
           )}
@@ -308,7 +356,7 @@ export function AboutMeWindowContent() {
           chatUnlocked &&
           exchanges.map((ex, i) => (
             <div key={i} className="flex flex-col gap-2">
-              <p className="text-foreground">
+              <p className="whitespace-pre-wrap text-foreground">
                 <PromptPrefix />
                 {ex.question}
               </p>
@@ -324,26 +372,46 @@ export function AboutMeWindowContent() {
         {introDone && !busy && (
           <div className="flex flex-col gap-2">
             {!chatUnlocked && <p className="text-muted">{GATE_HINT}.</p>}
-            <form onSubmit={handleSubmit} className="flex items-baseline">
-              <PromptPrefix />
-              <input
-                ref={inputRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleInputKeyDown}
-                maxLength={MAX_QUESTION_LENGTH}
-                autoComplete="off"
-                spellCheck={false}
-                style={{ width: `${Math.max(input.length, 1)}ch` }}
-                className="border-0 bg-transparent p-0 font-mono text-sm text-foreground caret-transparent outline-none"
-              />
-              <Cursor />
-              {suggestion && (
-                <span aria-hidden className="whitespace-pre text-muted/50">
-                  {suggestion}
+            {chatUnlocked ? (
+              <form onSubmit={handleFormSubmit} className="relative">
+                <span className="pointer-events-none absolute top-0 left-0">
+                  <PromptPrefix />
                 </span>
-              )}
-            </form>
+                <textarea
+                  ref={chatInputRef}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleChatKeyDown}
+                  maxLength={MAX_QUESTION_LENGTH}
+                  autoComplete="off"
+                  spellCheck={false}
+                  rows={1}
+                  style={{ textIndent: `${PROMPT_CH}ch` }}
+                  className="w-full resize-none overflow-hidden border-0 bg-transparent p-0 font-mono text-sm leading-relaxed text-foreground outline-none"
+                />
+              </form>
+            ) : (
+              <form onSubmit={handleFormSubmit} className="flex items-baseline">
+                <PromptPrefix />
+                <input
+                  ref={gateInputRef}
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={handleGateKeyDown}
+                  maxLength={MAX_QUESTION_LENGTH}
+                  autoComplete="off"
+                  spellCheck={false}
+                  style={{ width: `${Math.max(input.length, 1)}ch` }}
+                  className="border-0 bg-transparent p-0 font-mono text-sm text-foreground caret-transparent outline-none"
+                />
+                <Cursor />
+                {suggestion && (
+                  <span aria-hidden className="whitespace-pre text-muted/50">
+                    {suggestion}
+                  </span>
+                )}
+              </form>
+            )}
           </div>
         )}
 

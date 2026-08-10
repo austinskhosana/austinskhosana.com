@@ -7,12 +7,39 @@ import type {
   CSSProperties,
   MouseEvent as ReactMouseEvent,
   PointerEvent as ReactPointerEvent,
+  ReactNode,
 } from "react";
 import type { Project } from "@/lib/data";
 import { CoverVideo } from "@/components/CoverVideo";
 
 type LightboxImage = { src: string; alt: string; width: number; height: number };
 type Rect = { x: number; y: number; width: number; height: number };
+
+const MARKDOWN_LINK = /\[([^\]]+)\]\(([^)]+)\)/g;
+
+function renderBodyLine(line: string) {
+  const parts: ReactNode[] = [];
+  let lastIndex = 0;
+  for (const match of line.matchAll(MARKDOWN_LINK)) {
+    const [full, text, href] = match;
+    const index = match.index ?? 0;
+    if (index > lastIndex) parts.push(line.slice(lastIndex, index));
+    parts.push(
+      <a
+        key={index}
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-foreground underline underline-offset-2 transition-colors hover:text-accent"
+      >
+        {text}
+      </a>,
+    );
+    lastIndex = index + full.length;
+  }
+  if (lastIndex < line.length) parts.push(line.slice(lastIndex));
+  return parts;
+}
 
 function SectionVideo({
   video,
@@ -452,13 +479,13 @@ export function CaseStudyContent({ project }: { project: Project }) {
                     key={line}
                     className="font-mono text-sm leading-relaxed text-muted"
                   >
-                    {line}
+                    {renderBodyLine(line)}
                   </li>
                 ))}
               </ul>
             ) : (
               <p className="font-mono text-sm leading-relaxed text-muted">
-                {section.body[0]}
+                {renderBodyLine(section.body[0])}
               </p>
             )}
 

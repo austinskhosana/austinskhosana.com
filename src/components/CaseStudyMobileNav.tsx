@@ -25,7 +25,7 @@ export function CaseStudyMobileNav({ slug }: { slug: string }) {
         className="pointer-events-none fixed inset-x-0 bottom-0 z-30 h-40 backdrop-blur-xl [mask-image:linear-gradient(to_top,black,transparent)] [-webkit-mask-image:linear-gradient(to_top,black,transparent)]"
       />
       <div className="pointer-events-none fixed inset-x-0 bottom-10 z-50 flex justify-center">
-        <nav className="pointer-events-auto flex items-center gap-2 rounded-full border border-border bg-white/90 p-2 shadow-lg shadow-black/5 backdrop-blur">
+        <nav className="pointer-events-auto flex items-center gap-2 rounded-full border border-border bg-white p-2 shadow-lg shadow-black/5">
           <Link
             href={`/work/${prev.slug}`}
             aria-label={`Previous case study: ${prev.title}`}
