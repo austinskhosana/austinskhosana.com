@@ -35,7 +35,7 @@ export function ProjectCard({ project }: { project: Project }) {
               alt={project.imageAlt ?? project.title}
               fill
               quality={100}
-              className="object-cover object-top"
+              className="object-contain sm:object-cover sm:object-top"
               sizes="(min-width: 1024px) 1057px, 100vw"
             />
           )
