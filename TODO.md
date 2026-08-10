@@ -5,11 +5,12 @@ Working list for austinskhosana.com. Check items off as they're done.
 ## Left to do
 
 - [ ] Polish up case study written content
-- [ ] Add more blog articles
+- [ ] Polish up About Me
 - [ ] Sound design — UI sound effects across interactions (window open/close, clicks, terminal typing, etc.)
 
 ## Done
 
+- [x] Add more blog articles
 - [x] LLM version of me — Groq-backed chat route (`src/app/api/chat/route.ts`) and streaming chat UI in the About Me terminal (unlock-command gate, rate limiting, system prompt); fixed origin-check bypass, markdown leaking into the plain-text terminal, and a flexbox spacing bug in the live prompt row
 - [x] ASCII art for all the terminals
 - [x] Compress/convert `memoji.mov` to `.mp4` — 12MB → 2MB via macOS's built-in `avconvert`, same resolution
