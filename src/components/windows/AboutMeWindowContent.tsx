@@ -122,7 +122,7 @@ export function AboutMeWindowContent() {
         ...persistedState,
         exchanges: persistedState.exchanges.map((e) =>
           e.streaming
-            ? { ...e, streaming: false, error: true, answer: e.answer || "interrupted — try asking again." }
+            ? { ...e, streaming: false, error: true, answer: e.answer || "interrupted. Try asking again." }
             : e,
         ),
       };
@@ -180,7 +180,7 @@ export function AboutMeWindowContent() {
           const next = [...prev];
           next[next.length - 1] = {
             question,
-            answer: message || "something went wrong — try again.",
+            answer: message || "something went wrong. Try again.",
             streaming: false,
             error: true,
           };
@@ -214,7 +214,7 @@ export function AboutMeWindowContent() {
         const next = [...prev];
         next[next.length - 1] = {
           question,
-          answer: "connection error — try again.",
+          answer: "connection error. Try again.",
           streaming: false,
           error: true,
         };

@@ -348,13 +348,7 @@ export const projects: Project[] = [
     title: "Coeditor",
     description:
       "Creating an AI-powered comments moderation platform for some of the UK's leading magazines.",
-    tags: [
-      "UI Design",
-      "Product Design",
-      "Frontend Development",
-      "UX Research",
-      "Interaction Design",
-    ],
+    tags: ["UI Design", "Product Design", "Frontend Development"],
     role: "Product Designer",
     tools: "Product Design, CSS",
     image: "/images/cover-comments-moderation.png",
