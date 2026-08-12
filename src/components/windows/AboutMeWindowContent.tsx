@@ -304,7 +304,7 @@ export function AboutMeWindowContent() {
                 bio where I tell you I&apos;m sooo passionate about user
                 empathy and pixel-perfect design, but at this point
                 that&apos;s table stakes for designers. So let&apos;s talk
-                about something else — I&apos;m obsessed with DX, otherwise
+                about something else. I&apos;m obsessed with DX, otherwise
                 known as developer experience.
               </p>
               <p className="text-muted">
@@ -315,14 +315,14 @@ export function AboutMeWindowContent() {
               </p>
               <p className="text-muted">
                 A core idea in my practice is moving between disciplines to
-                improve cross-functional collaboration — championing the
+                improve cross-functional collaboration, championing the
                 material software exists in, and the people who help us
                 designers ship it to users.
               </p>
               <p className="text-muted">
                 That philosophy is best explained through Pixel Vault, a
                 resource base I solo-built (in three days, for a hackathon)
-                for teams to share prompts, prototypes and code — a shared
+                for teams to share prompts, prototypes and code: a shared
                 second brain for modern UI engineering workflows. It aptly
                 encapsulates the 3 C&apos;s that define my work: Code, Craft,
                 and Collaboration.

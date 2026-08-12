@@ -254,7 +254,7 @@ export const projects: Project[] = [
     description:
       "Creating a subscription flow that drove record highs for the world's oldest magazine.",
     tags: ["Product Design", "Strategy", "UX Research"],
-    role: "UI Designer",
+    role: "UI/UX Designer",
     tools: "UI/UX Design",
     image: "/images/cover-thespectator.png",
     imageAlt: "The Spectator gift subscription flow — choose your gift type",
