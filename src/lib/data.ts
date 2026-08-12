@@ -152,7 +152,7 @@ export const projects: Project[] = [
       {
         heading: "The Challenges",
         body: [
-          "AI-assisted UI engineering for teams is disjointed. There's a deployed link here, a Figma template there, and an experimental component running in another environment — maybe deployed somewhere, maybe only local. We live in an age where we can generate code with ease, but how do we actually curate and share all of this within a team?",
+          "AI-assisted UI engineering for teams is disjointed. There's a deployed link here, a Figma template there, and an experimental component running in another environment, maybe deployed somewhere, maybe only local. We live in an age where we can generate code with ease, but how do we actually curate and share all of this within a team?",
         ],
       },
       {
@@ -228,7 +228,7 @@ export const projects: Project[] = [
         heading: "Vibe Coded Design Tools",
         navLabel: "Design Tools",
         body: [
-          "In the age of democratised software creation, designers are creating their own tools — plugins, micro-apps, and internal utilities — and I wanted this to be a place where those tools can be shared and stored within teams.",
+          "In the age of democratised software creation, designers are creating their own tools (plugins, micro-apps, and internal utilities), and I wanted this to be a place where those tools can be shared and stored within teams.",
         ],
         images: [
           {
@@ -264,7 +264,7 @@ export const projects: Project[] = [
       {
         heading: "The Challenge",
         body: [
-          "The oldest running magazine in the world needed a flow for their gifting feature for the busiest time of the year for gifts — the holiday season.",
+          "The oldest running magazine in the world needed a flow for their gifting feature for the busiest time of the year for gifts: the holiday season.",
           "The PRD was simple: move users smoothly through the subscription flow while clearly communicating the value and payment options of each offer.",
         ],
       },
@@ -311,7 +311,7 @@ export const projects: Project[] = [
       {
         heading: "UI Design",
         body: [
-          "This is where I led the design effort — evolving the wireframes into high-fidelity screens that expressed the final vision for the UI and all its key states.",
+          "This is where I led the design effort, evolving the wireframes into high-fidelity screens that expressed the final vision for the UI and all its key states.",
         ],
         tightImages: true,
         images: [
@@ -338,7 +338,7 @@ export const projects: Project[] = [
       {
         heading: "The Outcome?",
         body: [
-          "The Spectator hit record subscription highs after this flow went live — results significant enough that the magazine wrote about them in [its own pages](https://spectator.com/article/the-spectators-record-subscriber-numbers/), noting more paying subscribers than at any point in its 198-year history. It was especially satisfying to see this project among the work behind that milestone.",
+          "The Spectator hit record subscription highs after this flow went live: results significant enough that the magazine wrote about them in [its own pages](https://spectator.com/article/the-spectators-record-subscriber-numbers/), noting more paying subscribers than at any point in its 198-year history. It was especially satisfying to see this project among the work behind that milestone.",
         ],
       },
     ],
@@ -359,7 +359,7 @@ export const projects: Project[] = [
       {
         heading: "The Challenge",
         body: [
-          "News and politics platforms often struggle with comments sections filled with bigotry and behaviour that doesn't align with community guidelines. We built this for some of the UK's leading magazines — the challenge was creating a system that could exist as a plug-in across different publishers, while still giving teams fine-grained control over the parameters of AI-moderated analysis and feedback.",
+          "News and politics platforms often struggle with comments sections filled with bigotry and behaviour that doesn't align with community guidelines. We built this for some of the UK's leading magazines. The challenge was creating a system that could exist as a plug-in across different publishers, while still giving teams fine-grained control over the parameters of AI-moderated analysis and feedback.",
         ],
       },
       {
@@ -442,7 +442,7 @@ export const projects: Project[] = [
         heading: "New Loader Animation",
         navLabel: "New Loader",
         body: [
-          "We shifted direction to something more neutral and flexible: a simple open-source search icon, with colours edited to better adapt to different brand environments. The animation and design felt more context-agnostic — something that could exist as a plugin multiple publishers could use without worrying whether it aligned perfectly with their visual language.",
+          "We shifted direction to something more neutral and flexible: a simple open-source search icon, with colours edited to better adapt to different brand environments. The animation and design felt more context-agnostic, something that could exist as a plugin multiple publishers could use without worrying whether it aligned perfectly with their visual language.",
         ],
         images: [
           {
@@ -465,7 +465,7 @@ export const projects: Project[] = [
       {
         heading: "Success State",
         body: [
-          "Approved comments display a clear message confirming that their comment had been successfully published — without unnecessary flourishes.",
+          "Approved comments display a clear message confirming that their comment had been successfully published, without unnecessary flourishes.",
         ],
         images: [
           {
@@ -508,7 +508,7 @@ export const projects: Project[] = [
       {
         heading: "The Modal",
         body: [
-          "Designing the moderation modal was my favourite part of this project — it had to surface the article, the comment itself, user details, and comment history in one compact, high-signal view, without drowning moderators in noise.",
+          "Designing the moderation modal was my favourite part of this project: it had to surface the article, the comment itself, user details, and comment history in one compact, high-signal view, without drowning moderators in noise.",
         ],
         images: [
           {
@@ -556,7 +556,7 @@ export const projects: Project[] = [
       {
         heading: "Welcome to Spectra",
         body: [
-          "The welcome screen features falling CDs against a vibrant backdrop, layered with a looping hero video. It's a nostalgic nod paired with a forward-looking idea of media — an entry point that sets the tone for creative exploration before the user's even signed up.",
+          "The welcome screen features falling CDs against a vibrant backdrop, layered with a looping hero video. It's a nostalgic nod paired with a forward-looking idea of media: an entry point that sets the tone for creative exploration before the user's even signed up.",
         ],
         videos: [
           {
@@ -573,7 +573,7 @@ export const projects: Project[] = [
         heading: "Prompt Input & Featured Content",
         navLabel: "Prompt Input",
         body: [
-          "The home screen leads with a prompt input where users can start generating a movie or series in their own words. Below it, they can scroll through content generated by others — a feed that doubles as inspiration and proof the tool actually works.",
+          "The home screen leads with a prompt input where users can start generating a movie or series in their own words. Below it, they can scroll through content generated by others, a feed that doubles as inspiration and proof the tool actually works.",
         ],
         images: [
           {
@@ -588,7 +588,7 @@ export const projects: Project[] = [
         heading: "AI Video Aesthetic Builder UI Workflow",
         navLabel: "Aesthetic Builder",
         body: [
-          "Curation starts with the visual aesthetic — realism, anime, or something more stylized — presented as a grid of options. A refresh button regenerates the set if nothing clicks, keeping exploration lightweight and fun without losing the sense of curation.",
+          "Curation starts with the visual aesthetic (realism, anime, or something more stylized), presented as a grid of options. A refresh button regenerates the set if nothing clicks, keeping exploration lightweight and fun without losing the sense of curation.",
         ],
         images: [
           {
@@ -632,7 +632,7 @@ export const projects: Project[] = [
       {
         heading: "Generating Loader",
         body: [
-          "While the movie generates, a minimal loader simply reads \"Generating.\" It's deliberately understated — enough to keep users informed and build a little anticipation without getting in the way.",
+          "While the movie generates, a minimal loader simply reads \"Generating.\" It's deliberately understated, enough to keep users informed and build a little anticipation without getting in the way.",
         ],
         images: [
           {
@@ -667,7 +667,7 @@ export const projects: Project[] = [
       {
         heading: "Persona",
         body: [
-          "I started by mapping the needs and motivations of Spectra's users — their goals, their frustrations — into a persona: a creative person who loves experimenting with technology, wants to express themselves visually, and wants to tell stories without needing a full production studio behind them.",
+          "I started by mapping the needs and motivations of Spectra's users (their goals, their frustrations) into a persona: a creative person who loves experimenting with technology, wants to express themselves visually, and wants to tell stories without needing a full production studio behind them.",
         ],
         images: [
           {
@@ -681,7 +681,7 @@ export const projects: Project[] = [
       {
         heading: "Empathy Maps",
         body: [
-          "From there, I built an empathy map — what users said, did, thought, and felt during their creative process — to get past assumptions and design around what they actually needed. It surfaced the real motivations and pain points behind the persona.",
+          "From there, I built an empathy map (what users said, did, thought, and felt during their creative process) to get past assumptions and design around what they actually needed. It surfaced the real motivations and pain points behind the persona.",
         ],
         images: [
           {
@@ -695,7 +695,7 @@ export const projects: Project[] = [
       {
         heading: "Ideation",
         body: [
-          "Next was the information architecture — organising content and defining the core user pathways so navigation felt obvious rather than learned. That structure is what let users move easily between style selection, character customisation, playback, and discovery.",
+          "Next was the information architecture: organising content and defining the core user pathways so navigation felt obvious rather than learned. That structure is what let users move easily between style selection, character customisation, playback, and discovery.",
         ],
         images: [
           {
@@ -709,7 +709,7 @@ export const projects: Project[] = [
       {
         heading: "Wireframes",
         body: [
-          "The information architecture became low-fidelity layouts next, focused on a clean interface for movie and series creation, with the key interactions — prompts, character selection, style customization, plot outlining — front and center. Testing flows at this stage, before high-fidelity visuals, made changes cheap.",
+          "The information architecture became low-fidelity layouts next, focused on a clean interface for movie and series creation, with the key interactions (prompts, character selection, style customization, plot outlining) front and center. Testing flows at this stage, before high-fidelity visuals, made changes cheap.",
           "1. The AI movie creation experience begins with the user writing a prompt.",
           "2. Once a visual aesthetic has been selected, the user selects various aspects of the movie experience through a swiping interface.",
           "3. Once all selections have been made, the movie is generated and begins playing.",
@@ -726,7 +726,7 @@ export const projects: Project[] = [
       {
         heading: "Reflections",
         body: [
-          "Spectra showed me what's possible when generative AI puts users in the seat of author rather than consumer. Structuring the information architecture early made every downstream decision easier, and working on a purely conceptual project taught me how much weight aesthetics have to carry when there's no working product yet — the design has to make the idea's viability feel obvious on its own.",
+          "Spectra showed me what's possible when generative AI puts users in the seat of author rather than consumer. Structuring the information architecture early made every downstream decision easier, and working on a purely conceptual project taught me how much weight aesthetics have to carry when there's no working product yet: the design has to make the idea's viability feel obvious on its own.",
         ],
       },
     ],
