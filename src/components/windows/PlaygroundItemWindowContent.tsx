@@ -17,7 +17,7 @@ export function PlaygroundItemWindowContent({ slug }: { slug: string }) {
           height={item.imageHeight}
           quality={100}
           className="h-full w-full object-cover"
-          sizes="640px"
+          sizes="100vw"
         />
       </div>
     );
