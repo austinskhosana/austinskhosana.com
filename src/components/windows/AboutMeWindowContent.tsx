@@ -319,14 +319,6 @@ export function AboutMeWindowContent() {
                 material software exists in, and the people who help us
                 designers ship it to users.
               </p>
-              <p className="text-muted">
-                That philosophy is best explained through Pixel Vault, a
-                resource base I solo-built (in three days, for a hackathon)
-                for teams to share prompts, prototypes and code: a shared
-                second brain for modern UI engineering workflows. It aptly
-                encapsulates the 3 C&apos;s that define my work: Code, Craft,
-                and Collaboration.
-              </p>
             </>
           )}
         </div>
