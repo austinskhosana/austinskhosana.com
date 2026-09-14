@@ -18,8 +18,8 @@ export default function Home() {
               I&apos;m a Designer and Developer
             </h1>
             <p className="max-w-[700px] text-balance font-mono text-base leading-snug text-muted">
-              I design software, Sometimes I code, Sometimes I centre divs,
-              sometimes with CSS and sometimes with{" "}English.
+              I design software, sometimes I code, sometimes I centre divs,
+              sometimes with CSS, and sometimes with English.
             </p>
           </div>
 
