@@ -93,6 +93,9 @@ export type Project = {
   tags: string[];
   role: string;
   tools: string;
+  // Keeps the case study reachable at /work/[slug] and in generateStaticParams
+  // while leaving it off the home page's card list.
+  hiddenFromHome?: boolean;
   image?: string;
   imageAlt?: string;
   imageWidth?: number;
@@ -107,6 +110,9 @@ export type Project = {
   // Overrides CoverVideo's default 1.25 crop-in scale — for clips that
   // don't need as tight a zoom to fill the frame.
   coverVideoScale?: number;
+  // Only applies when coverVideoFill is unset — drop the rounded corners,
+  // border, and shadow, while still floating inside the grey tray.
+  coverVideoBordered?: boolean;
   gallery?: { src: string; alt: string; width: number; height: number }[];
   sections: {
     heading: string;
@@ -115,10 +121,25 @@ export type Project = {
     // while leaving the actual in-article heading text untouched.
     navLabel?: string;
     body: string[];
-    images?: { src: string; alt: string; width: number; height: number }[];
+    images?: {
+      src: string;
+      alt: string;
+      width: number;
+      height: number;
+      // Contained inside a grey tray with padding, like the framed video
+      // treatment — for raw exploration shots that don't have their own
+      // grey tray/border/shadow baked in.
+      framed?: boolean;
+      // Only applies when `framed` is set — shrinks the image within the
+      // tray beyond the default padding, for shots that read as too large.
+      scale?: number;
+    }[];
     // Tighter stacking for image sets that read as one continuous sequence
     // (e.g. states of the same component) rather than standalone shots.
     tightImages?: boolean;
+    // Auto-scrolling logo-style marquee inside the grey tray, for a set of
+    // images meant to be skimmed as a strip rather than viewed one at a time.
+    posterTicker?: { src: string; alt: string }[];
     // `framed` opts into the cover video's grey-tray + border/shadow
     // treatment (for raw, chrome-less clips); omit/false for clips that
     // already carry their own frame baked in, so they can go edge-to-edge.
@@ -138,96 +159,244 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "thespectator",
-    title: "The Spectator",
+    slug: "creatorshop",
+    title: "Creatorshop",
     description:
-      "Creating a subscription flow that drove record highs for the world's oldest magazine.",
-    tags: ["Product Design", "Strategy", "UX Research"],
-    role: "UI/UX Designer",
-    tools: "UI/UX Design",
-    image: "/images/cover-thespectator.png",
-    imageAlt: "The Spectator gift subscription flow — choose your gift type",
-    imageWidth: 6912,
-    imageHeight: 4320,
+      "Using landing page data to iterate on the product itself, not just the page around it.",
+    tags: ["CRO", "Landing Page", "Experimentation", "Design Engineering"],
+    role: "Product Designer",
+    tools:
+      "Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, Framer Motion, React Three Fiber, drei, three.js, @paper-design/shaders-react, Radix UI, Base UI, Heroicons, Geist, Claude Code",
+    coverVideo: "/videos/creatorshop-cover.mp4",
+    coverVideoAlt: "Creator-side hero header with the lime green barter card and a spinning scroll-down badge",
+    coverVideoBordered: false,
+    coverVideoWidth: 1920,
+    coverVideoHeight: 1204,
     sections: [
       {
-        heading: "The Challenge",
+        heading: "The Problem Statement",
+        navLabel: "Problem Statement",
         body: [
-          "The oldest running magazine in the world needed a flow for their gifting feature for the busiest time of the year for gifts: the holiday season.",
-          "The PRD was simple: move users smoothly through the subscription flow while clearly communicating the value and payment options of each offer.",
+          "Creators who want access to paid software often can't justify the cost, and brands who want authentic content and distribution are stuck with influencer marketing that's slow, expensive, and hard to measure: negotiation, invoices, and cash changing hands before a single post goes up. Creatorshop's bet is to treat a creator's reach as a financial primitive in its own right. A brand lists software access instead of a fee, a creator applies with the content they'd make anyway, the brand approves or passes, no negotiation. Getting that exchange to feel obvious rather than gimmicky was the real design problem, and the landing pages that follow were where that mechanic actually got tested.",
         ],
       },
       {
-        heading: "The Solution",
+        heading: "The First Site",
+        navLabel: "First Site",
         body: [
-          "I took the UX work the Spectator team had already completed and translated it into high-fidelity, fully annotated Figma designs that were ready for developer handoff.",
+          "I built the initial landing page as a basic Tailwind waitlist site with a connected form, simple and functional, and it did its job of getting the product in front of people. But it surfaced a problem immediately: the ICP wasn't clearly defined. The creator industry is vast, from cooking to fashion to tech, and trying to speak to all of it meant speaking clearly to none of it. It also surfaced a product problem, since the barter model would look completely different for physical goods versus services versus software. The surface area was too large for a one-person team.",
+        ],
+        videos: [
+          {
+            src: "/videos/creatorshop-first-site.mp4",
+            alt: "Scroll through the first waitlist site, a generic SaaS-feeling dashboard mockup with shop and influencer directory pages",
+            width: 3456,
+            height: 2088,
+            framed: true,
+          },
         ],
       },
       {
-        heading: "The Process",
+        heading: "The Pivot: Landing Page Data Informed Product Design",
+        navLabel: "The Pivot",
         body: [
-          "The team began by creating user flows. I wasn't involved in this stage, but the flows were a key artefact for understanding the signed-off user experience and the constraints I needed to design within.",
+          "Based on what the waitlist site surfaced, I adapted the product. The barter model served well as contextual to software as the first market: in the age of abundant code, distribution becomes the bottleneck, and the barter model could be especially powerful for software teams where product access is cheaper than traditional physical PR and gifting. Niching down to software specifically made sense on every level. It's delivered remotely with no fulfilment overhead, it costs less to give away, and it maps well to the current wave of AI and vibe-coded tools looking for distribution. A solo founder can actually serve this market.",
+        ],
+      },
+      {
+        heading: "The Second Waitlist Site",
+        navLabel: "Second Site",
+        body: [
+          "I built a second waitlist site to reflect the new direction, built off quick identity explorations I'd already been working on. The brand side responded well to the landing page. But feedback from creators was still coming in.",
         ],
         images: [
           {
-            src: "/images/spectator-user-flow-fixed-term.png",
-            alt: "The Spectator gift subscription user flow for fixed-term gifts",
-            width: 12416,
-            height: 5376,
+            src: "/images/creatorshop-identity-exploration.png",
+            alt: "Identity exploration board with product cards, a Pay With Influence button, and category selection that informed the second waitlist site",
+            width: 7680,
+            height: 4320,
+            framed: true,
+            scale: 0.85,
           },
+        ],
+        videos: [
           {
-            src: "/images/spectator-user-flow-auto-renewing.png",
-            alt: "The Spectator gift subscription user flow for auto-renewing gifts",
-            width: 13632,
-            height: 6656,
+            src: "/videos/creatorshop-second-waitlist-site.mp4",
+            alt: "Scroll through the second waitlist site",
+            width: 3456,
+            height: 2064,
+            framed: true,
           },
         ],
       },
       {
-        heading: "Wireframes",
+        heading: "Creator Feedback",
+        navLabel: "Creator Feedback",
         body: [
-          "This is where collaboration began. We started wireframing the experience to clarify what we wanted the UI to look and feel like, without yet focusing on brand identity. This helped us align early and commit to a clear direction for layout and interaction.",
+          "The feedback split into two threads. For some creators the message felt lost, they needed more context to understand what Creatorshop was offering them. For others the issue was the identity design: 'This is nice, but it feels very corporate.' I agreed. It felt like a classic SaaS design, but the startup has a bold proposition in the attention economy, the idea that digital content could be a financial primitive. Unlike the NFT wave before it, this model has real utility, and I wanted to reflect that disruptive spirit in the design.",
         ],
-        images: [
+      },
+      {
+        heading: "The Final Two Landing Pages: The Craft of Information Architecture",
+        navLabel: "Information Architecture",
+        body: [
+          "The first decision was to emphasise clarity on an idea as dense as 'social content as a new financial primitive.' Splitting into two dedicated landing pages, one for each side of the marketplace, meant the language didn't get diluted across the site, avoiding confusion and sharpening the message for each audience. The pages mirror each other structurally but subvert each other tonally, tailored to context.",
+        ],
+        videos: [
           {
-            src: "/images/spectator-wireframes.png",
-            alt: "Stacked low-fidelity wireframes of the gift subscription flow's four steps",
-            width: 6912,
-            height: 4320,
+            src: "/videos/creatorshop-creator-page-scroll-1.mp4",
+            alt: "Full page scroll of the final creator landing page, from the variant B header through How it Works to the FAQ",
+            width: 3456,
+            height: 2088,
+            framed: true,
+          },
+          {
+            src: "/videos/creatorshop-creator-page-scroll-2.mp4",
+            alt: "Second full page scroll of the final creator landing page",
+            width: 3456,
+            height: 2088,
+            framed: true,
           },
         ],
       },
       {
-        heading: "UI Design",
+        heading: "The Header: Between Maximalist Chaos and Minimalist Restraint",
+        navLabel: "The Header",
         body: [
-          "This is where I led the design effort, evolving the wireframes into high-fidelity screens that expressed the final vision for the UI and all its key states.",
+          "I had a lot of fun working on this header. I wanted it to exist between maximalist chaos and minimalist restraint. Metal animation and shaders are a favourite design trend of mine, but I didn't want the card animated on this page, since there were already so many animated elements at play; the restraint was intentional. The 'Ditch the Subscription!' section pairs the copy with an ASCII fire I made during brand exploration, an interplay between UX writing and design. The energy it creates: more metal.",
         ],
-        tightImages: true,
-        images: [
+        videos: [
           {
-            src: "/images/spectator-ui-terms-recommended.png",
-            alt: "Gift subscription terms screen with annual automatic renewal recommended",
-            width: 6912,
-            height: 4320,
+            src: "/videos/creatorshop-header-brand.mp4",
+            alt: "Brand-side hero header with the metal barter card on an animated shader background",
+            width: 1920,
+            height: 1204,
+            framed: true,
           },
           {
-            src: "/images/spectator-ui-terms-bestvalue.png",
-            alt: "Gift subscription terms screen with annual one-off payment as best value",
-            width: 6912,
-            height: 4320,
-          },
-          {
-            src: "/images/spectator-ui-gift-type.png",
-            alt: "Gift subscription type screen with digital only selected",
-            width: 6912,
-            height: 4320,
+            src: "/videos/creatorshop-header-creator.mp4",
+            alt: "Creator-side hero header with the lime green barter card and a spinning scroll-down badge",
+            width: 1920,
+            height: 1204,
+            framed: true,
           },
         ],
       },
       {
-        heading: "The Outcome?",
+        heading: "How it Works",
+        navLabel: "How it Works",
         body: [
-          "The Spectator hit record subscription highs after this flow went live: results significant enough that the magazine wrote about them in [its own pages](https://spectator.com/article/the-spectators-record-subscriber-numbers/), noting more paying subscribers than at any point in its 198-year history. It was especially satisfying to see this project among the work behind that milestone.",
+          "Three steps, three metal objects: a floppy disk to browse the drop, a bag to apply to shop, a key to pay with a post. The metal treatment carries the shimmer from the header through into the page body, so the mechanic reads as an extension of the same material language rather than a separate illustration style. On the brand side the same three-step structure gets the restrained treatment: grey cards, black icons, no colour, walking through listing a campaign, reviewing pitches, and paying in access instead of cash.",
+        ],
+        videos: [
+          {
+            src: "/videos/creatorshop-how-it-works.mp4",
+            alt: "The 'How it works' section with three rotating metal icon cards: browse the drop, apply to shop, pay with a post",
+            width: 1920,
+            height: 1204,
+            framed: true,
+          },
+          {
+            src: "/videos/creatorshop-how-it-works-brand.mp4",
+            alt: "The brand-side 'Everything you need to run a campaign' section with three grey icon cards: list in minutes, you choose who gets in, pay in access not cash",
+            width: 1920,
+            height: 1204,
+            framed: true,
+          },
+        ],
+      },
+      {
+        heading: "Bringing the Product to the Landing Page",
+        navLabel: "Product in the Page",
+        body: [
+          "The brand side allows visitors to engage with the core creator-management mechanic right inside the landing page before signing up. The swipe feature gives brands a feel for the inbound creator-management experience before they commit.",
+        ],
+        videos: [
+          {
+            src: "/videos/creatorshop-swipe-interaction.mp4",
+            alt: "Swipe interaction on brand hero, reviewing creator profiles and swiping to approve or pass",
+            width: 3456,
+            height: 2168,
+            framed: true,
+          },
+        ],
+      },
+      {
+        heading: "Pricing",
+        navLabel: "Pricing",
+        body: ["Highlighting what we want picked."],
+        videos: [
+          {
+            src: "/videos/creatorshop-pricing.mp4",
+            alt: "Pricing section with a subscription plan and a custom plan",
+            width: 3456,
+            height: 2168,
+            framed: true,
+          },
+        ],
+      },
+      {
+        heading: "What Didn't Make the Cut",
+        navLabel: "What Didn't Make It",
+        body: [
+          "Not every idea made it. Some cool ideas got cut, not because they failed on their own terms, but because they didn't belong in the visual world being built. A landing page that tries to include everything stops being a landing page.",
+        ],
+        videos: [
+          {
+            src: "/videos/creatorshop-receipt-checkout.mp4",
+            alt: "A printed-receipt checkout confirmation animation, cut for not belonging to the card system's visual world",
+            width: 3456,
+            height: 2088,
+            framed: true,
+          },
+        ],
+      },
+      {
+        heading: "Home: Brand Engineering, the Kit and Internal Tool",
+        navLabel: "Brand Engineering",
+        body: [
+          "I went on to build a brand engineering kit that could help scale the brand, unlike a static brand book. This kit can be plugged into Claude Code for quick context on how the brand works for generative purposes. Assets like Lottie animations, 3D assets, and brand-specific gradients exist in code while having utility across various creative production efforts.",
+        ],
+        videos: [
+          {
+            src: "/videos/creatorshop-brand-engineering-kit.mp4",
+            alt: "The Brand Engineering Kit internal tool, showing the fire studies tool shelf with seven build variants",
+            width: 3456,
+            height: 2168,
+            framed: true,
+          },
+        ],
+      },
+      {
+        heading: "The Build",
+        navLabel: "The Build",
+        body: [
+          "Both final sites were designed and built by one person using the following stack: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, Framer Motion, React Three Fiber, drei, three.js, @paper-design/shaders-react, Radix UI, Base UI, Heroicons, Geist. No handoff. Design decisions could be made, tested in the browser, and iterated the same day.",
+        ],
+      },
+      {
+        heading: "What's Next",
+        navLabel: "What's Next",
+        body: [
+          "The final two sites are live. The creator side has a more playful feel and the brand side is more polished while echoing the brand's edge in subtle ways. The next step is putting them against each other. Variant 1 leads with the product mechanic: it's clear and structured, but risks reading as SaaS. Variant 2 is more editorial in feel, with more personality, but risks making the core message harder to land immediately. If the creator-side header leads with desire and feeling rather than mechanics, I'd expect higher scroll depth and stronger waitlist conversion from the creator ICP.",
+        ],
+        videos: [
+          {
+            src: "/videos/creatorshop-ab-test-variants.mp4",
+            alt: "Variant A and variant B creator headers, one hand-drawn and tilted, one flat with 'Barter is so back'",
+            width: 3456,
+            height: 2088,
+            framed: true,
+          },
+        ],
+      },
+      {
+        heading: "Test Setup",
+        body: [
+          "Variant A: product mechanic first, what Creatorshop does.",
+          "Variant B: editorial entry point, how it feels to be a creator on Creatorshop.",
+          "Success metric: waitlist signups from the creator ICP. Secondary: scroll depth past the hero.",
+          "The test goes live on launch. What we learn will inform not just the page but the product positioning going forward.",
         ],
       },
     ],
@@ -417,8 +586,104 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "thespectator",
+    title: "The Spectator",
+    description:
+      "Creating a subscription flow that drove record highs for the world's oldest magazine.",
+    tags: ["Product Design", "Strategy", "UX Research"],
+    role: "UI/UX Designer",
+    tools: "UI/UX Design",
+    image: "/images/cover-thespectator.png",
+    imageAlt: "The Spectator gift subscription flow — choose your gift type",
+    imageWidth: 6912,
+    imageHeight: 4320,
+    sections: [
+      {
+        heading: "The Challenge",
+        body: [
+          "The oldest running magazine in the world needed a flow for their gifting feature for the busiest time of the year for gifts: the holiday season.",
+          "The PRD was simple: move users smoothly through the subscription flow while clearly communicating the value and payment options of each offer.",
+        ],
+      },
+      {
+        heading: "The Solution",
+        body: [
+          "I took the UX work the Spectator team had already completed and translated it into high-fidelity, fully annotated Figma designs that were ready for developer handoff.",
+        ],
+      },
+      {
+        heading: "The Process",
+        body: [
+          "The team began by creating user flows. I wasn't involved in this stage, but the flows were a key artefact for understanding the signed-off user experience and the constraints I needed to design within.",
+        ],
+        images: [
+          {
+            src: "/images/spectator-user-flow-fixed-term.png",
+            alt: "The Spectator gift subscription user flow for fixed-term gifts",
+            width: 12416,
+            height: 5376,
+          },
+          {
+            src: "/images/spectator-user-flow-auto-renewing.png",
+            alt: "The Spectator gift subscription user flow for auto-renewing gifts",
+            width: 13632,
+            height: 6656,
+          },
+        ],
+      },
+      {
+        heading: "Wireframes",
+        body: [
+          "This is where collaboration began. We started wireframing the experience to clarify what we wanted the UI to look and feel like, without yet focusing on brand identity. This helped us align early and commit to a clear direction for layout and interaction.",
+        ],
+        images: [
+          {
+            src: "/images/spectator-wireframes.png",
+            alt: "Stacked low-fidelity wireframes of the gift subscription flow's four steps",
+            width: 6912,
+            height: 4320,
+          },
+        ],
+      },
+      {
+        heading: "UI Design",
+        body: [
+          "This is where I led the design effort, evolving the wireframes into high-fidelity screens that expressed the final vision for the UI and all its key states.",
+        ],
+        tightImages: true,
+        images: [
+          {
+            src: "/images/spectator-ui-terms-recommended.png",
+            alt: "Gift subscription terms screen with annual automatic renewal recommended",
+            width: 6912,
+            height: 4320,
+          },
+          {
+            src: "/images/spectator-ui-terms-bestvalue.png",
+            alt: "Gift subscription terms screen with annual one-off payment as best value",
+            width: 6912,
+            height: 4320,
+          },
+          {
+            src: "/images/spectator-ui-gift-type.png",
+            alt: "Gift subscription type screen with digital only selected",
+            width: 6912,
+            height: 4320,
+          },
+        ],
+      },
+      {
+        heading: "The Outcome?",
+        body: [
+          "The Spectator hit record subscription highs after this flow went live: results significant enough that the magazine wrote about them in [its own pages](https://spectator.com/article/the-spectators-record-subscriber-numbers/), noting more paying subscribers than at any point in its 198-year history. It was especially satisfying to see this project among the work behind that milestone.",
+        ],
+      },
+    ],
+  },
+  {
     slug: "spectra-2",
     title: "Spectra",
+    hiddenFromHome: true,
     description: "Transforming storytelling with AI-generated content.",
     tags: ["Product Design", "Strategy", "UX Research"],
     role: "Self-led Project",

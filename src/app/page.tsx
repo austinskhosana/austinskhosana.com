@@ -1,5 +1,4 @@
 import { CopyEmailButton } from "@/components/CopyEmailButton";
-import { ToolStack } from "@/components/ToolStack";
 import { ProjectCard } from "@/components/ProjectCard";
 import { MemojiAvatar } from "@/components/MemojiAvatar";
 import { projects } from "@/lib/data";
@@ -13,27 +12,29 @@ export default function Home() {
         <div className="flex flex-col items-center gap-6">
           <div className="flex flex-col items-center gap-4">
             <h1 className="text-balance font-display text-2xl leading-snug font-semibold tracking-tight">
-              Hi! My name is Austin Skhosana
+              Hi, I&apos;m Austin Skhosana
               <br />
-              I&apos;m a Designer and Developer
+              Where strategy meets&nbsp;craft
             </h1>
-            <p className="max-w-[700px] text-balance font-mono text-base leading-snug text-muted">
-              I design software, sometimes I code, sometimes I centre divs,
-              sometimes with CSS, and sometimes with English.
+            <p className="max-w-[700px] text-balance font-mono text-base leading-snug font-normal text-muted">
+              I chase problems the way a designer would, through visual
+              systems: I find what&apos;s broken, understand why it matters,
+              and get to the fastest version of the truth.
             </p>
           </div>
 
           <div className="flex flex-col items-center gap-14">
             <CopyEmailButton />
-            <ToolStack />
           </div>
         </div>
       </section>
 
       <section className="mx-auto flex w-full max-w-[1057px] flex-col gap-[100px]">
-        {projects.map((project) => (
-          <ProjectCard key={project.slug} project={project} />
-        ))}
+        {projects
+          .filter((project) => !project.hiddenFromHome)
+          .map((project) => (
+            <ProjectCard key={project.slug} project={project} />
+          ))}
       </section>
     </div>
   );

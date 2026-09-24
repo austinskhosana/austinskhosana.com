@@ -3,15 +3,13 @@ import { BlogWindowContent } from "./BlogWindowContent";
 import { PlaygroundWindowContent } from "./PlaygroundWindowContent";
 import { PlaygroundItemWindowContent } from "./PlaygroundItemWindowContent";
 import { AboutMeWindowContent } from "./AboutMeWindowContent";
-import { CaseStudyContent } from "@/components/CaseStudyContent";
 import { TITLE_BAR_HEIGHT } from "./WindowFrame";
-import { projects, blogPosts, playgroundItems } from "@/lib/data";
+import { blogPosts, playgroundItems } from "@/lib/data";
 
 export type WindowKey =
   | "blog"
   | "playground"
   | "about-me"
-  | `work:${string}`
   | `blog:${string}`
   | `playground:${string}`;
 
@@ -23,7 +21,6 @@ type RegistryEntry = {
   fadeScroll?: boolean;
 };
 
-export const CASE_STUDY_SIZE = { width: 1120, height: 820 };
 const BLOG_POST_SIZE = { width: 640, height: 620 };
 const PLAYGROUND_ITEM_SIZE = { width: 640, height: 560 };
 const PLAYGROUND_IMAGE_WIDTH = 880;
@@ -69,19 +66,6 @@ const staticRegistry: Record<"blog" | "playground" | "about-me", RegistryEntry> 
   },
 };
 
-const caseStudyRegistry: Record<string, RegistryEntry> = Object.fromEntries(
-  projects.map((project) => [
-    `work:${project.slug}`,
-    {
-      title: project.title,
-      Content: () => <CaseStudyContent project={project} />,
-      defaultSize: CASE_STUDY_SIZE,
-      centerX: true,
-      fadeScroll: true,
-    },
-  ]),
-);
-
 const blogPostRegistry: Record<string, RegistryEntry> = Object.fromEntries(
   blogPosts.map((post) => [
     `blog:${post.slug}`,
@@ -106,7 +90,6 @@ const playgroundItemRegistry: Record<string, RegistryEntry> = Object.fromEntries
 
 export const windowRegistry: Record<WindowKey, RegistryEntry> = {
   ...staticRegistry,
-  ...caseStudyRegistry,
   ...blogPostRegistry,
   ...playgroundItemRegistry,
 } as Record<WindowKey, RegistryEntry>;

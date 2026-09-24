@@ -69,12 +69,9 @@ export function FloatingDock() {
   const hasOpenWindows = windows.length > 0;
   const pathname = usePathname();
 
-  // On mobile/tablet, a case study is a real page rather than a window, so
-  // the full dock gives way to a focused prev/home/next rail — mirroring
-  // the dedicated CaseStudyNav rail desktop windows get.
-  const caseStudySlug = !isDesktop
-    ? pathname.match(/^\/work\/([^/]+)$/)?.[1]
-    : undefined;
+  // A case study is always a real page (not a window), so the full dock
+  // gives way to a focused prev/home/next rail on every screen size.
+  const caseStudySlug = pathname.match(/^\/work\/([^/]+)$/)?.[1];
   if (caseStudySlug) {
     return <CaseStudyMobileNav slug={caseStudySlug} />;
   }

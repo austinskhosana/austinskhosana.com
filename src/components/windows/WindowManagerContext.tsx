@@ -26,10 +26,6 @@ export type OpenWindow = {
   navDirection?: NavDirection;
 };
 
-function isCaseStudyKey(key: WindowKey) {
-  return key.startsWith("work:");
-}
-
 type WindowManagerContextValue = {
   windows: OpenWindow[];
   openWindow: (
@@ -61,23 +57,9 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
       zCounter.current += 1;
       const z = zCounter.current;
       setWindows((prev) => {
-        // Only one case study can be open at a time — any other case study
-        // gets replaced: minimized ones drop silently, visible ones animate
-        // out (genie, or a directional slide when triggered from the
-        // prev/next rail) via the `closing` flag picked up by WindowFrame.
-        const base = isCaseStudyKey(key)
-          ? prev
-              .filter((w) => !(isCaseStudyKey(w.key) && w.key !== key && w.minimized))
-              .map((w) =>
-                isCaseStudyKey(w.key) && w.key !== key
-                  ? { ...w, closing: true, navDirection }
-                  : w,
-              )
-          : prev;
-
-        const existing = base.find((w) => w.key === key);
+        const existing = prev.find((w) => w.key === key);
         if (existing) {
-          return base.map((w) =>
+          return prev.map((w) =>
             w.key === key
               ? { ...w, minimized: false, zIndex: z, closing: false, navDirection }
               : w,
@@ -86,7 +68,7 @@ export function WindowManagerProvider({ children }: { children: ReactNode }) {
         const spawnIndex = spawnCounter.current;
         spawnCounter.current += 1;
         return [
-          ...base,
+          ...prev,
           { key, zIndex: z, minimized: false, spawnIndex, origin, navDirection },
         ];
       });

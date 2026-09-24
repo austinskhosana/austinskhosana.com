@@ -1,27 +1,29 @@
 "use client";
 
-import { useWindowManager } from "./WindowManagerContext";
-import { CASE_STUDY_SIZE } from "./registry";
-import { projects } from "@/lib/data";
+import { useEffect, useState } from "react";
+import type { Project } from "@/lib/data";
 
-// The window is centered, so the rail's available width is derived from
-// its known half-width (mirrors CaseStudyNav) — labels truncate to fit
-// whatever space is actually free instead of spilling under the window.
+// Case studies are a real page (not a floating window), so the rail's
+// available width is derived from the content column's fixed max-w-[1120px]
+// (the imagery's width, wider than the max-w-2xl text column it sits beside)
+// rather than a window's known size — mirrors the old windowed rail's math,
+// just anchored to the page layout instead.
+const CONTENT_MAX_WIDTH = 1120;
 const RAIL_LEFT_OFFSET = 24; // matches the `left-6` on the rail below
 const RAIL_GAP = 20;
 
-export function CaseStudyTimeline() {
-  const { windows, scrollToFraction } = useWindowManager();
+export function CaseStudyTimeline({ project }: { project: Project }) {
+  const [progress, setProgress] = useState(0);
 
-  const active = windows
-    .filter((w) => w.key.startsWith("work:") && !w.minimized && !w.closing)
-    .sort((a, b) => b.zIndex - a.zIndex)[0];
-
-  if (!active) return null;
-
-  const slug = active.key.slice("work:".length);
-  const project = projects.find((p) => p.slug === slug);
-  if (!project) return null;
+  useEffect(() => {
+    function handleScroll() {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(max > 0 ? window.scrollY / max : 0);
+    }
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const stops = [
     "Overview",
@@ -29,14 +31,18 @@ export function CaseStudyTimeline() {
     ...(project.gallery && project.gallery.length > 0 ? ["Gallery"] : []),
   ];
 
-  const progress = active.scrollProgress ?? 0;
   const activeIndex = Math.min(
     stops.length - 1,
     Math.floor(progress * stops.length),
   );
 
+  function scrollToFraction(fraction: number) {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    window.scrollTo({ top: max * fraction, behavior: "smooth" });
+  }
+
   const maxRailWidth = `max(0px, calc(50vw - ${
-    CASE_STUDY_SIZE.width / 2 + RAIL_LEFT_OFFSET + RAIL_GAP
+    CONTENT_MAX_WIDTH / 2 + RAIL_LEFT_OFFSET + RAIL_GAP
   }px))`;
 
   return (
@@ -51,7 +57,7 @@ export function CaseStudyTimeline() {
             key={`${project.slug}-${label}`}
             type="button"
             onClick={() =>
-              scrollToFraction(active.key, index / (stops.length - 1 || 1))
+              scrollToFraction(index / (stops.length - 1 || 1))
             }
             style={{ animationDelay: `${Math.min(index, 6) * 40}ms` }}
             className="group pointer-events-auto flex animate-[timeline-item-in_260ms_var(--ease-out)_forwards] items-center gap-3 py-0.5 opacity-0"

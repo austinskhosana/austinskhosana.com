@@ -299,25 +299,30 @@ export function AboutMeWindowContent() {
           {introDone && (
             <>
               <p className="text-muted">
-                Hi there! I&apos;m Austin Skhosana, a designer based in
+                Hi there, I&apos;m Austin Skhosana, a designer based in
                 Johannesburg, South Africa. This is usually the point in the
-                bio where I tell you I&apos;m sooo passionate about user
-                empathy and pixel-perfect design, but at this point
-                that&apos;s table stakes for designers. So let&apos;s talk
-                about something else. I&apos;m obsessed with DX, otherwise
-                known as developer experience.
+                bio where I tell you I&apos;m passionate about user empathy
+                and pixel-perfect design, but at this point that&apos;s table
+                stakes. So let&apos;s talk about something else.
               </p>
               <p className="text-muted">
-                That&apos;s why my practice is fluid, existing somewhere
-                between high-fidelity mocks and increasingly sharing syntax
-                and code prototypes for frontend details Figma can&apos;t
-                fully capture.
+                I chase problems the way a designer would, through visual
+                systems. I find what&apos;s broken, understand why it
+                matters, and get to the fastest version of the truth. That
+                mindset
+                shapes everything from how I approach a brief to
+                how I present work to stakeholders.
               </p>
               <p className="text-muted">
-                A core idea in my practice is moving between disciplines to
-                improve cross-functional collaboration, championing the
-                material software exists in, and the people who help us
-                designers ship it to users.
+                My practice sits somewhere between strategy and craft. I care
+                about the thinking behind a design as much as the execution
+                of it, and I&apos;ve found the two are better together than
+                apart.
+              </p>
+              <p className="text-muted">
+                I also build. Which means I can move from concept to
+                production without a handoff, and that changes the speed and
+                quality of what I ship.
               </p>
             </>
           )}

@@ -1,13 +1,12 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { Project } from "@/lib/data";
-import { OSLink } from "@/components/windows/OSLink";
 import { CoverVideo } from "@/components/CoverVideo";
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
-    <OSLink
+    <Link
       href={`/work/${project.slug}`}
-      windowKey={`work:${project.slug}`}
       className="group flex flex-col gap-[28px]"
     >
       <div className="relative h-[320px] w-full overflow-hidden bg-[#f5f5f5] sm:h-[420px] lg:h-[700px]">
@@ -26,6 +25,7 @@ export function ProjectCard({ project }: { project: Project }) {
               height={project.coverVideoHeight ?? 1000}
               fill={project.coverVideoFill}
               scale={project.coverVideoScale}
+              bordered={project.coverVideoBordered}
             />
           </div>
         ) : (
@@ -52,6 +52,6 @@ export function ProjectCard({ project }: { project: Project }) {
           {project.tags.join(", ")}
         </p>
       </div>
-    </OSLink>
+    </Link>
   );
 }

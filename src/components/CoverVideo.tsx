@@ -10,6 +10,7 @@ export function CoverVideo({
   height,
   fill = false,
   scale = 1.25,
+  bordered = true,
 }: {
   src: string;
   alt: string;
@@ -21,6 +22,9 @@ export function CoverVideo({
   // Only applies when `fill` is set — crop-in amount so the cropped edges
   // don't show empty space for clips that don't quite cover the tray.
   scale?: number;
+  // Only applies when `fill` is unset — drop the rounded corners,
+  // border, and shadow, while still floating inside the grey tray.
+  bordered?: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   useAutoplayVideo(videoRef);
@@ -46,7 +50,11 @@ export function CoverVideo({
       ref={videoRef}
       src={src}
       aria-label={alt}
-      className="max-h-full max-w-full rounded-2xl border border-border shadow-lg shadow-black/5"
+      className={
+        bordered
+          ? "max-h-full max-w-full rounded-2xl border border-border shadow-lg shadow-black/5"
+          : "max-h-full max-w-full"
+      }
       style={{ aspectRatio: `${width} / ${height}` }}
       autoPlay
       loop

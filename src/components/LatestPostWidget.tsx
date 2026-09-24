@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { usePathname } from "next/navigation";
 import type { BlogPost } from "@/lib/data";
 import { OSLink } from "@/components/windows/OSLink";
 import { useAutoplayVideo } from "@/components/useAutoplayVideo";
@@ -57,7 +58,10 @@ function PostCard({
 }
 
 export function LatestPostWidget({ posts }: { posts: BlogPost[] }) {
+  const pathname = usePathname();
   const [primary, secondary] = posts;
+
+  if (pathname?.startsWith("/work/")) return null;
 
   return (
     <div className="group absolute top-6 right-6 z-30 hidden w-72 sm:block">

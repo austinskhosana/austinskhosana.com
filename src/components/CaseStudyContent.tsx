@@ -113,6 +113,39 @@ function SectionVideo({
   );
 }
 
+function PosterTicker({ posters }: { posters: { src: string; alt: string }[] }) {
+  const track = [...posters, ...posters];
+  return (
+    <div className="mt-10 flex w-full items-center justify-center bg-[#f5f5f5] py-10 sm:py-14">
+      <div
+        className="w-full overflow-hidden"
+        style={{
+          maskImage:
+            "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+          WebkitMaskImage:
+            "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+        }}
+      >
+        <div
+          className="flex w-max items-center gap-4"
+          style={{ animation: "marquee 90s linear infinite" }}
+        >
+          {track.map((poster, i) => (
+            <Image
+              key={`${poster.src}-${i}`}
+              src={poster.src}
+              alt={poster.alt}
+              width={324}
+              height={405}
+              className="h-56 w-auto shrink-0 rounded-lg shadow-lg shadow-black/10 sm:h-72"
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const MARGIN = 48;
 const DRAG_MARGIN = 8;
 const TITLE_BAR_HEIGHT = 41;
@@ -434,13 +467,13 @@ export function CaseStudyContent({ project }: { project: Project }) {
   }
 
   return (
-    <div className="mx-auto flex max-w-2xl flex-col gap-12 px-6 py-20">
-      <header className="flex flex-col gap-6">
+    <div className="mx-auto flex w-full max-w-[1120px] flex-col gap-12 px-6 py-20">
+      <header className="mx-auto flex w-full max-w-2xl flex-col gap-6">
         <span className="text-sm text-muted">{project.title}</span>
         <h1 className="text-balance font-display text-2xl font-semibold tracking-tight sm:text-3xl">
           {project.description}
         </h1>
-        <div className="flex flex-wrap gap-x-16 gap-y-6 border-t border-border pt-8 text-sm">
+        <div className="mt-4 flex flex-wrap gap-x-16 gap-y-6 text-sm">
           <div className="flex flex-col gap-2">
             <span className="text-xs uppercase tracking-wide text-muted">
               Role
@@ -477,8 +510,13 @@ export function CaseStudyContent({ project }: { project: Project }) {
             height={project.coverVideoHeight ?? 1000}
             fill={project.coverVideoFill}
             scale={project.coverVideoScale}
+            bordered={project.coverVideoBordered}
           />
         </div>
+      )}
+
+      {!project.coverVideo && project.image === "" && (
+        <div className="aspect-[16/10] w-full bg-[#f5f5f5]" />
       )}
 
       {!project.coverVideo && project.image && (
@@ -501,7 +539,7 @@ export function CaseStudyContent({ project }: { project: Project }) {
             fill
             quality={100}
             className="object-cover object-top transition-opacity duration-150 ease-[var(--ease-out)] group-hover:opacity-90"
-            sizes="(min-width: 672px) 624px, 100vw"
+            sizes="(min-width: 1120px) 1072px, 100vw"
             priority
           />
         </button>
@@ -510,11 +548,11 @@ export function CaseStudyContent({ project }: { project: Project }) {
       <div className="flex flex-col gap-12">
         {project.sections.map((section) => (
           <section key={section.heading} className="flex flex-col gap-4">
-            <h2 className="font-display text-xl font-medium tracking-tight">
+            <h2 className="mx-auto w-full max-w-2xl font-display text-xl font-medium tracking-tight">
               {section.heading}
             </h2>
             {section.body.length > 1 ? (
-              <ul className="flex flex-col gap-3">
+              <ul className="mx-auto flex w-full max-w-2xl flex-col gap-3">
                 {section.body.map((line) => (
                   <li
                     key={line}
@@ -524,50 +562,90 @@ export function CaseStudyContent({ project }: { project: Project }) {
                   </li>
                 ))}
               </ul>
-            ) : (
-              <p className="font-mono text-sm leading-relaxed text-muted">
+            ) : section.body.length === 1 ? (
+              <p className="mx-auto w-full max-w-2xl font-mono text-sm leading-relaxed text-muted">
                 {renderBodyLine(section.body[0])}
               </p>
+            ) : null}
+
+            {section.posterTicker && section.posterTicker.length > 0 && (
+              <PosterTicker posters={section.posterTicker} />
             )}
 
             {section.images && section.images.length > 0 && (
               <div
                 className={`flex flex-col ${section.tightImages ? "mt-6 gap-4" : "mt-10 gap-16"}`}
               >
-                {section.images.map((image) => (
-                  <button
-                    key={image.src}
-                    type="button"
-                    onClick={(e) =>
-                      openLightbox(e, {
-                        src: image.src,
-                        alt: image.alt,
-                        width: image.width,
-                        height: image.height,
-                      })
-                    }
-                    aria-label={`View larger image: ${image.alt}`}
-                    className="group block w-full cursor-zoom-in"
-                  >
-                    {/* No site-side frame here: these images already come
-                        with the grey tray, border, and shadow baked in
-                        from Figma, matching the video's treatment. */}
-                    <Image
-                      src={image.src}
-                      alt={image.alt}
-                      width={image.width}
-                      height={image.height}
-                      quality={100}
-                      className="h-auto w-full transition-opacity duration-150 ease-[var(--ease-out)] group-hover:opacity-90"
-                      sizes="(min-width: 672px) 624px, 100vw"
+                {section.images.map((image) =>
+                  image.src === "" ? (
+                    <div
+                      key={image.alt}
+                      className="w-full bg-[#f5f5f5]"
+                      style={{ aspectRatio: `${image.width} / ${image.height}` }}
                     />
-                  </button>
-                ))}
+                  ) : image.framed ? (
+                    <button
+                      key={image.src}
+                      type="button"
+                      onClick={(e) =>
+                        openLightbox(e, {
+                          src: image.src,
+                          alt: image.alt,
+                          width: image.width,
+                          height: image.height,
+                        })
+                      }
+                      aria-label={`View larger image: ${image.alt}`}
+                      className="group relative block aspect-[16/10] w-full cursor-zoom-in overflow-hidden bg-[#f5f5f5]"
+                    >
+                      <div className="absolute inset-0 flex items-center justify-center p-8 sm:p-12">
+                        <Image
+                          src={image.src}
+                          alt={image.alt}
+                          width={image.width}
+                          height={image.height}
+                          quality={100}
+                          style={{ transform: `scale(${image.scale ?? 1})` }}
+                          className="h-full w-full object-contain transition-opacity duration-150 ease-[var(--ease-out)] group-hover:opacity-90"
+                          sizes="(min-width: 1120px) 1072px, 100vw"
+                        />
+                      </div>
+                    </button>
+                  ) : (
+                    <button
+                      key={image.src}
+                      type="button"
+                      onClick={(e) =>
+                        openLightbox(e, {
+                          src: image.src,
+                          alt: image.alt,
+                          width: image.width,
+                          height: image.height,
+                        })
+                      }
+                      aria-label={`View larger image: ${image.alt}`}
+                      className="group block w-full cursor-zoom-in"
+                    >
+                      {/* No site-side frame here: these images already come
+                          with the grey tray, border, and shadow baked in
+                          from Figma, matching the video's treatment. */}
+                      <Image
+                        src={image.src}
+                        alt={image.alt}
+                        width={image.width}
+                        height={image.height}
+                        quality={100}
+                        className="h-auto w-full transition-opacity duration-150 ease-[var(--ease-out)] group-hover:opacity-90"
+                        sizes="(min-width: 1120px) 1072px, 100vw"
+                      />
+                    </button>
+                  ),
+                )}
               </div>
             )}
 
             {section.videos && section.videos.length > 0 && (
-              <div className="flex flex-col gap-6">
+              <div className="mt-10 flex flex-col gap-6">
                 {section.videos.map((video) => (
                   <SectionVideo key={video.src} video={video} />
                 ))}
@@ -600,7 +678,7 @@ export function CaseStudyContent({ project }: { project: Project }) {
                 fill
                 quality={100}
                 className="object-cover transition-opacity duration-150 ease-[var(--ease-out)] group-hover:opacity-90"
-                sizes="(min-width: 640px) 33vw, 100vw"
+                sizes="(min-width: 1120px) 341px, (min-width: 640px) 33vw, 100vw"
               />
             </button>
           ))}
