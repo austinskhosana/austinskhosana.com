@@ -299,29 +299,41 @@ export function AboutMeWindowContent() {
           {introDone && (
             <>
               <p className="text-muted">
-                Hi there, I&apos;m Austin Skhosana, a designer based in
-                Johannesburg, South Africa. This is usually the point in the
-                bio where I tell you I&apos;m passionate about user empathy
-                and pixel-perfect design, but at this point that&apos;s table
-                stakes. So let&apos;s talk about something else.
+                Hi, I&apos;m Austin Skhosana, a designer based in
+                Johannesburg, South Africa. I&apos;m currently simplifying
+                banking experiences as a consultant at Khabane Majestic
+                Consulting, working with Absa, one of the largest banks in
+                Africa.
               </p>
               <p className="text-muted">
-                I chase problems the way a designer would, through visual
-                systems. I find what&apos;s broken, understand why it
-                matters, and get to the fastest version of the truth. That
-                mindset
-                shapes everything from how I approach a brief to
-                how I present work to stakeholders.
+                This is usually the point in the bio where I tell you I&apos;m
+                passionate about user empathy and pixel-perfect design, but at
+                this point, that&apos;s table stakes. So let&apos;s talk about
+                something else.
+              </p>
+              <p className="text-muted">
+                What brought me into design was design thinking, which I first
+                encountered in business school at the University of South
+                Africa before going on to study design at the University of
+                Johannesburg. I was drawn to it as a methodology: a way to
+                diagnose problems, understand people and context, test
+                assumptions, and move toward the clearest version of the truth.
+              </p>
+              <p className="text-muted">
+                That mindset still shapes how I work. I use design to make
+                sense of messy briefs, competing stakeholder needs, user
+                behaviour, and business constraints, then turn that
+                understanding into something clear enough to build.
               </p>
               <p className="text-muted">
                 My practice sits somewhere between strategy and craft. I care
-                about the thinking behind a design as much as the execution
-                of it, and I&apos;ve found the two are better together than
-                apart.
+                about the thinking behind a design as much as the business and
+                anthropological context around it, because I&apos;ve found that
+                these ideas are stronger together than apart.
               </p>
               <p className="text-muted">
-                I also build. Which means I can move from concept to
-                production without a handoff, and that changes the speed and
+                I also build. That means I can move from concept to production
+                without a handoff, and that changes the speed, fidelity, and
                 quality of what I ship.
               </p>
             </>

@@ -16,10 +16,12 @@ export default function Home() {
               <br />
               Where strategy meets&nbsp;craft
             </h1>
-            <p className="max-w-[700px] text-balance font-mono text-base leading-snug font-normal text-muted">
-              I chase problems the way a designer would, through visual
-              systems: I find what&apos;s broken, understand why it matters,
-              and get to the fastest version of the truth.
+            <p className="max-w-[720px] font-mono text-base leading-snug font-normal text-muted">
+              I use design thinking to make sense of messy problems:
+              <br />
+              understanding people and business context, testing assumptions,
+              <br />
+              and turning complexity into something clear enough to build.
             </p>
           </div>
 

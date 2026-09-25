@@ -601,20 +601,21 @@ export const projects: Project[] = [
       {
         heading: "The Challenge",
         body: [
-          "The oldest running magazine in the world needed a flow for their gifting feature for the busiest time of the year for gifts: the holiday season.",
-          "The PRD was simple: move users smoothly through the subscription flow while clearly communicating the value and payment options of each offer.",
+          "The oldest continuously published magazine in the world needed a clearer way to sell gift subscriptions during the busiest gifting period of the year: the holiday season.",
+          "The product requirement was straightforward, but commercially important: move users smoothly through the subscription flow while making the value, differences, and payment options of each offer immediately clear.",
+          "That meant the gifting journey had to do more than collect checkout details. We had to think through two connected flows: the gifter, who needed to understand what they were buying, compare plans without friction, feel confident about timing and delivery, and complete the purchase with as little hesitation as possible; and the gifted recipient, who needed a clear path to receive, understand, and activate their subscription.",
         ],
       },
       {
         heading: "The Solution",
         body: [
-          "I took the UX work the Spectator team had already completed and translated it into high-fidelity, fully annotated Figma designs that were ready for developer handoff.",
+          "I worked with the Spectator team through stakeholder alignment meetings to define and agree on the final subscription flow. That shared UX document became the foundation for my wireframe explorations and the high-fidelity, fully annotated Figma screens prepared for developer handoff.",
         ],
       },
       {
         heading: "The Process",
         body: [
-          "The team began by creating user flows. I wasn't involved in this stage, but the flows were a key artefact for understanding the signed-off user experience and the constraints I needed to design within.",
+          "The team began by mapping the user flows together, aligning on how the gifting journey needed to work across the gifter and gifted recipient experience. These flows became the key artefact for exploring layout, interaction, and communication hierarchy through wireframes and final UI design.",
         ],
         images: [
           {
@@ -634,7 +635,7 @@ export const projects: Project[] = [
       {
         heading: "Wireframes",
         body: [
-          "This is where collaboration began. We started wireframing the experience to clarify what we wanted the UI to look and feel like, without yet focusing on brand identity. This helped us align early and commit to a clear direction for layout and interaction.",
+          "This is where I started working solo. I began wireframing the experience to clarify what we wanted the UI to look and feel like, without yet focusing on brand identity. This helped us align early and commit to a clear direction for layout and interaction.",
         ],
         images: [
           {
@@ -648,7 +649,7 @@ export const projects: Project[] = [
       {
         heading: "UI Design",
         body: [
-          "This is where I led the design effort, evolving the wireframes into high-fidelity screens that expressed the final vision for the UI and all its key states.",
+          "This is where I led the design effort, evolving the wireframes into high-fidelity screens that expressed the final vision for the UI and all its key states, while making sure everything was annotated, clear, and structured for the engineers.",
         ],
         tightImages: true,
         images: [
@@ -675,7 +676,7 @@ export const projects: Project[] = [
       {
         heading: "The Outcome?",
         body: [
-          "The Spectator hit record subscription highs after this flow went live: results significant enough that the magazine wrote about them in [its own pages](https://spectator.com/article/the-spectators-record-subscriber-numbers/), noting more paying subscribers than at any point in its 198-year history. It was especially satisfying to see this project among the work behind that milestone.",
+          "The Spectator hit record subscription highs after this flow went live: results significant enough that the magazine wrote about them in [its own pages](https://spectator.com/article/the-spectators-record-subscriber-numbers), noting more paying subscribers than at any point in its 198-year history. It was especially satisfying to see this project among the work behind that milestone.",
         ],
       },
     ],
