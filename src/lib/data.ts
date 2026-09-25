@@ -170,8 +170,8 @@ export const projects: Project[] = [
     coverVideo: "/videos/creatorshop-cover.mp4",
     coverVideoAlt: "Creator-side hero header with the lime green barter card and a spinning scroll-down badge",
     coverVideoBordered: false,
-    coverVideoWidth: 1920,
-    coverVideoHeight: 1204,
+    coverVideoWidth: 3456,
+    coverVideoHeight: 2168,
     sections: [
       {
         heading: "The Problem Statement",
