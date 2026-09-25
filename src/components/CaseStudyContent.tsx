@@ -467,7 +467,7 @@ export function CaseStudyContent({ project }: { project: Project }) {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-[1120px] flex-col gap-12 px-6 pt-20 pb-36">
+    <div className="mx-auto flex w-full max-w-[1120px] flex-col items-center gap-12 px-6 pt-20 pb-36 xl:translate-x-[calc((100vw-1120px)/4)]">
       <header className="mx-auto flex w-full max-w-2xl flex-col gap-6">
         <span className="text-sm text-muted">{project.title}</span>
         <h1 className="text-balance font-display text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -547,9 +547,12 @@ export function CaseStudyContent({ project }: { project: Project }) {
         </button>
       )}
 
-      <div className="flex flex-col gap-12">
+      <div className="flex w-full flex-col gap-12">
         {project.sections.map((section) => (
-          <section key={section.heading} className="flex flex-col gap-4">
+          <section
+            key={section.heading}
+            className="flex w-full flex-col items-center gap-4"
+          >
             <h2 className="mx-auto w-full max-w-2xl font-display text-xl font-medium tracking-tight">
               {section.heading}
             </h2>
@@ -576,7 +579,7 @@ export function CaseStudyContent({ project }: { project: Project }) {
 
             {section.images && section.images.length > 0 && (
               <div
-                className={`flex flex-col ${section.tightImages ? "mt-6 gap-4" : "mt-10 gap-16"}`}
+                className={`flex w-full flex-col ${section.tightImages ? "mt-6 gap-4" : "mt-10 gap-16"}`}
               >
                 {section.images.map((image) =>
                   image.src === "" ? (
@@ -647,7 +650,7 @@ export function CaseStudyContent({ project }: { project: Project }) {
             )}
 
             {section.videos && section.videos.length > 0 && (
-              <div className="mt-10 flex flex-col gap-6">
+              <div className="mt-10 flex w-full flex-col gap-6">
                 {section.videos.map((video) => (
                   <SectionVideo key={video.src} video={video} />
                 ))}
@@ -658,7 +661,7 @@ export function CaseStudyContent({ project }: { project: Project }) {
       </div>
 
       {project.gallery && project.gallery.length > 0 && (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+        <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-3">
           {project.gallery.map((image) => (
             <button
               key={image.src}
