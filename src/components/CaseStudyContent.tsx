@@ -467,7 +467,7 @@ export function CaseStudyContent({ project }: { project: Project }) {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-[1120px] flex-col items-center gap-12 px-6 pt-20 pb-36 xl:translate-x-[calc((100vw-1120px)/4)]">
+    <div className="mx-auto flex w-full max-w-[1120px] flex-col items-center gap-12 px-6 pt-20 pb-36">
       <header className="mx-auto flex w-full max-w-2xl flex-col gap-6">
         <span className="text-sm text-muted">{project.title}</span>
         <h1 className="text-balance font-display text-2xl font-semibold tracking-tight sm:text-3xl">
