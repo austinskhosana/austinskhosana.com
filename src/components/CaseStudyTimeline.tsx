@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Project } from "@/lib/data";
 
 // Case studies are a real page (not a floating window), so the rail's
@@ -14,7 +14,6 @@ const RAIL_GAP = 20;
 
 export function CaseStudyTimeline({ project }: { project: Project }) {
   const [progress, setProgress] = useState(0);
-  const railRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     function handleScroll() {
@@ -24,27 +23,6 @@ export function CaseStudyTimeline({ project }: { project: Project }) {
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Published as a CSS variable (rather than lifted state) so the content
-  // column — a separate sibling, not a child — can read the rail's actual
-  // rendered width (which varies with its longest label, up to its max-width
-  // cap) and shift itself over by exactly half of it, keeping equal space on
-  // both sides of the content instead of guessing a fixed offset.
-  useEffect(() => {
-    const el = railRef.current;
-    if (!el) return;
-    const observer = new ResizeObserver(([entry]) => {
-      document.documentElement.style.setProperty(
-        "--case-study-rail-width",
-        `${entry.contentRect.width}px`,
-      );
-    });
-    observer.observe(el);
-    return () => {
-      observer.disconnect();
-      document.documentElement.style.removeProperty("--case-study-rail-width");
-    };
   }, []);
 
   const stops = [
@@ -69,7 +47,6 @@ export function CaseStudyTimeline({ project }: { project: Project }) {
 
   return (
     <div
-      ref={railRef}
       style={{ maxWidth: maxRailWidth }}
       className="pointer-events-none fixed top-1/2 left-6 z-50 hidden -translate-y-1/2 flex-col gap-3 overflow-hidden xl:flex"
     >
