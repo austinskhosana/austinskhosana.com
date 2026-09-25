@@ -6,7 +6,7 @@ import { projects } from "@/lib/data";
 export default function Home() {
   return (
     <div className="mx-auto flex max-w-[1400px] flex-col gap-24 px-6 pt-20 pb-32">
-      <section className="mx-auto flex max-w-xl flex-col items-center gap-8 text-center">
+      <section className="mx-auto flex max-w-[820px] flex-col items-center gap-8 text-center">
         <MemojiAvatar />
 
         <div className="flex flex-col items-center gap-6">

@@ -121,9 +121,9 @@ function PosterTicker({ posters }: { posters: { src: string; alt: string }[] }) 
         className="w-full overflow-hidden"
         style={{
           maskImage:
-            "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+            "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 2.5%, black 7%, black 93%, rgba(0,0,0,0.35) 97.5%, transparent 100%)",
           WebkitMaskImage:
-            "linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)",
+            "linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 2.5%, black 7%, black 93%, rgba(0,0,0,0.35) 97.5%, transparent 100%)",
         }}
       >
         <div
@@ -467,30 +467,32 @@ export function CaseStudyContent({ project }: { project: Project }) {
   }
 
   return (
-    <div className="mx-auto flex w-full max-w-[1120px] flex-col gap-12 px-6 py-20">
+    <div className="mx-auto flex w-full max-w-[1120px] flex-col gap-12 px-6 pt-20 pb-36">
       <header className="mx-auto flex w-full max-w-2xl flex-col gap-6">
         <span className="text-sm text-muted">{project.title}</span>
         <h1 className="text-balance font-display text-2xl font-semibold tracking-tight sm:text-3xl">
           {project.description}
         </h1>
-        <div className="mt-4 flex flex-wrap gap-x-16 gap-y-6 text-sm">
+        <div className="mt-4 flex flex-wrap gap-x-16 gap-y-6 font-mono text-sm">
           <div className="flex flex-col gap-2">
-            <span className="text-xs uppercase tracking-wide text-muted">
+            <span className="text-xs font-semibold tracking-wide text-foreground uppercase">
               Role
             </span>
-            <span>{project.role}</span>
+            <span className="leading-relaxed text-muted">{project.role}</span>
           </div>
           <div className="flex flex-col gap-2">
-            <span className="text-xs uppercase tracking-wide text-muted">
+            <span className="text-xs font-semibold tracking-wide text-foreground uppercase">
               Tools
             </span>
-            <span>{project.tools}</span>
+            <span className="leading-relaxed text-muted">{project.tools}</span>
           </div>
           <div className="flex flex-col gap-2">
-            <span className="text-xs uppercase tracking-wide text-muted">
+            <span className="text-xs font-semibold tracking-wide text-foreground uppercase">
               Skills
             </span>
-            <span>{project.tags.join(", ")}</span>
+            <span className="leading-relaxed text-muted">
+              {project.tags.join(", ")}
+            </span>
           </div>
         </div>
       </header>

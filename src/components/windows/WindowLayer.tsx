@@ -28,18 +28,22 @@ export function WindowLayer() {
   }, [windows, closeWindow]);
 
   const minimized = windows.filter((w) => w.minimized);
-  const hasVisibleWindows = windows.some((w) => !w.minimized);
+  const visibleWindows = windows.filter((w) => !w.minimized);
+  const hasVisibleWindows = visibleWindows.length > 0;
+  const topVisibleZ = visibleWindows.reduce(
+    (max, w) => Math.max(max, w.zIndex),
+    -Infinity,
+  );
 
   return (
     <div className="pointer-events-none fixed inset-0 z-40">
       <div
         aria-hidden
-        className="pointer-events-none fixed inset-0 backdrop-blur-xl transition-opacity duration-300 ease-[var(--ease-out)]"
+        className="pointer-events-none fixed inset-0 bg-white/20 backdrop-blur-xl transition-opacity duration-300 ease-[var(--ease-out)]"
         style={{ opacity: hasVisibleWindows ? 1 : 0 }}
       />
 
-      {windows
-        .filter((w) => !w.minimized)
+      {visibleWindows
         .map((w) => {
           const entry = windowRegistry[w.key];
           const Content = entry.Content;
@@ -51,6 +55,7 @@ export function WindowLayer() {
               centerX={entry.centerX}
               fadeScroll={entry.fadeScroll}
               zIndex={w.zIndex}
+              focused={w.zIndex === topVisibleZ}
               spawnIndex={w.spawnIndex}
               origin={w.origin}
               navDirection={w.navDirection}
@@ -67,7 +72,7 @@ export function WindowLayer() {
         })}
 
       {minimized.length > 0 && (
-        <div className="pointer-events-auto fixed bottom-32 left-6 z-50 flex flex-col gap-2">
+        <div className="pointer-events-auto fixed bottom-32 left-6 z-50 flex max-w-[min(320px,calc(100vw-3rem))] flex-col gap-2">
           {minimized.map((w) => (
             <button
               key={w.key}
@@ -76,9 +81,10 @@ export function WindowLayer() {
                 focusWindow(w.key);
                 toggleMinimize(w.key);
               }}
-              className="rounded-full border border-border bg-white/90 px-4 py-2 font-mono text-xs text-foreground/70 shadow-lg shadow-black/5 backdrop-blur-xl transition-colors hover:text-foreground"
+              className="flex max-w-full items-center gap-2 rounded-full border border-white/70 bg-white/85 px-4 py-2 font-mono text-xs text-subtle shadow-lg shadow-black/10 ring-1 ring-black/5 backdrop-blur-xl transition-[transform,color,box-shadow] duration-150 ease-[var(--ease-out)] hover:-translate-y-0.5 hover:text-foreground hover:shadow-xl active:translate-y-0 active:scale-[0.98] motion-reduce:transition-colors motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100"
             >
-              {windowRegistry[w.key].title}
+              <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-foreground/30" />
+              <span className="truncate">{windowRegistry[w.key].title}</span>
             </button>
           ))}
         </div>

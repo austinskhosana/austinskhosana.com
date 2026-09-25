@@ -163,10 +163,10 @@ export const projects: Project[] = [
     title: "Creatorshop",
     description:
       "Using landing page data to iterate on the product itself, not just the page around it.",
-    tags: ["CRO", "Landing Page", "Experimentation", "Design Engineering"],
-    role: "Product Designer",
+    tags: ["CRO", "Landing Page", "Design Engineering"],
+    role: "Product Designer, Solo Founder",
     tools:
-      "Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, Framer Motion, React Three Fiber, drei, three.js, @paper-design/shaders-react, Radix UI, Base UI, Heroicons, Geist, Claude Code",
+      "Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, Framer Motion, React Three Fiber, drei, three.js, @paper-design/shaders-react, Radix UI, Base UI, Heroicons, Geist, Codex, Claude Code",
     coverVideo: "/videos/creatorshop-cover.mp4",
     coverVideoAlt: "Creator-side hero header with the lime green barter card and a spinning scroll-down badge",
     coverVideoBordered: false,
@@ -177,7 +177,9 @@ export const projects: Project[] = [
         heading: "The Problem Statement",
         navLabel: "Problem Statement",
         body: [
-          "Creators who want access to paid software often can't justify the cost, and brands who want authentic content and distribution are stuck with influencer marketing that's slow, expensive, and hard to measure: negotiation, invoices, and cash changing hands before a single post goes up. Creatorshop's bet is to treat a creator's reach as a financial primitive in its own right. A brand lists software access instead of a fee, a creator applies with the content they'd make anyway, the brand approves or passes, no negotiation. Getting that exchange to feel obvious rather than gimmicky was the real design problem, and the landing pages that follow were where that mechanic actually got tested.",
+          "PR gifting is not treated like a transaction because it is not one. Brands send products hoping for coverage, creators post when they feel like it, and the whole model runs on goodwill.",
+          "Creatorshop starts from a different premise: content is currency. Creators should be able to choose what they want and pay with a post. Brands should get coverage from creators who actually chose their product.",
+          "The challenge was turning that idea into a landing page that could attract both sides of a two-sided marketplace before the marketplace existed.",
         ],
       },
       {
@@ -263,7 +265,7 @@ export const projects: Project[] = [
         heading: "The Header: Between Maximalist Chaos and Minimalist Restraint",
         navLabel: "The Header",
         body: [
-          "I had a lot of fun working on this header. I wanted it to exist between maximalist chaos and minimalist restraint. Metal animation and shaders are a favourite design trend of mine, but I didn't want the card animated on this page, since there were already so many animated elements at play; the restraint was intentional. The 'Ditch the Subscription!' section pairs the copy with an ASCII fire I made during brand exploration, an interplay between UX writing and design. The energy it creates: more metal.",
+          "I had a lot of fun working on these two headers. I wanted them to exist between maximalist chaos and minimalist restraint. Metal animation and shaders are a favourite design trend of mine, so that's what I went with as the central UI direction for the brand page. But I didn't want the card animated there, since there were already so many animated elements at play; the restraint was intentional. For the creator landing page I wanted a more fun energy, even more subversive and playful. Because the context was creators, I was deeply inspired by the history of cellphones and UI design from previous eras, hence the pixel trail and the ASCII art. The scribbles felt like they directly subverted the 'this feels too corporate' feedback, bringing a playfulness that's almost synonymous with youth culture.",
         ],
         videos: [
           {
@@ -286,7 +288,7 @@ export const projects: Project[] = [
         heading: "How it Works",
         navLabel: "How it Works",
         body: [
-          "Three steps, three metal objects: a floppy disk to browse the drop, a bag to apply to shop, a key to pay with a post. The metal treatment carries the shimmer from the header through into the page body, so the mechanic reads as an extension of the same material language rather than a separate illustration style. On the brand side the same three-step structure gets the restrained treatment: grey cards, black icons, no colour, walking through listing a campaign, reviewing pitches, and paying in access instead of cash.",
+          "Three steps, three metal objects: a floppy disk to browse the drop, a bag to apply to shop, and a key to pay with a post. The metal treatment carries the shimmer from the header into the page body, so the mechanic reads as an extension of the same material language rather than a separate illustration style. On the brand side, the same three-step structure uses the same metal icons with a more restrained treatment: grey cards, no colour, and a walkthrough of listing a campaign, reviewing pitches, and paying in access instead of cash.",
         ],
         videos: [
           {
@@ -322,6 +324,34 @@ export const projects: Project[] = [
         ],
       },
       {
+        heading: "UX Writing: The Soul of a Brand, in Text",
+        navLabel: "UX Writing",
+        body: [
+          "I wanted the UX writing to be incredibly specific for both sides of the marketplace, so I fed Claude some quotes and built a system of throwaway posters generated using Claude Code. It helped me think through how the brand sounds and feels before a single word landed on the page. I wanted the writing to feel internet-native, as far from 'this feels corporate' as linguistically possible, moving as far away from polished SaaS copy as the audience would allow.",
+        ],
+        posterTicker: [
+          { src: "/images/creatorshop-posters/clout-is-collateral.png", alt: "Poster: Clout is the new collateral." },
+          { src: "/images/creatorshop-posters/broke-in-dollars.png", alt: "Poster: Broke in dollars. Rich in reach." },
+          { src: "/images/creatorshop-posters/reach-is-currency.png", alt: "Poster: Reach is the real currency." },
+          { src: "/images/creatorshop-posters/feed-is-paycheck.png", alt: "Poster: Your feed is your paycheck." },
+          { src: "/images/creatorshop-posters/followers-are-funds.png", alt: "Poster: Followers are the new funds." },
+          { src: "/images/creatorshop-posters/settles-bill.png", alt: "Poster: This face doesn't split the bill. It settles it." },
+          { src: "/images/creatorshop-posters/comps-the-table.png", alt: "Poster: My face card comps the whole table." },
+          { src: "/images/creatorshop-posters/engagement-pays.png", alt: "Poster: Engagement pays the bill." },
+          { src: "/images/creatorshop-posters/receipts-last-year.png", alt: "Poster: Receipts are so last year." },
+          { src: "/images/creatorshop-posters/caption-clears-tab.png", alt: "Poster: A caption clears the tab." },
+        ],
+        videos: [
+          {
+            src: "/videos/creatorshop-ascii-fire.mp4",
+            alt: "The 'Ditch the Subscription' section with the ASCII fire element in context",
+            width: 1920,
+            height: 1204,
+            framed: true,
+          },
+        ],
+      },
+      {
         heading: "Pricing",
         navLabel: "Pricing",
         body: ["Highlighting what we want picked."],
@@ -352,10 +382,10 @@ export const projects: Project[] = [
         ],
       },
       {
-        heading: "Home: Brand Engineering, the Kit and Internal Tool",
+        heading: "The New Brand Book: Brand Engineering, the Kit and Internal Tool",
         navLabel: "Brand Engineering",
         body: [
-          "I went on to build a brand engineering kit that could help scale the brand, unlike a static brand book. This kit can be plugged into Claude Code for quick context on how the brand works for generative purposes. Assets like Lottie animations, 3D assets, and brand-specific gradients exist in code while having utility across various creative production efforts.",
+          "I went on to build a brand engineering kit that could help scale the brand, unlike a static brand book. This kit is a Github repo that can be plugged into Claude Code for quick context on how the brand works for generative purposes. Assets like Logos, ASCII Animations, 3D assets, and brand-specific gradients exist in code while having utility across various creative production efforts.",
         ],
         videos: [
           {
@@ -371,14 +401,14 @@ export const projects: Project[] = [
         heading: "The Build",
         navLabel: "The Build",
         body: [
-          "Both final sites were designed and built by one person using the following stack: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, Framer Motion, React Three Fiber, drei, three.js, @paper-design/shaders-react, Radix UI, Base UI, Heroicons, Geist. No handoff. Design decisions could be made, tested in the browser, and iterated the same day.",
+          "Both final sites were designed and built by one person using the following stack: Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS 4, Framer Motion, React Three Fiber, drei, three.js, @paper-design/shaders-react, Radix UI, Base UI, Heroicons, Geist with the help of Codex and Claude Code. No handoff. Design decisions could be made, tested in the browser, and iterated the same day.",
         ],
       },
       {
         heading: "What's Next",
         navLabel: "What's Next",
         body: [
-          "The final two sites are live. The creator side has a more playful feel and the brand side is more polished while echoing the brand's edge in subtle ways. The next step is putting them against each other. Variant 1 leads with the product mechanic: it's clear and structured, but risks reading as SaaS. Variant 2 is more editorial in feel, with more personality, but risks making the core message harder to land immediately. If the creator-side header leads with desire and feeling rather than mechanics, I'd expect higher scroll depth and stronger waitlist conversion from the creator ICP.",
+          "The creator side has a more playful feel and the brand side is more polished while echoing the brand's edge in subtle ways. The next step is putting the two header variants against each other for A/B testing since while I love the more subversive layout we have, I wonder what would convert more. Variant 2 leads with the product mechanic: it's clear and structured, but risks reading as SaaS. Variant 1 is more editorial in feel, with more personality, but risks making the core message harder to land immediately. If the creator-side header leads with desire and feeling rather than mechanics, I'd expect higher scroll depth and stronger waitlist conversion from the creator ICP, so what's next is testing that hypothesis.",
         ],
         videos: [
           {
@@ -393,10 +423,10 @@ export const projects: Project[] = [
       {
         heading: "Test Setup",
         body: [
-          "Variant A: product mechanic first, what Creatorshop does.",
-          "Variant B: editorial entry point, how it feels to be a creator on Creatorshop.",
+          "Variant A: editorial entry point, hyper-minimalist restraint and a focus on playfulness and subversion of current layouts as a branding decision and touchpoint.",
+          "Variant B: product mechanic first, what Creatorshop does, with the CTA next, the conventional SaaS layout.",
           "Success metric: waitlist signups from the creator ICP. Secondary: scroll depth past the hero.",
-          "The test goes live on launch. What we learn will inform not just the page but the product positioning going forward.",
+          "The test goes live on launch. What we learn will inform not just the page but the web brand positioning going forward.",
         ],
       },
     ],
@@ -415,25 +445,52 @@ export const projects: Project[] = [
     imageHeight: 4320,
     sections: [
       {
-        heading: "The Challenge",
+        heading: "Problem Statement",
+        navLabel: "Problem Statement",
         body: [
-          "News and politics platforms often struggle with comments sections filled with bigotry and behaviour that doesn't align with community guidelines. We built this for some of the UK's leading magazines. The challenge was creating a system that could exist as a plug-in across different publishers, while still giving teams fine-grained control over the parameters of AI-moderated analysis and feedback.",
+          "News and politics platforms often struggle with comments sections filled with bigotry and behaviour that does not align with community guidelines. How can AI create a moderation system that is contextual, non-deterministic, and flexible enough to be used as a plug-in by a wide variety of magazines?",
         ],
       },
       {
         heading: "The Solution",
         body: [
-          "The platform analyses comments against defined parameters and provides contextual feedback aligned with community guidelines, aiming to maintain safety without heavy-handedness.",
+          "A plug-in connected to our internal platform that analyses comments against defined parameters and provides contextual feedback aligned with community guidelines. It helps maintain safety without heavy-handedness by automating the review process while keeping a human reviewer in the loop for final decision-making.",
         ],
       },
       {
         heading: "The Process",
         body: [
-          "The team followed standard UX methodology: user flow mapping, workshops, critiques, then wireframes and Figma designs. I contributed CSS animations to guide engineering implementation, working as the only designer on the project.",
+          "The team followed a standard UX process, from user flow mapping, workshops, and critiques through to wireframes and Figma designs. As the only designer on the project, I contributed across the full product journey: mapping the UX flows, shaping how the system would work alongside the backend context of an AI model, designing the UI, and creating CSS styling, animations, V0 prototypes, and other implementation resources to guide engineers beyond the design files.",
         ],
       },
       {
-        heading: "CSS Animations",
+        heading: "The Non-Deterministic Nature of AI Output as a UX Writing Design Challenge",
+        navLabel: "UX Writing",
+        body: [
+          "This proved to be the most difficult part of the project: delivering AI-based feedback that was both contextual and non-deterministic, while still maintaining an empathetic tone across a wide range of publishers.",
+          "There was significant stakeholder alignment around the prompt system and how the moderation feedback would work linguistically. The UX needed to feel neutral: clear enough to flag a problem, but never so final that it felt like the system had made an irreversible judgement. If a user felt the feedback was unfair, they needed a clear path to bring a human reviewer into the loop.",
+          "The political context made the challenge even more delicate. The system needed to identify inappropriate comments without feeling like it was suppressing freedom of speech. This UX writing template became the basis for prompting how the AI would generally respond.",
+        ],
+        images: [
+          {
+            src: "/images/coeditor-moderation-feedback.png",
+            alt: "Comment editor showing AI moderation feedback on a flagged comment",
+            width: 6912,
+            height: 4320,
+          },
+        ],
+      },
+      {
+        heading: "Introducing the Team to V0: A New Way to Prototype",
+        navLabel: "V0 Prototyping",
+        body: [
+          "While working closely with the engineering team, my collaboration was called out during standup, particularly around the implementation resources I was providing alongside the design work. One of the ways I made the development process easier was by introducing V0 to the team. Because the project was built with Next.js, it felt like a natural fit for prototyping interface ideas in a format closer to the final product.",
+          "I had initially been giving engineers small code snippets for specific pieces of the design, but V0 helped us move faster. It gave the team a source of truth that was closer to the material of software than a polished Figma file, making it easier to test ideas, discuss implementation, and translate design intent into production.",
+        ],
+      },
+      {
+        heading: "Designing System Feedback",
+        navLabel: "System Feedback",
         body: [
           "We were moving quickly, and I wanted a loading state that felt unique but was still feasible to ship on deadline, with me as the only designer on the project. I started from an open-source loader and built on top of it to create a small visual system for the loading states.",
         ],
@@ -490,10 +547,10 @@ export const projects: Project[] = [
         ],
       },
       {
-        heading: "Tradeoffs and Direction Change",
-        navLabel: "Tradeoffs",
+        heading: "Then I Made a Business Tradeoff",
+        navLabel: "Business Tradeoff",
         body: [
-          "The team was excited about the loader as a visual direction, but we realised it wouldn't work in all the contexts it needed to. The plugin needed to sit comfortably alongside the brand colours of any publisher using it, and the colourful orb risked clashing with existing visual systems.",
+          "The team was excited about the loader as a visual direction, but I realised it would not work in every context it needed to. The plug-in had to sit comfortably alongside the brand colours of any publisher using it, and the colourful orb risked clashing with existing visual systems. It looked strong when tested with the publishers we had in-house, but it did not feel built to scale, so I recommended moving in a more minimalist direction.",
         ],
       },
       {
@@ -535,21 +592,6 @@ export const projects: Project[] = [
         ],
       },
       {
-        heading: "UX Writing Challenge",
-        navLabel: "UX Writing",
-        body: [
-          "This proved most difficult: delivering AI-based feedback that is both contextual and non-deterministic, while maintaining an empathetic tone across diverse publishers.",
-        ],
-        images: [
-          {
-            src: "/images/coeditor-moderation-feedback.png",
-            alt: "Comment editor showing AI moderation feedback on a flagged comment",
-            width: 6912,
-            height: 4320,
-          },
-        ],
-      },
-      {
         heading: "The Dashboard UI",
         body: [
           "The moderation dashboard is where moderators review comments that didn't pass the AI check, with enough context to approve, reject, or escalate quickly and confidently.",
@@ -580,7 +622,8 @@ export const projects: Project[] = [
       {
         heading: "The Results",
         body: [
-          "The MVP delivered feedback that felt intelligent and contextual, enabling publishing teams to moderate efficiently while maintaining safe communities.",
+          "The MVP delivered feedback that felt intelligent and contextual, even within the largely non-deterministic nature of AI output. Users of the tool reported that it helped publishing teams moderate more efficiently while maintaining safer communities.",
+          "On the consumer side, we arrived at a solution that remained contextually impartial while giving commenters a clear way to bring a human reviewer into the loop. The system did not rely on AI judgement as the final say.",
         ],
       },
     ],

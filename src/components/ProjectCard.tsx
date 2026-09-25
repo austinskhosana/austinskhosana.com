@@ -41,8 +41,8 @@ export function ProjectCard({ project }: { project: Project }) {
           )
         )}
       </div>
-      <div className="grid grid-cols-1 gap-3 px-2 sm:grid-cols-[1fr_1.6fr_1fr] sm:gap-8 sm:px-4">
-        <h3 className="font-display text-lg font-semibold tracking-tight">
+      <div className="grid grid-cols-1 items-start gap-4 px-2 sm:grid-cols-[max-content_minmax(320px,420px)_220px] sm:justify-between sm:px-4">
+        <h3 className="font-display text-lg leading-snug font-semibold tracking-tight">
           {project.title}
         </h3>
         <p className="font-mono text-sm leading-relaxed text-muted">

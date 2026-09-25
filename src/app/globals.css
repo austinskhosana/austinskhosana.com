@@ -4,6 +4,7 @@
   --background: #ffffff;
   --foreground: #0f0f0f;
   --muted: #6e6e6e;
+  --subtle: #9a9a9a;
   --border: #e1e1e1;
   --accent: #0099ff;
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
@@ -14,11 +15,12 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
   --color-border: var(--border);
   --color-accent: var(--accent);
   --font-sans: var(--font-geist);
   --font-display: var(--font-geist);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-geist);
 }
 
 body {

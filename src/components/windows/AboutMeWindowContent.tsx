@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent, KeyboardEvent } from "react";
+import { TerminalAsciiArt } from "./TerminalAsciiArt";
 
 const ASCII_ART = `          _____                    _____                    _____                _____                    _____                    _____
          /\\    \\                  /\\    \\                  /\\    \\              /\\    \\                  /\\    \\                  /\\    \\
@@ -283,12 +284,9 @@ export function AboutMeWindowContent() {
         onClick={handleTerminalClick}
         className="flex flex-col gap-2 bg-white p-5 font-mono text-sm leading-relaxed"
       >
-        <pre
-          aria-hidden
-          className="mb-10 hidden w-fit font-mono text-[5px] leading-[5px] whitespace-pre text-foreground/70 select-none sm:block"
-        >
+        <TerminalAsciiArt className="hidden text-[5px] leading-[5px] sm:block">
           {ASCII_ART}
-        </pre>
+        </TerminalAsciiArt>
 
         <div className="flex flex-col gap-2">
           <p className="text-foreground">
@@ -415,7 +413,7 @@ export function AboutMeWindowContent() {
                 />
                 <Cursor />
                 {suggestion && (
-                  <span aria-hidden className="whitespace-pre text-muted/50">
+                  <span aria-hidden className="whitespace-pre text-subtle">
                     {suggestion}
                   </span>
                 )}

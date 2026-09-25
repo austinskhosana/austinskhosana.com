@@ -8,6 +8,7 @@ import {
   BeakerIcon,
   LightBulbIcon,
 } from "@heroicons/react/24/solid";
+import { useState } from "react";
 import type { ComponentType, SVGProps } from "react";
 import { OSLink } from "@/components/windows/OSLink";
 import { useIsDesktop } from "@/components/windows/useIsDesktop";
@@ -68,6 +69,7 @@ export function FloatingDock() {
   const { windows, closeAllWindows } = useWindowManager();
   const hasOpenWindows = windows.length > 0;
   const pathname = usePathname();
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   // A case study is always a real page (not a window), so the full dock
   // gives way to a focused prev/home/next rail on every screen size.
@@ -83,15 +85,33 @@ export function FloatingDock() {
         className="pointer-events-none fixed inset-x-0 bottom-0 z-30 h-40 backdrop-blur-xl [mask-image:linear-gradient(to_top,black,transparent)] [-webkit-mask-image:linear-gradient(to_top,black,transparent)]"
       />
       <div className="pointer-events-none fixed inset-x-0 bottom-10 z-50 flex justify-center">
-        <nav className="pointer-events-auto flex items-center gap-1.5 rounded-full border border-border bg-white p-1.5 shadow-lg shadow-black/5 sm:gap-2 sm:p-2">
-          {items.map((item) => {
-            const className =
-              "flex h-11 w-11 items-center justify-center rounded-full border border-border text-foreground/70 transition-colors hover:border-border hover:bg-[#e5e5e5] hover:text-foreground sm:h-[52px] sm:w-[52px]";
+        <nav
+          className="pointer-events-auto flex items-end gap-1.5 rounded-full border border-white/70 bg-white/85 p-1.5 shadow-xl shadow-black/10 ring-1 ring-black/5 backdrop-blur-xl sm:gap-2 sm:p-2"
+          onPointerLeave={() => setHoveredIndex(null)}
+        >
+          {items.map((item, index) => {
+            const isRouteActive =
+              !item.external &&
+              (pathname === item.href ||
+                (item.href !== "/" && pathname.startsWith(`${item.href}/`)));
+            const hoverDistance =
+              hoveredIndex === null ? Number.POSITIVE_INFINITY : Math.abs(hoveredIndex - index);
+            const dockMotionClass =
+              hoverDistance === 0
+                ? "[--dock-scale:1.12] [--dock-y:-7px]"
+                : hoverDistance === 1
+                  ? "[--dock-scale:1.045] [--dock-y:-2px]"
+                  : "[--dock-scale:1] [--dock-y:0px]";
+            const className = [
+              dockMotionClass,
+              "flex h-11 w-11 items-center justify-center rounded-full border [transform:translate3d(0,var(--dock-y),0)_scale(var(--dock-scale))] transition-[transform,background-color,border-color,color,box-shadow] duration-[170ms] ease-[var(--ease-out)] will-change-transform active:[--dock-scale:0.97] active:[--dock-y:0px] motion-reduce:[--dock-scale:1] motion-reduce:[--dock-y:0px] motion-reduce:transition-colors motion-reduce:active:[--dock-scale:1] sm:h-[52px] sm:w-[52px]",
+              "border-border bg-white text-muted shadow-sm shadow-black/5 [@media(hover:hover)_and_(pointer:fine)]:hover:border-border [@media(hover:hover)_and_(pointer:fine)]:hover:bg-[#f1f1f1] [@media(hover:hover)_and_(pointer:fine)]:hover:text-foreground [@media(hover:hover)_and_(pointer:fine)]:hover:shadow-md",
+            ].join(" ");
 
             const tooltip = (
               <span
                 role="presentation"
-                className="pointer-events-none absolute bottom-full left-1/2 mb-3 -translate-x-1/2 scale-95 rounded-md border border-border bg-white px-3 py-1.5 font-mono text-xs whitespace-nowrap text-foreground opacity-0 shadow-lg shadow-black/5 transition-all duration-150 group-hover:scale-100 group-hover:opacity-100"
+                className="pointer-events-none absolute bottom-full left-1/2 mb-3 -translate-x-1/2 translate-y-1 rounded-md border border-border bg-white px-3 py-1.5 font-mono text-xs whitespace-nowrap text-foreground opacity-0 shadow-lg shadow-black/5 transition-[transform,opacity] duration-150 ease-[var(--ease-out)] [@media(hover:hover)_and_(pointer:fine)]:group-hover:translate-y-0 [@media(hover:hover)_and_(pointer:fine)]:group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 motion-reduce:translate-y-0"
               >
                 {item.label}
               </span>
@@ -99,12 +119,21 @@ export function FloatingDock() {
 
             if (item.windowKey) {
               return (
-                <div key={item.href} className="group relative">
+                <div
+                  key={item.href}
+                  className="group relative"
+                  onPointerEnter={(event) => {
+                    if (event.pointerType === "mouse") setHoveredIndex(index);
+                  }}
+                  onFocus={() => setHoveredIndex(index)}
+                  onBlur={() => setHoveredIndex(null)}
+                >
                   {tooltip}
                   <OSLink
                     href={item.href}
                     windowKey={item.windowKey}
                     aria-label={item.label}
+                    aria-current={isRouteActive ? "page" : undefined}
                     className={className}
                   >
                     <item.Icon className="h-[18px] w-[18px] sm:h-[22px] sm:w-[22px]" strokeWidth={1.8} />
@@ -122,6 +151,12 @@ export function FloatingDock() {
                   target={item.external ? "_blank" : undefined}
                   rel={item.external ? "noopener noreferrer" : undefined}
                   className={className}
+                  aria-current={isRouteActive ? "page" : undefined}
+                  onPointerEnter={(event) => {
+                    if (event.pointerType === "mouse") setHoveredIndex(index);
+                  }}
+                  onFocus={() => setHoveredIndex(index)}
+                  onBlur={() => setHoveredIndex(null)}
                   onClick={(e) => {
                     if (item.href === "/" && isDesktop && hasOpenWindows) {
                       e.preventDefault();

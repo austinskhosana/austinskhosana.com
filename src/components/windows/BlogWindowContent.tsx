@@ -6,6 +6,7 @@ import type { KeyboardEvent } from "react";
 import { blogPosts } from "@/lib/data";
 import { useWindowManager } from "./WindowManagerContext";
 import { OSLink } from "./OSLink";
+import { TerminalAsciiArt } from "./TerminalAsciiArt";
 import type { WindowKey } from "./registry";
 
 type DocStep = {
@@ -236,7 +237,7 @@ function StepOutput({
 
 export function BlogWindowContent({ initialSlug }: { initialSlug?: string } = {}) {
   const { closeWindow } = useWindowManager();
-  const [steps, setSteps] = useState<Step[]>(() =>
+  const [steps] = useState<Step[]>(() =>
     initialSlug
       ? [{ kind: "post", command: "open post.md", slug: initialSlug }]
       : BASE_STEPS,
@@ -276,12 +277,9 @@ export function BlogWindowContent({ initialSlug }: { initialSlug?: string } = {}
     <div className="mx-auto flex max-w-2xl flex-col gap-8 overflow-x-hidden px-6 py-10">
       <div className="flex flex-col gap-2 bg-white p-5 font-mono text-sm leading-relaxed">
         {!initialSlug && (
-          <pre
-            aria-hidden
-            className="mb-10 w-fit font-mono text-[10px] leading-[10px] whitespace-pre text-foreground/70 select-none"
-          >
+          <TerminalAsciiArt className="text-[11px] leading-[11px]">
             {ASCII_ART}
-          </pre>
+          </TerminalAsciiArt>
         )}
 
         {steps.slice(0, completed).map((step, i) => (

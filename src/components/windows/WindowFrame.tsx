@@ -17,13 +17,50 @@ const CASCADE_CYCLE = 6;
 // Keeps windows clear of the floating dock (and its hover tooltips) at the
 // bottom of the viewport.
 const DOCK_EXCLUSION = 160;
-const ENTER_DURATION = 380;
-const EXIT_DURATION = 300;
+const ENTER_DURATION = 340;
+const EXIT_DURATION = 260;
 export const NAV_DURATION = 260;
 const REDUCED_DURATION = 150;
 
 type Rect = { x: number; y: number; width: number; height: number };
 type Phase = "entering" | "idle" | "closing";
+type WindowControlTone = "close" | "minimize" | "maximize";
+
+const controlToneClass: Record<WindowControlTone, string> = {
+  close: "bg-[#ff5f57] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.12)]",
+  minimize: "bg-[#febc2e] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.12)]",
+  maximize: "bg-[#28c840] shadow-[inset_0_0_0_0.5px_rgba(0,0,0,0.12)]",
+};
+
+function WindowControlButton({
+  label,
+  tone,
+  symbol,
+  onClick,
+}: {
+  label: string;
+  tone: WindowControlTone;
+  symbol: string;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      aria-label={label}
+      onPointerDown={(e) => e.stopPropagation()}
+      onClick={onClick}
+      className="group/window-control relative flex h-5 w-5 items-center justify-center rounded-full transition-transform duration-100 ease-[var(--ease-out)] active:scale-90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-foreground/30"
+    >
+      <span
+        aria-hidden
+        className={`h-3 w-3 rounded-full transition-[filter,opacity] duration-100 group-hover/window-control:brightness-[0.98] group-hover/window-control:opacity-95 ${controlToneClass[tone]}`}
+      />
+      <span className="pointer-events-none absolute -mt-px text-[8px] leading-none font-semibold text-foreground/45 opacity-0 transition-opacity duration-100 group-hover/window-control:opacity-100">
+        {symbol}
+      </span>
+    </button>
+  );
+}
 
 function genieVars(rect: Rect, origin: WindowOrigin) {
   return {
@@ -67,6 +104,7 @@ export function WindowFrame({
   fadeScroll,
   zIndex,
   spawnIndex,
+  focused,
   origin,
   navDirection,
   forceClose,
@@ -83,6 +121,7 @@ export function WindowFrame({
   fadeScroll?: boolean;
   zIndex: number;
   spawnIndex: number;
+  focused?: boolean;
   origin?: WindowOrigin;
   navDirection?: NavDirection;
   forceClose?: boolean;
@@ -109,6 +148,8 @@ export function WindowFrame({
   });
   const reducedMotion = usePrefersReducedMotion();
   const [maximized, setMaximized] = useState(false);
+  const [dragging, setDragging] = useState(false);
+  const [resizing, setResizing] = useState(false);
   const preMaximizeRect = useRef<Rect | null>(null);
   const contentElRef = useRef<HTMLDivElement | null>(null);
   const [scrollEdges, setScrollEdges] = useState({ atTop: true, atBottom: true });
@@ -138,6 +179,7 @@ export function WindowFrame({
     (e: ReactPointerEvent) => {
       if (maximized || phase !== "idle") return;
       onFocus();
+      setDragging(true);
       dragState.current = { startX: e.clientX, startY: e.clientY, origin: rect };
       (e.currentTarget as Element).setPointerCapture(e.pointerId);
     },
@@ -158,6 +200,7 @@ export function WindowFrame({
 
   const handleDragEnd = useCallback((e: ReactPointerEvent) => {
     dragState.current = null;
+    setDragging(false);
     (e.currentTarget as Element).releasePointerCapture(e.pointerId);
   }, []);
 
@@ -166,6 +209,7 @@ export function WindowFrame({
       if (maximized || phase !== "idle") return;
       e.stopPropagation();
       onFocus();
+      setResizing(true);
       resizeState.current = { startX: e.clientX, startY: e.clientY, origin: rect };
       (e.currentTarget as Element).setPointerCapture(e.pointerId);
     },
@@ -190,6 +234,7 @@ export function WindowFrame({
 
   const handleResizeEnd = useCallback((e: ReactPointerEvent) => {
     resizeState.current = null;
+    setResizing(false);
     (e.currentTarget as Element).releasePointerCapture(e.pointerId);
   }, []);
 
@@ -282,7 +327,11 @@ export function WindowFrame({
 
   return (
     <div
-      className="pointer-events-auto absolute flex flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-2xl shadow-black/10"
+      className={`pointer-events-auto absolute flex flex-col overflow-hidden rounded-2xl border bg-white transition-[box-shadow,border-color,filter] duration-200 ease-[var(--ease-out)] ${
+        focused
+          ? "border-black/15 shadow-2xl shadow-black/18"
+          : "border-border shadow-xl shadow-black/8 brightness-[0.985]"
+      } ${dragging || resizing ? "shadow-2xl shadow-black/25 brightness-100" : ""}`}
       style={{
         left: rect.x,
         top: rect.y,
@@ -295,35 +344,40 @@ export function WindowFrame({
       onAnimationEnd={handleAnimationEnd}
     >
       <div
-        className="flex shrink-0 cursor-grab items-center border-b border-border px-4 py-3 active:cursor-grabbing"
+        className={`flex shrink-0 cursor-grab items-center border-b px-3 py-2.5 backdrop-blur-xl transition-[background-color,border-color,opacity] duration-200 ease-[var(--ease-out)] active:cursor-grabbing ${
+          focused
+            ? "border-black/10 bg-white/90"
+            : "border-border bg-white/70 opacity-90"
+        }`}
         onPointerDown={handleDragStart}
         onPointerMove={handleDragMove}
         onPointerUp={handleDragEnd}
       >
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            aria-label="Close"
-            onPointerDown={(e) => e.stopPropagation()}
+          <WindowControlButton
+            label="Close"
+            tone="close"
+            symbol="×"
             onClick={handleCloseClick}
-            className="h-3 w-3 rounded-full bg-[#ff5f57] transition-opacity hover:opacity-80"
           />
-          <button
-            type="button"
-            aria-label="Minimize"
-            onPointerDown={(e) => e.stopPropagation()}
+          <WindowControlButton
+            label="Minimize"
+            tone="minimize"
+            symbol="−"
             onClick={onMinimize}
-            className="h-3 w-3 rounded-full bg-[#febc2e] transition-opacity hover:opacity-80"
           />
-          <button
-            type="button"
-            aria-label="Maximize"
-            onPointerDown={(e) => e.stopPropagation()}
+          <WindowControlButton
+            label="Maximize"
+            tone="maximize"
+            symbol="+"
             onClick={toggleMaximize}
-            className="h-3 w-3 rounded-full bg-[#28c840] transition-opacity hover:opacity-80"
           />
         </div>
-        <span className="flex-1 text-center font-mono text-xs text-muted select-none">
+        <span
+          className={`flex-1 text-center font-mono text-xs select-none transition-colors duration-200 ${
+            focused ? "text-muted" : "text-subtle"
+          }`}
+        >
           {title}
         </span>
         <div className="w-[52px]" aria-hidden />

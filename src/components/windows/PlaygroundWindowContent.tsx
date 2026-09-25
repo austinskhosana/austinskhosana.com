@@ -5,6 +5,7 @@ import type { KeyboardEvent } from "react";
 import { playgroundItems } from "@/lib/data";
 import type { PlaygroundCategory } from "@/lib/data";
 import { OSLink } from "./OSLink";
+import { TerminalAsciiArt } from "./TerminalAsciiArt";
 
 type DocStep = {
   kind: "doc";
@@ -208,12 +209,9 @@ export function PlaygroundWindowContent() {
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-8 px-6 pt-3 pb-10">
       <div className="flex flex-col gap-2 bg-white p-5 font-mono text-sm leading-relaxed">
-        <pre
-          aria-hidden
-          className="mb-10 w-fit font-mono text-[6px] leading-[6px] whitespace-pre text-foreground/70 select-none"
-        >
+        <TerminalAsciiArt className="hidden text-[6px] leading-[6px] sm:block">
           {ASCII_ART}
-        </pre>
+        </TerminalAsciiArt>
 
         {steps.slice(0, completed).map((step, i) => (
           <div key={i} className="flex flex-col gap-2">
