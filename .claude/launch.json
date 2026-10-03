@@ -4,8 +4,12 @@
     {
       "name": "dev",
       "runtimeExecutable": "/Users/austinskhosana/.nvm/versions/node/v22.23.2/bin/npm",
-      "runtimeArgs": ["run", "dev"],
-      "port": 3000
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
+      "port": 3000,
+      "autoPort": true
     }
   ]
 }
