@@ -1023,4 +1023,4 @@ export const blogPosts: BlogPost[] = [
       "So the question shouldn't be whether designers should code or not, but rather how much technical fluency designers should acquire, be it in code or plain English, to create with as much contextual awareness as possible.",
     ],
   },
-];
+].sort((a, b) => a.date.localeCompare(b.date));
