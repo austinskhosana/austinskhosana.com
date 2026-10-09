@@ -29,7 +29,6 @@ export function WindowLayer() {
 
   const minimized = windows.filter((w) => w.minimized);
   const visibleWindows = windows.filter((w) => !w.minimized);
-  const hasVisibleWindows = visibleWindows.length > 0;
   const topVisibleZ = visibleWindows.reduce(
     (max, w) => Math.max(max, w.zIndex),
     -Infinity,
@@ -37,12 +36,6 @@ export function WindowLayer() {
 
   return (
     <div className="pointer-events-none fixed inset-0 z-40">
-      <div
-        aria-hidden
-        className="pointer-events-none fixed inset-0 bg-white/20 backdrop-blur-xl transition-opacity duration-300 ease-[var(--ease-out)]"
-        style={{ opacity: hasVisibleWindows ? 1 : 0 }}
-      />
-
       {visibleWindows
         .map((w) => {
           const entry = windowRegistry[w.key];
