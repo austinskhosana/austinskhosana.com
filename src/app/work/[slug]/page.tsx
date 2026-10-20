@@ -5,9 +5,7 @@ import { CaseStudyContent } from "@/components/CaseStudyContent";
 import { CaseStudyTimeline } from "@/components/CaseStudyTimeline";
 
 export function generateStaticParams() {
-  return projects
-    .filter((project) => !project.comingSoon)
-    .map((project) => ({ slug: project.slug }));
+  return projects.map((project) => ({ slug: project.slug }));
 }
 
 export async function generateMetadata({
@@ -17,7 +15,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
-  if (!project || project.comingSoon) return {};
+  if (!project) return {};
   return {
     title: `${project.title} — Austin Skhosana`,
     description: project.description,
@@ -31,7 +29,7 @@ export default async function CaseStudy({
 }) {
   const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
-  if (!project || project.comingSoon) notFound();
+  if (!project) notFound();
 
   return (
     <>

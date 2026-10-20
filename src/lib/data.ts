@@ -178,6 +178,7 @@ const projectEntries: Project[] = [
     description:
       "Building a playable argument for human participation on the internet.",
     tags: ["Product Design", "Design Engineering", "Open Source"],
+    comingSoon: true,
     role: "Product Designer & Developer, Self-led Project",
     tools:
       "React, TypeScript, Vinext, Three.js, Canvas, Clerk, Supabase, Vercel, Codex, Claude Code",
