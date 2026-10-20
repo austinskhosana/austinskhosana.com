@@ -656,7 +656,6 @@ const projectEntries: Project[] = [
     tags: ["UI Design", "Product Design", "Frontend Development"],
     role: "Product Designer",
     tools: "Product Design, CSS",
-    coverOrb: true,
     image: "/images/coeditor-loader-final.png",
     imageAlt: "Coeditor comment editor with the final moderation loader",
     imageWidth: 6912,
@@ -1171,10 +1170,10 @@ const projectEntries: Project[] = [
 export const projects: Project[] = [...projectEntries].sort((a, b) => {
   if (a.slug === "creatorshop") return -1;
   if (b.slug === "creatorshop") return 1;
-  if (a.slug === "comments-moderation") return -1;
-  if (b.slug === "comments-moderation") return 1;
   if (a.slug === "next-of-kin") return -1;
   if (b.slug === "next-of-kin") return 1;
+  if (a.slug === "comments-moderation") return -1;
+  if (b.slug === "comments-moderation") return 1;
   if (a.slug === "thespectator") return -1;
   if (b.slug === "thespectator") return 1;
   return 0;
