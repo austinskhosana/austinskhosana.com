@@ -555,7 +555,16 @@ export function CaseStudyContent({ project }: { project: Project }) {
             alt={project.imageAlt ?? project.title}
             fill
             quality={100}
-            className="object-cover object-top transition-opacity duration-150 ease-[var(--ease-out)] group-hover:opacity-90"
+            className={`${
+              project.coverImageScale
+                ? "object-contain"
+                : "object-cover object-top"
+            } transition-opacity duration-150 ease-[var(--ease-out)] group-hover:opacity-90`}
+            style={
+              project.coverImageScale
+                ? { transform: `scale(${project.coverImageScale})` }
+                : undefined
+            }
             sizes="(min-width: 1120px) 1072px, 100vw"
             priority
           />

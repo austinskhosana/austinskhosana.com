@@ -656,10 +656,11 @@ const projectEntries: Project[] = [
     tags: ["UI Design", "Product Design", "Frontend Development"],
     role: "Product Designer",
     tools: "Product Design, CSS",
-    image: "/images/coeditor-loader-final.png",
-    imageAlt: "Coeditor comment editor with the final moderation loader",
-    imageWidth: 6912,
-    imageHeight: 4320,
+    image: "/images/coeditor-cover.png",
+    imageAlt: "Coeditor detailed comment view with source, commenter details, and moderation history",
+    imageWidth: 5774,
+    imageHeight: 3591,
+    coverImageScale: 0.72,
     sections: [
       {
         heading: "Problem Statement",
