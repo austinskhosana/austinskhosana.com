@@ -219,14 +219,6 @@ const projectEntries: Project[] = [
           "Completing the daily goals triggers a short confetti animation: a simple success state that adds a little fun to an otherwise practical tool.",
           "The product does not write or reply on the user's behalf. It gives the work a structure while leaving the human part of it intact.",
         ],
-        images: [
-          {
-            src: "/images/the-scene-dashboard.png",
-            alt: "The Scene dashboard showing a GitHub-style activity streak and daily reply and original post goals",
-            width: 3456,
-            height: 2164,
-          },
-        ],
         videos: [
           {
             src: "/videos/the-scene-confetti-success.mp4",
@@ -274,6 +266,22 @@ const projectEntries: Project[] = [
           "Releasing The Scene publicly meant it needed more than a functional dashboard. It needed a landing page, a product identity, and an art direction capable of communicating what the product stood for.",
           "While thinking about that identity, I kept returning to [dead internet theory](https://en.wikipedia.org/wiki/Dead_Internet_theory): not as a proven description of the internet, but as a useful cultural reference for the growing presence of synthetic content, automated engagement, and bots interacting with bots.",
         ],
+        tightImages: true,
+        sideBySideImages: true,
+        images: [
+          {
+            src: "/images/the-scene-world-building-magazine-cutout.png",
+            alt: "The Scene world-building magazine spread connecting dead internet theory with the project's human participation message",
+            width: 1536,
+            height: 1024,
+          },
+          {
+            src: "/images/the-scene-world-building-poster-cutout.png",
+            alt: "The Scene poster reading Don't Be a Bot with the game's central character and lime visual system",
+            width: 1024,
+            height: 1536,
+          },
+        ],
       },
       {
         heading: "The Ghosts in the Machine",
@@ -289,22 +297,6 @@ const projectEntries: Project[] = [
         body: [
           "The landing page became a playable expression of that idea. Instead of explaining the argument through paragraphs, the player enters the world and fights its digital ghosts and bots.",
           "The game does not replace the product story. It visualises it. The player remains present, takes action, and pushes back against a world filled with artificial activity.",
-        ],
-        videos: [
-          {
-            src: "/videos/the-scene-shooting-animation.mp4",
-            alt: "The Scene character firing a lime energy blast",
-            width: 1080,
-            height: 1080,
-            framed: true,
-          },
-          {
-            src: "/videos/the-scene-ghost-dissolve-animation.mp4",
-            alt: "A digital ghost dissolving after being hit in The Scene",
-            width: 1080,
-            height: 1080,
-            framed: true,
-          },
         ],
       },
       {
@@ -322,20 +314,20 @@ const projectEntries: Project[] = [
           "The character, energy blasts, enemies, music, sound effects, loaders, transitions, cover artwork, and menu gradually turned the product into one coherent videogame world.",
           "Each layer had a job. Sound gave interactions weight, animation made enemy states legible, and the transitions stopped the game and dashboard from feeling like unrelated parts of the same website.",
         ],
-        tightImages: true,
-        sideBySideImages: true,
-        images: [
+        videos: [
           {
-            src: "/images/the-scene-world-building-magazine-cutout.png",
-            alt: "The Scene world-building magazine spread connecting dead internet theory with the project's human participation message",
-            width: 1536,
-            height: 1024,
+            src: "/videos/the-scene-shooting-animation.mp4",
+            alt: "The Scene character firing a lime energy blast",
+            width: 1080,
+            height: 1080,
+            framed: true,
           },
           {
-            src: "/images/the-scene-world-building-poster-cutout.png",
-            alt: "The Scene poster reading Don't Be a Bot with the game's central character and lime visual system",
-            width: 1024,
-            height: 1536,
+            src: "/videos/the-scene-ghost-dissolve-animation.mp4",
+            alt: "A digital ghost dissolving after being hit in The Scene",
+            width: 1080,
+            height: 1080,
+            framed: true,
           },
         ],
       },
