@@ -45,6 +45,7 @@ function renderBodyLine(line: string) {
 
 function SectionVideo({
   video,
+  squareCorners = false,
 }: {
   video: {
     src: string;
@@ -57,6 +58,7 @@ function SectionVideo({
     fill?: boolean;
     scale?: number;
   };
+  squareCorners?: boolean;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   useAutoplayVideo(videoRef);
@@ -87,7 +89,7 @@ function SectionVideo({
             ref={videoRef}
             src={video.src}
             aria-label={video.alt}
-            className="h-full w-full rounded-2xl object-contain"
+            className={`h-full w-full object-contain ${squareCorners ? "" : "rounded-2xl"}`}
             autoPlay
             loop
             muted
@@ -499,9 +501,18 @@ export function CaseStudyContent({ project }: { project: Project }) {
 
       {project.coverVideo && (
         <div
+          style={
+            project.coverVideoFill &&
+            project.coverVideoFitWidth &&
+            !project.gamingFrame
+              ? {
+                  aspectRatio: `${project.coverVideoWidth ?? 1600} / ${project.coverVideoHeight ?? 1000}`,
+                }
+              : undefined
+          }
           className={
             project.coverVideoFill
-              ? "aspect-[16/10] w-full overflow-hidden bg-[#f5f5f5]"
+              ? `${project.coverVideoFitWidth && !project.gamingFrame ? "" : "aspect-[16/10]"} flex w-full items-center justify-center overflow-hidden bg-[#f5f5f5]`
               : "flex aspect-[16/10] w-full items-center justify-center bg-[#f5f5f5] p-8 sm:p-12"
           }
         >
@@ -511,8 +522,12 @@ export function CaseStudyContent({ project }: { project: Project }) {
             width={project.coverVideoWidth ?? 1600}
             height={project.coverVideoHeight ?? 1000}
             fill={project.coverVideoFill}
+            fitWidth={project.coverVideoFitWidth}
             scale={project.coverVideoScale}
             bordered={project.coverVideoBordered}
+            rounded={false}
+            darkBorder={project.coverVideoDarkBorder}
+            gamingFrame={project.gamingFrame}
           />
         </div>
       )}
@@ -579,7 +594,7 @@ export function CaseStudyContent({ project }: { project: Project }) {
 
             {section.images && section.images.length > 0 && (
               <div
-                className={`flex w-full flex-col ${section.tightImages ? "mt-6 gap-4" : "mt-10 gap-16"}`}
+                className={`w-full ${section.sideBySideImages ? "grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6" : "flex flex-col"} ${section.tightImages ? "mt-6 gap-4" : "mt-10 gap-16"}`}
               >
                 {section.images.map((image) =>
                   image.src === "" ? (
@@ -610,8 +625,11 @@ export function CaseStudyContent({ project }: { project: Project }) {
                           width={image.width}
                           height={image.height}
                           quality={100}
-                          style={{ transform: `scale(${image.scale ?? 1})` }}
-                          className="h-full w-full object-contain transition-opacity duration-150 ease-[var(--ease-out)] group-hover:opacity-90"
+                          style={{
+                            transform: `scale(${image.scale ?? 1})`,
+                            transformOrigin: "center",
+                          }}
+                          className="h-full w-full object-contain transition-[opacity,transform] duration-150 ease-[var(--ease-out)] group-hover:opacity-90"
                           sizes="(min-width: 1120px) 1072px, 100vw"
                         />
                       </div>
@@ -629,18 +647,15 @@ export function CaseStudyContent({ project }: { project: Project }) {
                         })
                       }
                       aria-label={`View larger image: ${image.alt}`}
-                      className="group block w-full cursor-zoom-in"
+                      className={`group block cursor-zoom-in ${section.sideBySideImages ? "flex aspect-[4/3] min-w-0 items-center justify-center overflow-hidden bg-[#f5f5f5] p-4 sm:p-8" : "w-full"}`}
                     >
-                      {/* No site-side frame here: these images already come
-                          with the grey tray, border, and shadow baked in
-                          from Figma, matching the video's treatment. */}
                       <Image
                         src={image.src}
                         alt={image.alt}
                         width={image.width}
                         height={image.height}
                         quality={100}
-                        className="h-auto w-full transition-opacity duration-150 ease-[var(--ease-out)] group-hover:opacity-90"
+                        className={`h-auto w-full transition-opacity duration-150 ease-[var(--ease-out)] group-hover:opacity-90 ${section.sideBySideImages ? "max-h-full object-contain" : ""}`}
                         sizes="(min-width: 1120px) 1072px, 100vw"
                       />
                     </button>
@@ -652,7 +667,11 @@ export function CaseStudyContent({ project }: { project: Project }) {
             {section.videos && section.videos.length > 0 && (
               <div className="mt-10 flex w-full flex-col gap-6">
                 {section.videos.map((video) => (
-                  <SectionVideo key={video.src} video={video} />
+                  <SectionVideo
+                    key={video.src}
+                    video={video}
+                    squareCorners={project.squareFramedMedia}
+                  />
                 ))}
               </div>
             )}

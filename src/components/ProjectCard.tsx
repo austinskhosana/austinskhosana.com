@@ -2,19 +2,41 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/lib/data";
 import { CoverVideo } from "@/components/CoverVideo";
+import { OrbCover } from "@/components/OrbCover";
 
 export function ProjectCard({ project }: { project: Project }) {
-  return (
-    <Link
-      href={`/work/${project.slug}`}
-      className="group flex flex-col gap-[28px]"
-    >
-      <div className="relative h-[320px] w-full overflow-hidden bg-[#f5f5f5] sm:h-[420px] lg:h-[700px]">
-        {project.coverVideo ? (
+  const card = (
+    <>
+      <div
+        data-cursor-label={
+          project.comingSoon ? "Coming Soon" : "View Case Study"
+        }
+        style={
+          project.coverVideoFitWidth && !project.gamingFrame
+            ? {
+                aspectRatio: `${project.coverVideoWidth ?? 1600} / ${project.coverVideoHeight ?? 1000}`,
+              }
+            : undefined
+        }
+        className={`relative w-full overflow-hidden bg-[#f5f5f5] ${
+          project.coverVideoFitWidth && !project.gamingFrame
+            ? ""
+            : project.gamingFrame
+              ? "aspect-[16/10]"
+              : "h-[320px] sm:h-[420px] lg:h-[700px]"
+        }`}
+      >
+        {project.coverOrb ? (
+          <div className="flex h-full w-full items-center justify-center p-8 sm:p-12">
+            <OrbCover />
+          </div>
+        ) : project.coverVideo ? (
           <div
             className={
               project.coverVideoFill
-                ? "h-full w-full"
+                ? project.gamingFrame
+                  ? "flex h-full w-full items-center justify-center"
+                  : "h-full w-full"
                 : "flex h-full w-full items-center justify-center p-8 sm:p-12"
             }
           >
@@ -24,8 +46,12 @@ export function ProjectCard({ project }: { project: Project }) {
               width={project.coverVideoWidth ?? 1600}
               height={project.coverVideoHeight ?? 1000}
               fill={project.coverVideoFill}
+              fitWidth={project.coverVideoFitWidth}
               scale={project.coverVideoScale}
               bordered={project.coverVideoBordered}
+              rounded={project.coverVideoRounded}
+              darkBorder={project.coverVideoDarkBorder}
+              gamingFrame={project.gamingFrame}
             />
           </div>
         ) : (
@@ -35,7 +61,16 @@ export function ProjectCard({ project }: { project: Project }) {
               alt={project.imageAlt ?? project.title}
               fill
               quality={100}
-              className="object-contain sm:object-cover sm:object-top"
+              className={
+                project.coverImageScale
+                  ? "object-contain"
+                  : "object-contain sm:object-cover sm:object-top"
+              }
+              style={
+                project.coverImageScale
+                  ? { transform: `scale(${project.coverImageScale})` }
+                  : undefined
+              }
               sizes="(min-width: 1024px) 1057px, 100vw"
             />
           )
@@ -52,6 +87,26 @@ export function ProjectCard({ project }: { project: Project }) {
           {project.tags.join(", ")}
         </p>
       </div>
+    </>
+  );
+
+  if (project.comingSoon) {
+    return (
+      <article
+        className="group flex flex-col gap-[28px]"
+        aria-label={`${project.title}, coming soon`}
+      >
+        {card}
+      </article>
+    );
+  }
+
+  return (
+    <Link
+      href={`/work/${project.slug}`}
+      className="group flex flex-col gap-[28px]"
+    >
+      {card}
     </Link>
   );
 }

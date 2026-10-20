@@ -33,6 +33,141 @@ body {
   color: var(--background);
 }
 
+.custom-cursor {
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  left: 0;
+  display: none;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform;
+  transition: opacity 150ms var(--ease-out);
+}
+
+.custom-cursor[data-visible="true"] {
+  opacity: 1;
+}
+
+.custom-cursor__press {
+  position: relative;
+  width: 0;
+  height: 0;
+  transform: scale(1);
+  transition: transform 120ms var(--ease-out);
+}
+
+.custom-cursor[data-pressed="true"] .custom-cursor__press {
+  transform: scale(0.72);
+}
+
+.custom-cursor__shape {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 136px;
+  height: 38px;
+  background: #333333;
+  border-radius: 999px;
+  clip-path: inset(10px 59px round 999px);
+  transform: translate(-50%, -50%);
+  transition: clip-path 180ms var(--ease-in-out);
+}
+
+.custom-cursor[data-expanded="true"] .custom-cursor__shape {
+  clip-path: inset(0 round 999px);
+}
+
+.custom-cursor__label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 136px;
+  color: #ffffff;
+  font-family: var(--font-geist), sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 125ms var(--ease-out);
+}
+
+.custom-cursor[data-expanded="true"] .custom-cursor__label {
+  opacity: 1;
+  transition-delay: 55ms;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .custom-cursor {
+    display: block;
+  }
+
+  .custom-cursor-enabled,
+  .custom-cursor-enabled * {
+    cursor: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-cursor,
+  .custom-cursor__press,
+  .custom-cursor__shape,
+  .custom-cursor__label {
+    transition: none;
+  }
+}
+
+.coeditor-orb-panel {
+  display: grid;
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  aspect-ratio: 800 / 926;
+  place-items: center;
+  background: #ffffff;
+}
+
+.coeditor-orb {
+  width: 100px;
+  height: 100px;
+  padding: 0;
+  background-image: linear-gradient(
+    rgb(186, 66, 255) 35%,
+    rgb(0, 225, 255)
+  );
+  border-radius: 50%;
+  box-shadow:
+    0 -5px 20px rgb(186, 66, 255),
+    0 5px 20px rgb(0, 225, 255);
+  filter: blur(1px);
+  animation: coeditor-orb-spin 1.7s linear infinite;
+}
+
+.coeditor-orb-inner {
+  width: 100px;
+  height: 100px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  filter: blur(10px);
+}
+
+@keyframes coeditor-orb-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coeditor-orb {
+    animation: none;
+  }
+}
+
 @keyframes marquee {
   from {
     transform: translateX(0);

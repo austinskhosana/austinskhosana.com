@@ -8,6 +8,7 @@ import { LatestPostWidget } from "@/components/LatestPostWidget";
 import { blogPosts } from "@/lib/data";
 import { WindowManagerProvider } from "@/components/windows/WindowManagerContext";
 import { WindowLayer } from "@/components/windows/WindowLayer";
+import { CustomCursor } from "@/components/CustomCursor";
 
 const widgetPosts = [
   blogPosts.find((post) => post.slug === "tailwind-the-last-css-framework-3")!,
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geist.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans text-[15px] text-foreground">
+        <CustomCursor />
         <WindowManagerProvider>
           <Nav />
           <LatestPostWidget posts={widgetPosts} />

@@ -96,10 +96,14 @@ export type Project = {
   // Keeps the case study reachable at /work/[slug] and in generateStaticParams
   // while leaving it off the home page's card list.
   hiddenFromHome?: boolean;
+  // Shows a non-interactive project card without publishing a case-study route.
+  comingSoon?: boolean;
   image?: string;
   imageAlt?: string;
   imageWidth?: number;
   imageHeight?: number;
+  coverImageScale?: number;
+  coverOrb?: boolean;
   coverVideo?: string;
   coverVideoAlt?: string;
   coverVideoWidth?: number;
@@ -107,12 +111,20 @@ export type Project = {
   // Edge-to-edge, cropped cover instead of the default padded grey tray
   // with a bordered/contained video.
   coverVideoFill?: boolean;
+  // Fits the video to the tray width first, leaving any remaining height as
+  // gray letterboxing instead of cropping the footage.
+  coverVideoFitWidth?: boolean;
   // Overrides CoverVideo's default 1.25 crop-in scale — for clips that
   // don't need as tight a zoom to fill the frame.
   coverVideoScale?: number;
   // Only applies when coverVideoFill is unset — drop the rounded corners,
   // border, and shadow, while still floating inside the grey tray.
   coverVideoBordered?: boolean;
+  // Keeps the border while allowing square corners for a project-specific frame.
+  coverVideoRounded?: boolean;
+  coverVideoDarkBorder?: boolean;
+  gamingFrame?: boolean;
+  squareFramedMedia?: boolean;
   gallery?: { src: string; alt: string; width: number; height: number }[];
   sections: {
     heading: string;
@@ -134,6 +146,8 @@ export type Project = {
       // tray beyond the default padding, for shots that read as too large.
       scale?: number;
     }[];
+    // Places transparent editorial objects together on one shared grey tray.
+    sideBySideImages?: boolean;
     // Tighter stacking for image sets that read as one continuous sequence
     // (e.g. states of the same component) rather than standalone shots.
     tightImages?: boolean;
@@ -157,7 +171,208 @@ export type Project = {
   }[];
 };
 
-export const projects: Project[] = [
+const projectEntries: Project[] = [
+  {
+    slug: "the-scene",
+    title: "The Scene",
+    description:
+      "Building a playable argument for human participation on the internet.",
+    tags: ["Product Design", "Design Engineering", "Open Source"],
+    role: "Product Designer & Developer, Self-led Project",
+    tools:
+      "React, TypeScript, Vinext, Three.js, Canvas, Clerk, Supabase, Vercel, Codex, Claude Code",
+    image: "",
+    coverVideo: "/videos/the-scene-landing-page-gameplay.mp4",
+    coverVideoAlt:
+      "The Scene landing page gameplay with the player moving through the world and fighting digital ghosts and bots",
+    coverVideoWidth: 3456,
+    coverVideoHeight: 2164,
+    coverVideoBordered: false,
+    coverVideoFill: true,
+    coverVideoFitWidth: true,
+    coverVideoRounded: false,
+    coverVideoDarkBorder: true,
+    gamingFrame: true,
+    sections: [
+      {
+        heading: "The Scene",
+        body: [
+          "The Scene started as a personal tool for showing up consistently on X, using daily goals and a GitHub-style activity streak to make posting and replying visible.",
+          "When I began preparing it for an open-source release, the growing conversation around [dead internet theory](https://en.wikipedia.org/wiki/Dead_Internet_theory) gave me a way to art-direct its public identity. I created a playable world where digital ghosts and bots represent the increasingly automated internet, while the product underneath encourages people to participate themselves.",
+          "The videogame, sound design, and 3D case turned that message into something artful, distinct, and unmistakably branded.",
+        ],
+      },
+      {
+        heading: "Building the Tool I Needed",
+        navLabel: "The Personal Tool",
+        body: [
+          "Growing an account on X depends on showing up consistently: posting, replying, and genuinely engaging with other people. I wanted a lightweight system that could make those daily actions visible and repeatable without turning the process into a complicated productivity system.",
+          "The first version was simple. It tracked my activity, gave me something concrete to return to each day, and helped me build a habit around the work I already knew I needed to do.",
+        ],
+      },
+      {
+        heading: "Making Consistency Visible",
+        navLabel: "Visible Consistency",
+        body: [
+          "Daily post and reply goals sit alongside a GitHub-style contribution streak. The idea was to make an inconsistent activity visible over time: not just whether I had completed a task today, but whether I was building a pattern of participation.",
+          "Completing the daily goals triggers a short confetti animation: a simple success state that adds a little fun to an otherwise practical tool.",
+          "The product does not write or reply on the user's behalf. It gives the work a structure while leaving the human part of it intact.",
+        ],
+        images: [
+          {
+            src: "/images/the-scene-dashboard.png",
+            alt: "The Scene dashboard showing a GitHub-style activity streak and daily reply and original post goals",
+            width: 3456,
+            height: 2164,
+          },
+        ],
+        videos: [
+          {
+            src: "/videos/the-scene-confetti-success.mp4",
+            alt: "Confetti animation celebrating completed daily goals in The Scene",
+            width: 3456,
+            height: 2164,
+            fill: true,
+            scale: 1,
+          },
+        ],
+      },
+      {
+        heading: "Settings",
+        body: [
+          "The daily reply and original post targets can be adjusted to match the habit each person is trying to build. Changes save as they are made, and the same Lime system carries across light and dark modes.",
+        ],
+        tightImages: true,
+        images: [
+          {
+            src: "/images/the-scene-settings.png",
+            alt: "The Scene settings page with configurable daily reply and original post goals and a dark mode control",
+            width: 3456,
+            height: 2164,
+          },
+          {
+            src: "/images/the-scene-dashboard-dark.png",
+            alt: "The Scene dashboard in dark mode with the activity streak and daily X goals",
+            width: 3456,
+            height: 2164,
+          },
+        ],
+      },
+      {
+        heading: "Making It Open Source",
+        navLabel: "Open Source",
+        body: [
+          "The problem was not unique to me. Other people were also trying to grow an audience by showing up consistently, so I decided to release the tool publicly and share its source rather than keep it as a private utility.",
+          "That decision changed the project. A personal tool only had to make sense to me. A public product needed to explain itself, feel intentional, and give people a reason to care.",
+        ],
+      },
+      {
+        heading: "Giving the Product a World",
+        navLabel: "A Product World",
+        body: [
+          "Releasing The Scene publicly meant it needed more than a functional dashboard. It needed a landing page, a product identity, and an art direction capable of communicating what the product stood for.",
+          "While thinking about that identity, I kept returning to [dead internet theory](https://en.wikipedia.org/wiki/Dead_Internet_theory): not as a proven description of the internet, but as a useful cultural reference for the growing presence of synthetic content, automated engagement, and bots interacting with bots.",
+        ],
+      },
+      {
+        heading: "The Ghosts in the Machine",
+        navLabel: "Ghosts & Bots",
+        body: [
+          "That context gave the landing page its visual language. Digital ghosts and bots became a playful representation of the automated internet, while the product underneath continued to support something deliberately human: showing up, posting, replying, and building relationships yourself.",
+          "The Scene is not opposed to AI or automation in general. Its argument is specifically against automating the human participation that makes social platforms social.",
+        ],
+      },
+      {
+        heading: "Turning the Message into a Game",
+        navLabel: "The Playable Metaphor",
+        body: [
+          "The landing page became a playable expression of that idea. Instead of explaining the argument through paragraphs, the player enters the world and fights its digital ghosts and bots.",
+          "The game does not replace the product story. It visualises it. The player remains present, takes action, and pushes back against a world filled with artificial activity.",
+        ],
+        videos: [
+          {
+            src: "/videos/the-scene-shooting-animation.mp4",
+            alt: "The Scene character firing a lime energy blast",
+            width: 1080,
+            height: 1080,
+            framed: true,
+          },
+          {
+            src: "/videos/the-scene-ghost-dissolve-animation.mp4",
+            alt: "A digital ghost dissolving after being hit in The Scene",
+            width: 1080,
+            height: 1080,
+            framed: true,
+          },
+        ],
+      },
+      {
+        heading: "Building Beyond My Technical Range",
+        navLabel: "AI-assisted Building",
+        body: [
+          "Turning that art direction into a playable world required systems I had not built before: character movement, combat, enemy behaviour, sprite animation, sound, Canvas rendering, and Three.js.",
+          "AI-assisted coding lowered the technical barrier enough for me to explore those ideas directly. That created an important tension: AI helped me build The Scene, while The Scene argues against using AI to impersonate human connection. The distinction is what the automation replaces. These tools expanded what I could create; they did not participate on my behalf.",
+        ],
+      },
+      {
+        heading: "Building the World Around It",
+        navLabel: "Building the World",
+        body: [
+          "The character, energy blasts, enemies, music, sound effects, loaders, transitions, cover artwork, and menu gradually turned the product into one coherent videogame world.",
+          "Each layer had a job. Sound gave interactions weight, animation made enemy states legible, and the transitions stopped the game and dashboard from feeling like unrelated parts of the same website.",
+        ],
+        tightImages: true,
+        sideBySideImages: true,
+        images: [
+          {
+            src: "/images/the-scene-world-building-magazine-cutout.png",
+            alt: "The Scene world-building magazine spread connecting dead internet theory with the project's human participation message",
+            width: 1536,
+            height: 1024,
+          },
+          {
+            src: "/images/the-scene-world-building-poster-cutout.png",
+            alt: "The Scene poster reading Don't Be a Bot with the game's central character and lime visual system",
+            width: 1024,
+            height: 1536,
+          },
+        ],
+      },
+      {
+        heading: "Putting the Game in a Case",
+        navLabel: "The 3D Case",
+        body: [
+          "The Three.js case came last. It turned The Scene into a fictional physical object, gave the website a memorable opening, and placed the game, dashboard, sign-in, streak, and sound controls inside one navigation system.",
+          "It also became a useful marketing asset. One image of the case could communicate the product's visual world before someone had played it.",
+        ],
+        videos: [
+          {
+            src: "/videos/the-scene-game-case.mp4",
+            alt: "The Scene Three.js game case rotating and opening to reveal the game-style menu",
+            width: 3456,
+            height: 2164,
+            fill: true,
+            scale: 1,
+          },
+        ],
+      },
+      {
+        heading: "Preparing It for Release",
+        navLabel: "Launch Preparation",
+        body: [
+          "Clerk and Supabase moved the project beyond a local prototype. They support authentication, onboarding, protected routes, persistent daily activity, date-specific streak history, and counts that reset according to the user's local calendar day.",
+        ],
+      },
+      {
+        heading: "What I Learned and What Comes Next",
+        navLabel: "What Comes Next",
+        body: [
+          "The Scene taught me how a small personal tool can grow into a much larger product story, and how art direction can communicate an argument rather than simply decorate an interface. It also pushed me beyond my previous technical range and made the importance of restraint more obvious: when experimentation becomes easier, deciding what belongs becomes the harder design problem.",
+          "The project is still evolving. The next step is to launch it, learn from the people using it, improve the dashboard and onboarding, and see which parts of the videogame world continue to add value after the first interaction. The open-source release also leaves space for the project to grow through community feedback and contribution.",
+        ],
+      },
+    ],
+  },
   {
     slug: "creatorshop",
     title: "Creatorshop",
@@ -170,6 +385,8 @@ export const projects: Project[] = [
     coverVideo: "/videos/creatorshop-cover.mp4",
     coverVideoAlt: "Creator-side hero header with the lime green barter card and a spinning scroll-down badge",
     coverVideoBordered: false,
+    coverVideoRounded: false,
+    squareFramedMedia: true,
     coverVideoWidth: 3456,
     coverVideoHeight: 2168,
     sections: [
@@ -439,8 +656,9 @@ export const projects: Project[] = [
     tags: ["UI Design", "Product Design", "Frontend Development"],
     role: "Product Designer",
     tools: "Product Design, CSS",
-    image: "/images/cover-comments-moderation.png",
-    imageAlt: "Coeditor detailed comment view",
+    coverOrb: true,
+    image: "/images/coeditor-loader-final.png",
+    imageAlt: "Coeditor comment editor with the final moderation loader",
     imageWidth: 6912,
     imageHeight: 4320,
     sections: [
@@ -500,6 +718,8 @@ export const projects: Project[] = [
             alt: "CSS code for the pink and blue gradient loader animation",
             width: 6912,
             height: 4320,
+            framed: true,
+            scale: 0.75,
           },
         ],
       },
@@ -629,6 +849,23 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "next-of-kin",
+    title: "Next of Kin",
+    description:
+      "Helping people securely organise information about their assets for the people they leave behind.",
+    tags: ["Product Design", "Frontend Development"],
+    role: "Product Designer & Frontend Developer",
+    tools: "Product Design, Frontend Development",
+    comingSoon: true,
+    image: "/images/next-of-kin-cover.png",
+    imageAlt:
+      "Three Next of Kin mobile onboarding screens featuring beneficiaries, a secure vault, and a reminder clock",
+    imageWidth: 2400,
+    imageHeight: 1523,
+    coverImageScale: 0.88,
+    sections: [],
+  },
+  {
     slug: "thespectator",
     title: "The Spectator",
     description:
@@ -636,8 +873,8 @@ export const projects: Project[] = [
     tags: ["Product Design", "Strategy", "UX Research"],
     role: "UI/UX Designer",
     tools: "UI/UX Design",
-    image: "/images/cover-thespectator.png",
-    imageAlt: "The Spectator gift subscription flow — choose your gift type",
+    image: "/images/imagegen/spectator-christmas-flatlay-large.png",
+    imageAlt: "The Spectator Christmas magazine lying flat as a tactile physical mock-up",
     imageWidth: 6912,
     imageHeight: 4320,
     sections: [
@@ -930,6 +1167,18 @@ export const projects: Project[] = [
     ],
   },
 ];
+
+export const projects: Project[] = [...projectEntries].sort((a, b) => {
+  if (a.slug === "creatorshop") return -1;
+  if (b.slug === "creatorshop") return 1;
+  if (a.slug === "comments-moderation") return -1;
+  if (b.slug === "comments-moderation") return 1;
+  if (a.slug === "next-of-kin") return -1;
+  if (b.slug === "next-of-kin") return 1;
+  if (a.slug === "thespectator") return -1;
+  if (b.slug === "thespectator") return 1;
+  return 0;
+});
 
 export type BlogPost = {
   slug: string;
