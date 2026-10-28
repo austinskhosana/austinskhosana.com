@@ -33,6 +33,52 @@ body {
   color: var(--background);
 }
 
+.dock-refraction-field {
+  position: fixed;
+  z-index: 45;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 164px;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 0),
+    rgb(255 255 255 / 0.025) 44%,
+    rgb(255 255 255 / 0.1)
+  );
+  -webkit-backdrop-filter: blur(2px) saturate(1.12) contrast(1.03);
+  backdrop-filter: blur(2px) saturate(1.12) contrast(1.03);
+  mask-image: linear-gradient(to bottom, transparent, black 42%, black);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 42%,
+    black
+  );
+}
+
+@supports (backdrop-filter: url("#dock-refraction")) {
+  .dock-refraction-field {
+    backdrop-filter: url("#dock-refraction") blur(0.65px) saturate(1.16)
+      contrast(1.04);
+  }
+}
+
+@media (min-width: 640px) {
+  .dock-refraction-field {
+    height: 180px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce),
+  (prefers-reduced-transparency: reduce) {
+  .dock-refraction-field {
+    -webkit-backdrop-filter: blur(2px) saturate(1.08);
+    backdrop-filter: blur(2px) saturate(1.08);
+  }
+}
+
 .custom-cursor {
   position: fixed;
   z-index: 10000;

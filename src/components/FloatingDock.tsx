@@ -80,10 +80,6 @@ export function FloatingDock() {
 
   return (
     <>
-      <div
-        aria-hidden
-        className="pointer-events-none fixed inset-x-0 bottom-0 z-30 h-40 backdrop-blur-xl [mask-image:linear-gradient(to_top,black,transparent)] [-webkit-mask-image:linear-gradient(to_top,black,transparent)]"
-      />
       <div className="pointer-events-none fixed inset-x-0 bottom-10 z-50 flex justify-center">
         <nav
           className="pointer-events-auto flex items-end gap-1.5 rounded-full border border-white/70 bg-white/85 p-1.5 shadow-xl shadow-black/10 ring-1 ring-black/5 backdrop-blur-xl sm:gap-2 sm:p-2"

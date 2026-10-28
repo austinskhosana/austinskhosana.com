@@ -9,6 +9,7 @@ import { blogPosts } from "@/lib/data";
 import { WindowManagerProvider } from "@/components/windows/WindowManagerContext";
 import { WindowLayer } from "@/components/windows/WindowLayer";
 import { CustomCursor } from "@/components/CustomCursor";
+import { DockRefraction } from "@/components/DockRefraction";
 
 const widgetPosts = [
   blogPosts.find((post) => post.slug === "tailwind-the-last-css-framework-3")!,
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <LatestPostWidget posts={widgetPosts} />
           <main className="flex-1 pb-8">{children}</main>
           <Footer />
+          <DockRefraction />
           <FloatingDock />
           <WindowLayer />
         </WindowManagerProvider>
