@@ -849,11 +849,11 @@ const projectEntries: Project[] = [
     role: "Product Designer & Frontend Developer",
     tools: "Product Design, Frontend Development",
     comingSoon: true,
-    image: "/images/next-of-kin-cover.png",
+    image: "/images/next-of-kin-cover.webp",
     imageAlt:
       "Three Next of Kin mobile onboarding screens featuring beneficiaries, a secure vault, and a reminder clock",
     imageWidth: 2400,
-    imageHeight: 1523,
+    imageHeight: 1524,
     coverImageScale: 0.88,
     sections: [],
   },
