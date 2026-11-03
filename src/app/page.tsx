@@ -18,7 +18,7 @@ export default function Home() {
             <h1 className="text-balance font-display text-2xl leading-snug font-semibold tracking-tight">
               Hi, I&apos;m Austin Skhosana
               <br />
-              Where strategy meets&nbsp;craft
+              Where design meets&nbsp;development
             </h1>
             <p className="max-w-[720px] font-mono text-base leading-snug font-normal text-muted">
               I use design thinking to make sense of messy problems:
