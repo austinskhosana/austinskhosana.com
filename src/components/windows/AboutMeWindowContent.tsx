@@ -297,42 +297,19 @@ export function AboutMeWindowContent() {
           {introDone && (
             <>
               <p className="text-muted">
-                Hi, I&apos;m Austin Skhosana, a designer based in
-                Johannesburg, South Africa. I&apos;m currently simplifying
-                banking experiences as a consultant at Khabane Majestic
-                Consulting, working with Absa, one of the largest banks in
-                Africa.
-              </p>
-              <p className="text-muted">
-                This is usually the point in the bio where I tell you I&apos;m
-                passionate about user empathy and pixel-perfect design, but at
-                this point, that&apos;s table stakes. So let&apos;s talk about
-                something else.
-              </p>
-              <p className="text-muted">
-                What brought me into design was design thinking, which I first
-                encountered in business school at the University of South
-                Africa before going on to study design at the University of
-                Johannesburg. I was drawn to it as a methodology: a way to
-                diagnose problems, understand people and context, test
-                assumptions, and move toward the clearest version of the truth.
-              </p>
-              <p className="text-muted">
-                That mindset still shapes how I work. I use design to make
-                sense of messy briefs, competing stakeholder needs, user
-                behaviour, and business constraints, then turn that
-                understanding into something clear enough to build.
-              </p>
-              <p className="text-muted">
-                My practice sits somewhere between strategy and craft. I care
-                about the thinking behind a design as much as the business and
-                anthropological context around it, because I&apos;ve found that
-                these ideas are stronger together than apart.
-              </p>
-              <p className="text-muted">
-                I also build. That means I can move from concept to production
-                without a handoff, and that changes the speed, fidelity, and
-                quality of what I ship.
+                I&apos;m Austin Skhosana, a designer based in Johannesburg,
+                South Africa. This is usually the point of the bio where I tell
+                you I&apos;m sooo passionate about user empathy and
+                pixel-perfect designs, but at this point, that&apos;s table
+                stakes for designers. So let&apos;s talk about something else.
+                I&apos;m obsessed with DX, otherwise known as developer
+                experience. That&apos;s why my design practice is fluid,
+                existing somewhere between high-fidelity mocks and increasingly
+                sharing syntax and code prototypes for frontend details that
+                can&apos;t be captured in Figma. A core idea in my practice is
+                moving between disciplines to improve cross-functional
+                collaboration; championing the material software exists in, and
+                the people who help us designers ship it to users.
               </p>
             </>
           )}
