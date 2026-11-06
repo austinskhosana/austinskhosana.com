@@ -854,7 +854,7 @@ const projectEntries: Project[] = [
       "Three Next of Kin mobile onboarding screens featuring beneficiaries, a secure vault, and a reminder clock",
     imageWidth: 2400,
     imageHeight: 1524,
-    coverImageScale: 0.88,
+    coverImageScale: 0.72,
     sections: [],
   },
   {
