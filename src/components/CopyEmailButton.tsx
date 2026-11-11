@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { CheckCircleIcon, EnvelopeIcon } from "@heroicons/react/24/solid";
 
-const EMAIL = "austinskhosana.design@gmail.com";
+const EMAIL = "austin@austinskhosana.com";
 
 export function CopyEmailButton() {
   const [copied, setCopied] = useState(false);
