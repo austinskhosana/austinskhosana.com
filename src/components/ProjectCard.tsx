@@ -9,7 +9,8 @@ export function ProjectCard({ project }: { project: Project }) {
     <>
       <div
         data-cursor-label={
-          project.comingSoon ? "Coming Soon" : "View Case Study"
+          project.cursorLabel ??
+            (project.comingSoon ? "Coming Soon" : "View Case Study")
         }
         style={
           project.coverVideoFitWidth && !project.gamingFrame
@@ -98,6 +99,19 @@ export function ProjectCard({ project }: { project: Project }) {
       >
         {card}
       </article>
+    );
+  }
+
+  if (project.externalUrl) {
+    return (
+      <a
+        href={project.externalUrl}
+        target="_blank"
+        rel="noreferrer"
+        className="group flex flex-col gap-[28px]"
+      >
+        {card}
+      </a>
     );
   }
 

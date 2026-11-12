@@ -11,7 +11,9 @@ import { projects } from "@/lib/data";
 
 export function CaseStudyMobileNav({ slug }: { slug: string }) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const navigableProjects = projects.filter((project) => !project.hiddenFromHome);
+  const navigableProjects = projects.filter(
+    (project) => !project.hiddenFromHome && !project.externalUrl,
+  );
   const index = navigableProjects.findIndex((p) => p.slug === slug);
   if (index === -1) return null;
 

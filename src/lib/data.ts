@@ -98,6 +98,10 @@ export type Project = {
   hiddenFromHome?: boolean;
   // Shows a non-interactive project card without publishing a case-study route.
   comingSoon?: boolean;
+  // Uses an external destination for the home-page card instead of the case study.
+  externalUrl?: string;
+  // Overrides the default custom-cursor label for this project card.
+  cursorLabel?: string;
   image?: string;
   imageAlt?: string;
   imageWidth?: number;
@@ -364,6 +368,98 @@ const projectEntries: Project[] = [
         ],
       },
     ],
+  },
+  {
+    slug: "creatorshop-waitlist-car",
+    title: "Creatorshop",
+    description:
+      "A Three.js-powered waitlist exploration focused on a distinct brand language, and an interactive header.",
+    tags: ["CRO", "Landing Page", "Design Engineering"],
+    externalUrl: "https://www.creatorshop.store/waitlist-car",
+    cursorLabel: "View Live Site",
+    role: "Product Designer & Developer, Self-led Exploration",
+    tools: "Next.js, React, TypeScript, Tailwind CSS, React Three Fiber, Three.js",
+    coverVideo: "/videos/creatorshop-waitlist-car.mp4",
+    coverVideoAlt:
+      "Creatorshop waitlist landing page with a green sports car and the headline Get in, loser. We pay with posts now.",
+    coverVideoWidth: 1920,
+    coverVideoHeight: 1144,
+    coverVideoBordered: false,
+    coverVideoRounded: false,
+    sections: [],
+  },
+  {
+    slug: "creatorshop-webgpu-agents",
+    title: "Creatorshop",
+    description:
+      "Built and designed with WebGPU library by Vercel, designed for agents.",
+    tags: ["CRO", "Landing Page", "Design Engineering"],
+    externalUrl: "https://www.creatorshop.store/waitlist-diamond",
+    cursorLabel: "View Live Site",
+    role: "Product Designer & Developer, Self-led Exploration",
+    tools: "Next.js, React, TypeScript, Tailwind CSS, WebGPU",
+    coverVideo: "/videos/creatorshop-webgpu-agents.mp4",
+    coverVideoAlt:
+      "Creatorshop landing page built with Vercel's WebGPU library, designed for agents",
+    coverVideoWidth: 1920,
+    coverVideoHeight: 1144,
+    coverVideoBordered: false,
+    coverVideoRounded: false,
+    sections: [],
+  },
+  {
+    slug: "creatorshop-plutus",
+    title: "Creatorshop",
+    description:
+      "Built and designed with ChatGPT for Image Generation and Codex for engineering and WebGL for Cloud Text",
+    tags: ["CRO", "Landing Page", "Design Engineering"],
+    externalUrl: "https://www.creatorshop.store/waitlist-plutus",
+    cursorLabel: "View Live Site",
+    role: "Product Designer & Developer, Self-led Exploration",
+    tools: "ChatGPT, Codex, WebGL",
+    image: "/images/creatorshop-plutus.png",
+    imageAlt:
+      "Creatorshop landing page with blue sky, cloud typography, and a mythological figure sitting on a cloud",
+    imageWidth: 3456,
+    imageHeight: 2062,
+    coverImageScale: 0.8,
+    sections: [],
+  },
+  {
+    slug: "creatorshop-spray",
+    title: "Creatorshop",
+    description:
+      "Built and designed with ChatGPT for Image Generation and Codex for engineering",
+    tags: ["CRO", "Landing Page", "Design Engineering"],
+    externalUrl: "https://www.creatorshop.store/waitlist-spray",
+    cursorLabel: "View Live Site",
+    role: "Product Designer & Developer, Self-led Exploration",
+    tools: "ChatGPT, Codex",
+    image: "/images/creatorshop-spray.png",
+    imageAlt:
+      "Creatorshop landing page with hand-drawn spray paint lettering and an illustrated character",
+    imageWidth: 3456,
+    imageHeight: 2082,
+    coverImageScale: 0.8,
+    sections: [],
+  },
+  {
+    slug: "thespectator-layout-exploration",
+    title: "The Spectator",
+    description:
+      "Collaboratively designing an editorial web layout experience for the world’s oldest magazine",
+    tags: ["Editorial Design", "UX Design", "UI Design"],
+    externalUrl: "https://spectator.com/",
+    cursorLabel: "View Live Site",
+    role: "Product Designer, Self-led Exploration",
+    tools: "Editorial Design, UX Design, UI Design",
+    image: "/images/thespectator-layout-exploration.png",
+    imageAlt:
+      "The Spectator editorial homepage with a newspaper-inspired layout, article columns, and a latest analysis sidebar",
+    imageWidth: 3456,
+    imageHeight: 2062,
+    coverImageScale: 0.8,
+    sections: [],
   },
   {
     slug: "creatorshop",
@@ -1171,12 +1267,24 @@ const projectEntries: Project[] = [
 export const projects: Project[] = [...projectEntries].sort((a, b) => {
   if (a.slug === "creatorshop") return -1;
   if (b.slug === "creatorshop") return 1;
+  if (a.slug === "creatorshop-webgpu-agents") return -1;
+  if (b.slug === "creatorshop-webgpu-agents") return 1;
+  if (a.slug === "thespectator-layout-exploration") return -1;
+  if (b.slug === "thespectator-layout-exploration") return 1;
+  if (a.slug === "creatorshop-plutus") return -1;
+  if (b.slug === "creatorshop-plutus") return 1;
   if (a.slug === "next-of-kin") return -1;
   if (b.slug === "next-of-kin") return 1;
   if (a.slug === "comments-moderation") return -1;
   if (b.slug === "comments-moderation") return 1;
   if (a.slug === "thespectator") return -1;
   if (b.slug === "thespectator") return 1;
+  if (a.slug === "the-scene") return -1;
+  if (b.slug === "the-scene") return 1;
+  if (a.slug === "creatorshop-spray") return -1;
+  if (b.slug === "creatorshop-spray") return 1;
+  if (a.slug === "creatorshop-waitlist-car") return -1;
+  if (b.slug === "creatorshop-waitlist-car") return 1;
   return 0;
 });
 
