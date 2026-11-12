@@ -1269,6 +1269,8 @@ export const projects: Project[] = [...projectEntries].sort((a, b) => {
   if (b.slug === "creatorshop") return 1;
   if (a.slug === "creatorshop-webgpu-agents") return -1;
   if (b.slug === "creatorshop-webgpu-agents") return 1;
+  if (a.slug === "thespectator") return -1;
+  if (b.slug === "thespectator") return 1;
   if (a.slug === "thespectator-layout-exploration") return -1;
   if (b.slug === "thespectator-layout-exploration") return 1;
   if (a.slug === "creatorshop-plutus") return -1;
@@ -1277,8 +1279,6 @@ export const projects: Project[] = [...projectEntries].sort((a, b) => {
   if (b.slug === "next-of-kin") return 1;
   if (a.slug === "comments-moderation") return -1;
   if (b.slug === "comments-moderation") return 1;
-  if (a.slug === "thespectator") return -1;
-  if (b.slug === "thespectator") return 1;
   if (a.slug === "the-scene") return -1;
   if (b.slug === "the-scene") return 1;
   if (a.slug === "creatorshop-spray") return -1;
