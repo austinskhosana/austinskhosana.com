@@ -40,6 +40,7 @@ const leadingCarouselSlugSet = new Set(
 const nimbusCarouselProject: Project = {
   slug: "nimbus",
   title: "Nimbus",
+  comingSoon: true,
   description:
     "A logo for a ticketing system for AI-powered workflows, a software factory.",
   tags: ["Brand Identity", "AI Systems"],
@@ -49,7 +50,7 @@ const nimbusCarouselProject: Project = {
   imageAlt: "Nimbus blue cloud logo with a central four-point star",
   imageWidth: 1440,
   imageHeight: 1440,
-  coverImageScale: 0.28,
+  coverImageScale: 0.22,
   sections: [],
 };
 
