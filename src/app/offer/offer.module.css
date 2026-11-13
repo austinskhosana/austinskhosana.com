@@ -224,6 +224,31 @@
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   outline: none;
+  touch-action: pan-y;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .workRail {
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .workRail img,
+  .workRail video {
+    pointer-events: none;
+    -webkit-user-drag: none;
+  }
+
+  .workRail[data-dragging="true"] {
+    cursor: grabbing;
+    scroll-behavior: auto;
+    scroll-snap-type: none;
+  }
+
+  .workRail[data-settling="true"] {
+    scroll-snap-type: none;
+  }
 }
 
 .workRail::-webkit-scrollbar {
@@ -768,6 +793,7 @@
   }
 
   .calendarFrame {
+    margin-top: -92px;
     border-right: 0;
     border-left: 0;
     border-radius: 0;
@@ -781,6 +807,10 @@
 
   .siteHeader {
     padding-block: 22px;
+  }
+
+  .bookingSection {
+    padding-block: 76px 60px;
   }
 
   .hero {

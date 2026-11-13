@@ -254,6 +254,8 @@ export default function OfferPage() {
                 <ProjectCard
                   project={project}
                   mediaClassName={styles.projectMedia}
+                  disableNavigation
+                  cursorLabel="Drag"
                 />
               </div>
             ))}

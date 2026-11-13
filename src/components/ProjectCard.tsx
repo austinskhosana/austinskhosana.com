@@ -7,15 +7,20 @@ import { OrbCover } from "@/components/OrbCover";
 export function ProjectCard({
   project,
   mediaClassName,
+  disableNavigation = false,
+  cursorLabel,
 }: {
   project: Project;
   mediaClassName?: string;
+  disableNavigation?: boolean;
+  cursorLabel?: string;
 }) {
   const card = (
     <>
       <div
         data-cursor-label={
-          project.cursorLabel ??
+          cursorLabel ??
+            project.cursorLabel ??
             (project.comingSoon ? "Coming Soon" : "View Case Study")
         }
         style={
@@ -97,11 +102,13 @@ export function ProjectCard({
     </>
   );
 
-  if (project.comingSoon) {
+  if (project.comingSoon || disableNavigation) {
     return (
       <article
         className="group flex flex-col gap-[28px]"
-        aria-label={`${project.title}, coming soon`}
+        aria-label={
+          project.comingSoon ? `${project.title}, coming soon` : project.title
+        }
       >
         {card}
       </article>
