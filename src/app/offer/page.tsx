@@ -15,7 +15,7 @@ import { TestimonialCarousel } from "./TestimonialCarousel";
 import styles from "./offer.module.css";
 
 export const metadata: Metadata = {
-  title: "Design subscription — Austin Skhosana",
+  title: "Design Subscription",
   description:
     "Senior product design support for funded teams, without the full-time hiring overhead.",
 };
