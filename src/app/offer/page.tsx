@@ -255,7 +255,6 @@ export default function OfferPage() {
                   project={project}
                   mediaClassName={styles.projectMedia}
                   disableNavigation
-                  cursorLabel="Drag"
                 />
               </div>
             ))}

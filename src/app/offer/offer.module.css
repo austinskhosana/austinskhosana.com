@@ -227,30 +227,6 @@
   touch-action: pan-y;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .workRail {
-    cursor: grab;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-
-  .workRail img,
-  .workRail video {
-    pointer-events: none;
-    -webkit-user-drag: none;
-  }
-
-  .workRail[data-dragging="true"] {
-    cursor: grabbing;
-    scroll-behavior: auto;
-    scroll-snap-type: none;
-  }
-
-  .workRail[data-settling="true"] {
-    scroll-snap-type: none;
-  }
-}
-
 .workRail::-webkit-scrollbar {
   display: none;
 }
@@ -346,6 +322,40 @@
 .scrollHint button.activeDot {
   width: 22px;
   background: #242424;
+}
+
+.carouselControls {
+  display: flex;
+  gap: 8px;
+  padding-top: 16px;
+  padding-left: max(20px, calc((100vw - 1180px) / 2));
+}
+
+.carouselControl {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  place-items: center;
+  border: 0;
+  border-radius: 999px;
+  background: #f1f1f1;
+  color: var(--offer-ink);
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.carouselControl:hover:not(:disabled) {
+  background: #e7e7e7;
+}
+
+.carouselControl:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.carouselControl svg {
+  width: 18px;
+  height: 18px;
 }
 
 .section {
