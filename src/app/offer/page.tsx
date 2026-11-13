@@ -126,7 +126,7 @@ const faqs = [
   {
     question: "What programs do you design in?",
     answer:
-      "Figma is the primary design tool. I can also build polished marketing experiences in Framer or production-ready interfaces in modern frontend code.",
+      "I work at the intersection of design and code, primarily using Claude Code and Codex to shape and build digital experiences. I also use Figma for branding, social assets, and other visual design work.",
   },
   {
     question: "Are there any requests you don’t support?",
