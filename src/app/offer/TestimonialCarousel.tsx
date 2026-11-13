@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import styles from "./offer.module.css";
 
@@ -10,21 +11,21 @@ const testimonials = [
       "Austin has been a massive asset to the team. He has a brilliant knack for taking complex technical requirements and turning them into a polished interface that actually makes sense for the user.",
     name: "Brittany Campbell-Akers",
     role: "Senior Product & Delivery Manager, Coeditor",
-    initials: "BC",
+    image: "/images/testimonial-brittany.png",
   },
   {
     quote:
       "Such a valuable asset in beginning my company’s visual journey, delivering polished visuals that made me feel differentiated and providing design support that helped me land major clients like Apple Music and Netflix with sleek presentation decks. Great strategic thinking for a cohesive visual world of identity assets.",
     name: "Mpumelelo Ngwenya",
     role: "Founder and CEO, Dropshot Media Solutions",
-    initials: "MN",
+    image: "/images/testimonial-mpumi.png",
   },
   {
     quote:
       "Austin has been a design partner for projects with quick turnaround, lots of dedication to getting the job done, and is always happy to help with design support and assets delivered with speed and intention. A great asset to have for teams who need to move fast.",
     name: "Kamvelihle Gwana",
     role: "Senior Public Relations Officer, Kamva Gwana",
-    initials: "KG",
+    image: "/images/testimonial-kamva.png",
   },
 ];
 
@@ -116,9 +117,14 @@ export function TestimonialCarousel() {
             >
               <blockquote className={styles.quote}>“{testimonial.quote}”</blockquote>
               <figcaption className={styles.quoteAuthor}>
-                <span className={styles.avatar} aria-hidden="true">
-                  {testimonial.initials}
-                </span>
+                <Image
+                  className={styles.avatar}
+                  src={testimonial.image}
+                  alt=""
+                  width={40}
+                  height={40}
+                  aria-hidden="true"
+                />
                 <span>
                   <span className={styles.authorName}>{testimonial.name}</span>
                   <span className={styles.authorRole}>{testimonial.role}</span>

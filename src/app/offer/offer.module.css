@@ -457,6 +457,7 @@
   background: #242424;
   color: #fff;
   font-size: 11px;
+  object-fit: cover;
 }
 
 .authorName {
