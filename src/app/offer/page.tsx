@@ -63,17 +63,12 @@ const spectatorProject = remainingCarouselProjects.find(
 const remainingWithoutSpectator = remainingCarouselProjects.filter(
   (project) => project.slug !== "thespectator",
 );
-const finalCarouselProject = remainingWithoutSpectator.at(-1);
-const middleCarouselProjects = finalCarouselProject
-  ? remainingWithoutSpectator.slice(0, -1)
-  : remainingWithoutSpectator;
 
 const carouselProjects = [
   ...leadingCarouselProjects,
   nimbusCarouselProject,
-  ...middleCarouselProjects,
   ...(spectatorProject ? [spectatorProject] : []),
-  ...(finalCarouselProject ? [finalCarouselProject] : []),
+  ...remainingWithoutSpectator,
 ];
 
 function LinkedInIcon(props: SVGProps<SVGSVGElement>) {
