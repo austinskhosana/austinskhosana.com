@@ -7,7 +7,7 @@ import {
   UserIcon,
 } from "@heroicons/react/24/solid";
 import { ProjectCard } from "@/components/ProjectCard";
-import { projects } from "@/lib/data";
+import { projects, type Project } from "@/lib/data";
 import { CalEmbed } from "./CalEmbed";
 import { LiquidMetalIcon, type LiquidMetalIconName } from "./LiquidMetalIcon";
 import { OfferCarousel } from "./OfferCarousel";
@@ -21,6 +21,59 @@ export const metadata: Metadata = {
 };
 
 const featuredProjects = projects.filter((project) => !project.hiddenFromHome);
+
+const leadingCarouselSlugs = [
+  "creatorshop",
+  "creatorshop-webgpu-agents",
+  "creatorshop-waitlist-car",
+];
+
+const leadingCarouselProjects = leadingCarouselSlugs.flatMap((slug) => {
+  const project = featuredProjects.find((item) => item.slug === slug);
+  return project ? [project] : [];
+});
+
+const leadingCarouselSlugSet = new Set(
+  leadingCarouselProjects.map((project) => project.slug),
+);
+
+const nimbusCarouselProject: Project = {
+  slug: "nimbus",
+  title: "Nimbus",
+  description:
+    "A logo for a ticketing system for AI-powered workflows, a software factory.",
+  tags: ["Brand Identity", "AI Systems"],
+  role: "Product Designer, Self-led Exploration",
+  tools: "Figma, Claude Code, Codex",
+  image: "/images/nimbus-logo.png",
+  imageAlt: "Nimbus blue cloud logo with a central four-point star",
+  imageWidth: 1440,
+  imageHeight: 1440,
+  coverImageScale: 0.28,
+  sections: [],
+};
+
+const remainingCarouselProjects = featuredProjects.filter(
+  (project) => !leadingCarouselSlugSet.has(project.slug),
+);
+const spectatorProject = remainingCarouselProjects.find(
+  (project) => project.slug === "thespectator",
+);
+const remainingWithoutSpectator = remainingCarouselProjects.filter(
+  (project) => project.slug !== "thespectator",
+);
+const finalCarouselProject = remainingWithoutSpectator.at(-1);
+const middleCarouselProjects = finalCarouselProject
+  ? remainingWithoutSpectator.slice(0, -1)
+  : remainingWithoutSpectator;
+
+const carouselProjects = [
+  ...leadingCarouselProjects,
+  nimbusCarouselProject,
+  ...middleCarouselProjects,
+  ...(spectatorProject ? [spectatorProject] : []),
+  ...(finalCarouselProject ? [finalCarouselProject] : []),
+];
 
 function LinkedInIcon(props: SVGProps<SVGSVGElement>) {
   return (
@@ -196,10 +249,10 @@ export default function OfferPage() {
 
         <section aria-label="Selected work">
           <OfferCarousel>
-            {featuredProjects.map((project) => (
+            {carouselProjects.map((project, index) => (
               <div
                 className={styles.projectSlide}
-                key={project.slug}
+                key={`${project.slug}-${index}`}
                 data-carousel-slide
               >
                 <ProjectCard
