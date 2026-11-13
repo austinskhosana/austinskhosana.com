@@ -71,6 +71,8 @@ export function FloatingDock() {
   const pathname = usePathname();
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
+  if (pathname === "/offer") return null;
+
   // A case study is always a real page (not a window), so the full dock
   // gives way to a focused prev/home/next rail on every screen size.
   const caseStudySlug = pathname.match(/^\/work\/([^/]+)$/)?.[1];

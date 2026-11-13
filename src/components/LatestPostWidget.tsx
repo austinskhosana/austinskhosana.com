@@ -61,7 +61,7 @@ export function LatestPostWidget({ posts }: { posts: BlogPost[] }) {
   const pathname = usePathname();
   const [primary, secondary] = posts;
 
-  if (pathname?.startsWith("/work/")) return null;
+  if (pathname?.startsWith("/work/") || pathname === "/offer") return null;
 
   return (
     <div className="group absolute top-6 right-6 z-30 hidden w-72 sm:block">

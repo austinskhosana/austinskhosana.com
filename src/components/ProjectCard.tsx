@@ -4,7 +4,13 @@ import type { Project } from "@/lib/data";
 import { CoverVideo } from "@/components/CoverVideo";
 import { OrbCover } from "@/components/OrbCover";
 
-export function ProjectCard({ project }: { project: Project }) {
+export function ProjectCard({
+  project,
+  mediaClassName,
+}: {
+  project: Project;
+  mediaClassName?: string;
+}) {
   const card = (
     <>
       <div
@@ -19,7 +25,7 @@ export function ProjectCard({ project }: { project: Project }) {
               }
             : undefined
         }
-        className={`relative w-full overflow-hidden bg-[#f5f5f5] ${
+        className={`relative w-full overflow-hidden bg-[#f5f5f5] ${mediaClassName ?? ""} ${
           project.coverVideoFitWidth && !project.gamingFrame
             ? ""
             : project.gamingFrame
